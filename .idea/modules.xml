@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Feast.iml" filepath="$PROJECT_DIR$/Feast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/feast/feast.iml" filepath="$PROJECT_DIR$/feast/feast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_alipay/library_alipay.iml" filepath="$PROJECT_DIR$/library_alipay/library_alipay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_swipback/library_swipback.iml" filepath="$PROJECT_DIR$/library_swipback/library_swipback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_version/library_version.iml" filepath="$PROJECT_DIR$/library_version/library_version.iml" />
+    </modules>
+  </component>
+</project>

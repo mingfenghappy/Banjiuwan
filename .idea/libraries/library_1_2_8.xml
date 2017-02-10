@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.2.8">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/common/build/intermediates/exploded-aar/com.jaeger.statusbaruitl/library/1.2.8/res" />
+      <root url="jar://$PROJECT_DIR$/common/build/intermediates/exploded-aar/com.jaeger.statusbaruitl/library/1.2.8/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jaeger.statusbaruitl/library/1.2.8/8168cba7f2b55d1a891bc6a97deb188910cee5d/library-1.2.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
