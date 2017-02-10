@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.ins.feast.ui.activity.DomainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.sobey.common.view.FullyListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
+
+
+        <EditText
+            android:id="@+id/edit_domain"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="输入或选择要连接的服务器域名"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textSize="@dimen/text_nomal" />
+
+        <CheckBox
+            android:id="@+id/check_domain_vali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="20dp"
+            android:checked="true"
+            android:text="是否显示验证码"
+            android:textColor="@color/com_text_blank" />
+
+        <CheckBox
+            android:id="@+id/check_domain_toast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="20dp"
+            android:checked="true"
+            android:text="是否打印测试信息到窗口"
+            android:textColor="@color/com_text_blank" />
+
+        <Button
+            android:id="@+id/btn_go"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:text="启动App" />
+
+    </LinearLayout>
+</ScrollView>
