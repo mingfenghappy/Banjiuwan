@@ -17,6 +17,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.ins.feast.BuildConfig;
 import com.ins.feast.R;
 import com.sobey.common.utils.ApplicationHelp;
@@ -50,6 +51,7 @@ public class FeastApplication extends Application {
      */
     private void initSetting() {
 
+
     }
 
     @Override
@@ -81,7 +83,7 @@ public class FeastApplication extends Application {
         FIR.init(this);
     }
 
-//    private void initBaiduMap(){
-//        SDKInitializer.initialize(this);
-//    }
+    private void initBaiduMap(){
+        SDKInitializer.initialize(this);
+    }
 }
