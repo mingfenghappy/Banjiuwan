@@ -50,7 +50,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
-
     //加载自定义字体
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //bughd
@@ -60,10 +59,10 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'
-
     compile project(':common')
     compile project(':library_alipay')
     compile project(':library_swipback')
     compile project(':library_version')
     compile files('libs/libammsdk.jar')
+    compile project(':baidumapsdk')
 }
