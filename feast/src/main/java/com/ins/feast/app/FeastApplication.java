@@ -31,11 +31,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class FeastApplication extends Application {
 
 
-    /**
-     * 当前用户nickname,为了苹果推送不是userid而是昵称
-     */
-    public static String currentUserNick = "";
-
     @Override
     public void onCreate() {
         MultiDex.install(this);
@@ -43,10 +38,18 @@ public class FeastApplication extends Application {
         ApplicationHelp.getApplicationContext(this);
 
         initFonts();
-        initJpush();
-        initXutils();
-        initbugHd();
+        initJPush();
+        initXUtils();
+        initBugHd();
 //        initBaiduMap();
+        initSetting();
+    }
+
+    /**
+     * 初始化设置
+     */
+    private void initSetting() {
+
     }
 
     @Override
@@ -55,12 +58,12 @@ public class FeastApplication extends Application {
         MultiDex.install(this);
     }
 
-    private void initJpush() {
+    private void initJPush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
     }
 
-    private void initXutils() {
+    private void initXUtils() {
         x.Ext.init(this);
         x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
     }
@@ -74,7 +77,7 @@ public class FeastApplication extends Application {
     }
 
 
-    private void initbugHd(){
+    private void initBugHd(){
         FIR.init(this);
     }
 
