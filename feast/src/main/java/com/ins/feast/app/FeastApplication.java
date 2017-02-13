@@ -42,16 +42,7 @@ public class FeastApplication extends Application {
         initJPush();
         initXUtils();
         initBugHd();
-//        initBaiduMap();
-        initSetting();
-    }
-
-    /**
-     * 初始化设置
-     */
-    private void initSetting() {
-
-
+        initBaiduMap();
     }
 
     @Override
