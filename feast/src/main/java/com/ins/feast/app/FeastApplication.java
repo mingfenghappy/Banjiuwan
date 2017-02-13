@@ -21,6 +21,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.ins.feast.BuildConfig;
 import com.ins.feast.R;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.L;
 
 import org.xutils.x;
 
@@ -43,6 +44,11 @@ public class FeastApplication extends Application {
         initXUtils();
         initBugHd();
         initBaiduMap();
+        initSetting();
+    }
+
+    private void initSetting() {
+        L.setDEBUG(BuildConfig.DEBUG);
     }
 
     @Override
