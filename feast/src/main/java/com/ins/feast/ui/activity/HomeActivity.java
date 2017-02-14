@@ -5,12 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.R;
@@ -22,6 +24,7 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
 
     private Locationer locationer;
     private TextView text_hello;
+    private final static String LOG_TAG="HomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        if (isFirst) text_hello.append("\n当前城市："+city+"\n区域："+district+"\n坐标："+latLng.toString());
+        BDLocation bdLocation = locationer.getBdLocation();
+        String msg=
+                "\naddStr:"+bdLocation.getAddrStr()+
+                "\naddress"+bdLocation.getAddress().address;
+        if (isFirst) text_hello.append("\n当前城市："+city+"\n区域："+district+"\n坐标："+latLng.toString()+msg);
     }
 }
