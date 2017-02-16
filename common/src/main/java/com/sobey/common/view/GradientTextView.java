@@ -33,7 +33,7 @@ public class GradientTextView extends TextView {
         //获取字体颜色并计算渐变色
         int textColor = getCurrentTextColor();
         int endColor = textColor & 0x00ffffff; //透明度设为0:（颜色值高8位设置为0）
-        LinearGradient mLinearGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0, new int[]{textColor, textColor, endColor}, new float[]{0, 0.7f, 1f}, Shader.TileMode.REPEAT);
+        LinearGradient mLinearGradient = new LinearGradient(0, 0, getMeasuredWidth(), 0, new int[]{textColor, endColor}, new float[]{0.7f, 1f}, Shader.TileMode.REPEAT);
         mPaint.setShader(mLinearGradient);
     }
 }
