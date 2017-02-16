@@ -1,6 +1,5 @@
 package com.sobey.common.utils;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -17,29 +16,60 @@ public class L {
     }
 
     private L() {
-        throw new UnsupportedOperationException();
     }
 
-    public static void i(String tag, String message) {
+    public static void v(Object message) {
+        v(TAG, message);
+    }
+
+    public static void v(String tag, Object message) {
         if (!DEBUG) {
             return;
         }
-        Log.i(tag, message);
+        try {
+            Log.v(tag, message.toString());
+        } catch (NullPointerException e) {
+            Log.e(tag, "L.v(Object message),object is null");
+            e.printStackTrace();
+        }
     }
 
-    public static void i(String message) {
+    public static void i(Object message) {
         i(TAG, message);
     }
 
-    public static void e(String tag, String message) {
+    public static void i(String tag, Object message) {
         if (!DEBUG) {
             return;
         }
-        Log.e(tag, message);
+
+        try {
+            Log.i(tag, message.toString());
+        } catch (NullPointerException e) {
+            Log.e(tag, "L.i(Object message),object is null");
+            e.printStackTrace();
+        }
     }
 
-    public static void e(String message) {
+    public static void e(Object message) {
         e(TAG, message);
+    }
+
+    public static void e(String tag, Object message) {
+        if (!DEBUG) {
+            return;
+        }
+
+        try {
+            Log.e(tag, message.toString());
+        } catch (NullPointerException e) {
+            Log.e(tag, "L.e(Object message),object is null");
+            e.printStackTrace();
+        }
+    }
+
+    public static void d(Object message) {
+        d(TAG, message);
     }
 
     public static void d(String tag, Object message) {
@@ -47,14 +77,11 @@ public class L {
             return;
         }
 
-        if (message != null && !TextUtils.isEmpty(message.toString())) {
+        try {
             Log.d(tag, message.toString());
-        } else if (message == null) {
-            Log.e(tag, "L.d(String tag,Object message),object is null");
+        } catch (NullPointerException e) {
+            Log.e(tag, "L.d(Object message),object is null");
+            e.printStackTrace();
         }
-    }
-
-    public static void d(Object message) {
-        d(TAG, message);
     }
 }

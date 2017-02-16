@@ -23,7 +23,9 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     private final static String LOG_TAG = "HomeActivity";
     private final static String JS_BRIDGE_NAME = "native";
     private WebView webView;
+    //标题栏定位Tv
     private TextView title_location;
+    //标题栏中间title
     private TextView title_center;
 
     @Override
