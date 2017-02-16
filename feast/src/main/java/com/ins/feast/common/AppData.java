@@ -136,6 +136,6 @@ public class AppData {
          */
         public static String version_passenger        = domain + "updateAPK/version_passenger.json";	     						    //检查更新
         public static String getInfo			    	= domain + "mobile/user/getInfo";												//token登陆
-        public static String app_homepage=domain+"/Banjiuwan/app/index";
+        public static String app_homepage=domain+"/Banjiuwan/app/page/index";
     }
 }

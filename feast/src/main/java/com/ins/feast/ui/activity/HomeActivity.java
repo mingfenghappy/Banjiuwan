@@ -44,10 +44,14 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
 
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
+        initWebView();
+    }
+
+    private void initWebView() {
         webView = (WebView) findViewById(R.id.webView);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-
+        webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }
 
