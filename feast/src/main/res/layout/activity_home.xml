@@ -19,9 +19,12 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
+            <com.sobey.common.view.GradientTextView
                 android:id="@+id/title_location"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:maxEms="7"
+                android:singleLine="true"
                 android:layout_height="wrap_content" />
 
             <TextView

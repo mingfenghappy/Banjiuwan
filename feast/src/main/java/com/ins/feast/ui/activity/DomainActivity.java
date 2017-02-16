@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
@@ -103,11 +105,10 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btn_go) {
-            String domain = edit_domain.getText().toString();
-            if (!StrUtils.isEmpty(domain)) {
-                AppData.Url.domain = "http://" + domain + "/Carpooling/";
-                modify();
-                AppData.App.saveDomain(domain);
+            String domainIP = edit_domain.getText().toString();
+            if (!StrUtils.isEmpty(domainIP)) {
+                modify(domainIP);
+                AppData.App.saveDomain(domainIP);
 
                 Intent intent = new Intent(this, LoadUpActivity.class);
                 startActivity(intent);
@@ -116,7 +117,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void modify() {
+    private void modify(String domainIP) {
         try {
             Object o = AppData.Url.class.newInstance();//获取对象
             Field[] field = AppData.Url.class.getFields();//获取全部参数
@@ -125,7 +126,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
                 if ((Modifier.STATIC + Modifier.PUBLIC) == f.getModifiers()) {//获取字段的修饰符，public 1,static 8
                     if (f.getType().getName().indexOf("String") != -1) {
                         String strtemp = (String) f.get(o);
-                        f.set(o, replace(AppData.Url.domain, strtemp));
+                        f.set(o, replace(domainIP, strtemp));
                     }
                 }
             }
@@ -134,14 +135,12 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private String replace(String domain, String str) {
-        int index = str.indexOf("Carpooling/");
-        if (str.endsWith("Carpooling/")) {
-            return domain;
-        } else {
-            String substring = str.substring(index + "Carpooling/".length());
-            return domain + substring;
-        }
+    private String replace(String domainIP, String str) {
+        int index1 = str.indexOf("://");
+        int index2 = str.indexOf("/", 10);
+        String ret = str.substring(0,index1 + "://".length()) + domainIP + str.substring(index2);
+        Log.e("liao",ret);
+        return ret;
     }
 
 
