@@ -1,8 +1,11 @@
 package com.ins.feast.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
@@ -20,6 +23,7 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     private final static String JS_BRIDGE_NAME = "native";
     private WebView webView;
     private TextView title_location;
+    private TextView title_center;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +47,42 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     }
 
     private void initView() {
+        title_center= (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
         initWebView();
     }
 
+    private WebViewClient mClient = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (!view.getSettings().getLoadsImagesAutomatically()) {
+                view.getSettings().setLoadsImagesAutomatically(true);
+            }
+        }
+    };
+    private WebChromeClient mChromeClient = new WebChromeClient() {
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            title_center.setText(title);
+        }
+    };
+
     private void initWebView() {
         webView = (WebView) findViewById(R.id.webView);
+        webView.setWebViewClient(mClient);
+        webView.setWebChromeClient(mChromeClient);
         WebSettings settings = webView.getSettings();
+
+        settings.setLoadsImagesAutomatically(Build.VERSION.SDK_INT >= 19);
         settings.setJavaScriptEnabled(true);
-        webView.loadUrl(AppData.Url.app_homepage);
+        webView.loadUrl("http://192.168.118.206:8080/Banjiuwan/app/page/index");
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }
 
@@ -70,5 +101,14 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         title_location.setText(locationer.getAddrStr());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
