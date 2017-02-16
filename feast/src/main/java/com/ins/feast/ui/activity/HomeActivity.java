@@ -14,6 +14,7 @@ import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.jsbridge.JSInterface;
 import com.shelwee.update.UpdateHelper;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 
 public class HomeActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
@@ -47,11 +48,14 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     }
 
     private void initView() {
-        title_center= (TextView) findViewById(R.id.text_toolbar_title);
+        title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
         initWebView();
     }
 
+    /**
+     * 自定义WebViewClient
+     */
     private WebViewClient mClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -67,9 +71,13 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
             }
         }
     };
+    /**
+     * 自定义WebChromeClient
+     */
     private WebChromeClient mChromeClient = new WebChromeClient() {
         @Override
         public void onReceivedTitle(WebView view, String title) {
+            L.d(title);
             title_center.setText(title);
         }
     };
@@ -82,7 +90,7 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
 
         settings.setLoadsImagesAutomatically(Build.VERSION.SDK_INT >= 19);
         settings.setJavaScriptEnabled(true);
-        webView.loadUrl("http://192.168.118.206:8080/Banjiuwan/app/page/index");
+        webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }
 

@@ -129,13 +129,13 @@ public class AppData {
         /**
          * 服务器域名
          */
-		public static String domain = "http://192.168.118.206:8080/";								//外网测试服务器(二)
+        public static String domain = "http://192.168.118.206:8080/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
          */
-        public static String version_passenger        = domain + "updateAPK/version_passenger.json";	     						    //检查更新
-        public static String getInfo			    	= domain + "mobile/user/getInfo";												//token登陆
-        public static String app_homepage=domain+"/Banjiuwan/app/page/index";
+        public static String version_passenger = domain + "updateAPK/version_passenger.json";                                    //检查更新
+        public static String getInfo = domain + "mobile/user/getInfo";                                                //token登陆
+        public static String app_homepage = domain + "Banjiuwan/app/page/index";
     }
 }

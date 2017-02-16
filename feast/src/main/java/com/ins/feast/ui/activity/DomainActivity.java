@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
@@ -67,11 +66,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initData() {
         results.clear();
-        results.add(new Domain("101.201.222.160:8101", "(外网测试服务器一)"));
-        results.add(new Domain("139.129.111.76:8101", "(外网测试服务器二)"));
-        results.add(new Domain("192.168.118.110:9528", "(内部测试服务器)"));
-        results.add(new Domain("192.168.118.205:9527", "(开发服务器：谢启谋)"));
-        results.add(new Domain("192.168.118.184:8080", "(开发服务器：李作焕)"));
+        results.add(new Domain("192.168.118.206:8080", "(Web开发服务器)"));
     }
 
     private void initCtrl() {
@@ -138,8 +133,8 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     private String replace(String domainIP, String str) {
         int index1 = str.indexOf("://");
         int index2 = str.indexOf("/", 10);
-        String ret = str.substring(0,index1 + "://".length()) + domainIP + str.substring(index2);
-        Log.e("liao",ret);
+        String ret = str.substring(0, index1 + "://".length()) + domainIP + str.substring(index2);
+        Log.e("liao", ret);
         return ret;
     }
 
