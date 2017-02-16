@@ -75,8 +75,6 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     private void initCtrl() {
         AppData.Config.showVali = true;
         AppData.Config.showTestToast = true;
-        AppData.Config.showFreshBtn = true;
-        AppData.Config.needNeardriver = true;
         check_domain_vali.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

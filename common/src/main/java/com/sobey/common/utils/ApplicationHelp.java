@@ -14,7 +14,7 @@ public class ApplicationHelp {
 
     public static Context getApplicationContext(Context appContext) {
         if (context == null) {
-        	ApplicationHelp.context = appContext;
+        	ApplicationHelp.context = appContext.getApplicationContext();
         }
         return context;
     }

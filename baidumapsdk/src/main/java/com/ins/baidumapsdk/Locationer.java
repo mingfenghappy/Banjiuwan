@@ -6,7 +6,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
 /**
@@ -16,6 +15,9 @@ import com.baidu.mapapi.model.LatLng;
 public class Locationer {
 
     private Context context;
+
+    private BDLocation bdLocation;
+
 //    private MapView mapView;
 //    private BaiduMap baiduMap;
 
@@ -60,6 +62,7 @@ public class Locationer {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
+            Locationer.this.bdLocation=location;
             // map view 销毁后不在处理新接收的位置
             if (location == null ) {
                 return;
@@ -93,5 +96,9 @@ public class Locationer {
 
     public interface LocationCallback {
         void onLocation(LatLng latLng, String city, String district, boolean isFirst);
+    }
+
+    public String getAddrStr(){
+        return bdLocation.getAddrStr();
     }
 }

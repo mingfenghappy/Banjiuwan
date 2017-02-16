@@ -4,16 +4,9 @@ import android.os.Handler;
 
 import com.dd.CircularProgressButton;
 import com.ins.feast.common.AppData;
-import com.ins.feast.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.StrUtils;
-import com.sobey.common.view.PswView;
-import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -23,11 +16,7 @@ public class AppHelper {
     public static boolean getStartUp() {
         int versionCodeSave = AppData.App.getVersionCode();
         int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
-        if (versionCode > versionCodeSave) {
-            return false;
-        } else {
-            return true;
-        }
+        return versionCode <= versionCodeSave;
     }
 
     public static void saveStartUp() {
@@ -100,6 +89,7 @@ public class AppHelper {
 
 
     public interface ProgressCallback {
+
         void callback();
     }
 }
