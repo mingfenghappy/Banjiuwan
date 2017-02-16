@@ -65,4 +65,5 @@ dependencies {
     compile project(':library_version')
     compile files('libs/libammsdk.jar')
     compile project(':baidumapsdk')
+    compile files('libs/tbs_sdk_thirdapp_v3.0.0.1038_43000_sharewithdownload_obfs_20170110_144724.jar')
 }
