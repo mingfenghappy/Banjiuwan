@@ -18,9 +18,6 @@ public class Locationer {
 
     private BDLocation bdLocation;
 
-    public BDLocation getBdLocation() {
-        return new BDLocation(bdLocation);
-    }
 //    private MapView mapView;
 //    private BaiduMap baiduMap;
 
@@ -99,5 +96,9 @@ public class Locationer {
 
     public interface LocationCallback {
         void onLocation(LatLng latLng, String city, String district, boolean isFirst);
+    }
+
+    public String getAddrStr(){
+        return bdLocation.getAddrStr();
     }
 }
