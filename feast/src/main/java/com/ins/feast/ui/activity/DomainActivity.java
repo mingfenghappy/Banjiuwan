@@ -62,6 +62,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         check_domain_toast = (CheckBox) findViewById(R.id.check_domain_toast);
 
         findViewById(R.id.btn_go).setOnClickListener(this);
+        findViewById(R.id.btn_go_test).setOnClickListener(this);
     }
 
     private void initData() {
@@ -109,6 +110,12 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 finish();
             }
+        } else if (i == R.id.btn_go_test) {
+            Intent intent = new Intent(this, WebActivity.class);
+            intent.putExtra("url",AppData.Url.app_homepage);
+            intent.putExtra("title","测试web");
+            startActivity(intent);
+            finish();
         }
     }
 
