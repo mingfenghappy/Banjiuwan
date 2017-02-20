@@ -1,12 +1,19 @@
 package com.ins.feast.ui.activity;
 
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+//import android.webkit.WebChromeClient;
+//import android.webkit.WebSettings;
+//import android.webkit.WebView;
+//import android.webkit.WebViewClient;
+
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
@@ -34,6 +41,10 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 
         initBase();
         initView();
@@ -104,7 +115,6 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         settings.setJavaScriptEnabled(true);
         webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
-
     }
 
     @Override

@@ -56,5 +56,12 @@
             android:layout_marginTop="20dp"
             android:text="启动App" />
 
+        <Button
+            android:id="@+id/btn_go_test"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:text="测试" />
+
     </LinearLayout>
 </ScrollView>

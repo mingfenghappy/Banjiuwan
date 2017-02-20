@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.feast.ui.activity.HomeActivity">
+    tools:context=".ui.activity.WebActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -17,33 +18,45 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:navigationIcon="@drawable/icon_back"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <com.sobey.common.view.GradientTextView
-                android:id="@+id/title_location"
-                android:layout_width="wrap_content"
-                android:textColor="@color/white"
-                android:maxEms="7"
-                android:singleLine="true"
-                android:layout_height="wrap_content" />
-
             <TextView
-                android:id="@+id/text_toolbar_title"
+                android:id="@+id/text_toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="办酒碗"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_big" />
+                android:text="资讯"
+                android:textColor="@color/sb_text_blank_deep"
+                android:textSize="@dimen/text_subig" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--com.tencent.smtt.sdk.WebView-->
-    <com.tencent.smtt.sdk.WebView
-        android:id="@+id/webView"
+    <com.liaoinstan.springview.widget.SpringView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:type="follow">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/wj_bk" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@style/tallerBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="5px" />
+
+        </FrameLayout>
+
+    </com.liaoinstan.springview.widget.SpringView>
 
 </android.support.design.widget.CoordinatorLayout>
