@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
-import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.jsbridge.JSInterface;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
+import com.ins.feast.R;
+
 
 public class HomeActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
 
@@ -99,6 +100,7 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         settings.setDomStorageEnabled(true);
 
         settings.setLoadsImagesAutomatically(Build.VERSION.SDK_INT >= 19);
+
         settings.setJavaScriptEnabled(true);
         webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
