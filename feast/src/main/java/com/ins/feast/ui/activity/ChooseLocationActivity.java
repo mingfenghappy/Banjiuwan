@@ -24,6 +24,7 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
+        EventBus.getDefault().register(this);
         initView();
         initSetting();
     }
@@ -68,10 +70,11 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         View moreLocation = findViewById(R.id.moreLocationRoot);
         RxViewUtils.throttleFirst(moreLocation, this);
         RxViewUtils.throttleFirst(findViewById(R.id.searchLocation), this);
+        RxViewUtils.throttleFirst(nowLocation,this);
     }
 
     private void startSearchLocationActivity() {
-        // TODO: 2017/2/21
+        SearchLocationActivity.start(this,city);
     }
 
     private void startSearchAddressActivity() {
@@ -84,17 +87,19 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private String city = "成都市";
 
     private LatLng latLng = new LatLng(30.560514, 104.075222);
+    private String district="";
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         locationer.stopLocation();
-        saveLocationInfoAndChangeUI(latLng, city);
+        saveLocationInfoAndChangeUI(latLng, city,district);
         searchNearbyLocation(latLng);
     }
 
-    private void saveLocationInfoAndChangeUI(LatLng latLng, String city) {
+    private void saveLocationInfoAndChangeUI(LatLng latLng, String city, String district) {
         this.latLng = latLng;
         this.city = city;
+        this.district=district;
         nowLocation.setText(locationer.getAddrStr());
     }
 
@@ -117,7 +122,19 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             case searchLocation:
                 startSearchLocationActivity();
                 break;
+            case R.id.nowLocation:
+                chooseNowLocation();
+                break;
         }
+    }
+
+    private void chooseNowLocation() {
+        Position position=new Position();
+        position.setKey(nowLocation.getText().toString());
+        position.setCity(city);
+        position.setLatLng(latLng);
+        position.setDistrict(district);
+        postAndFinishActivity(position);
     }
 
     @Override
@@ -127,8 +144,6 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     @Override
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-        String address = reverseGeoCodeResult.getAddress();
-        L.d("reverseResult:" + address);
         List<PoiInfo> poiList =
                 reverseGeoCodeResult.getPoiList();
         poiList = poiList.subList(0, 3);
@@ -143,10 +158,30 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        PoiInfo poiInfo = adapter.getPoiInfoList().get(viewHolder.getLayoutPosition());
+        PoiInfo poiInfo = adapter.getPoiInfoList().get(viewHolder.getAdapterPosition());
         Position position = new Position(poiInfo);
+        postAndFinishActivity(position);
+    }
+
+    private void postAndFinishActivity(Position position) {
         position.setCity(city);
         EventBus.getDefault().post(position);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onReceivePosition(Position position) {
+        L.d("receivePosition-- ChooseLocationActivity:"+position.getKey());
+        finish();
+    }
+
+    public void onClick_back(View view) {
+        onBackPressed();
     }
 }

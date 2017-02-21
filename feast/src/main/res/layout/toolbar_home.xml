@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:src="@mipmap/ic_mark" />
+
+    <com.sobey.common.view.GradientTextView
+        android:id="@+id/title_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawableRight="@mipmap/ic_rightarrow_white"
+        android:maxLength="6"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        tools:text="中国四川省..." />
+
+    <TextView
+        android:id="@+id/text_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="办酒碗"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_search_white" />
+</merge>

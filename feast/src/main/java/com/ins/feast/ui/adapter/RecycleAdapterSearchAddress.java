@@ -39,7 +39,7 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null && pstion.isIn()) listener.onItemClick(holder);
+                if (listener != null) listener.onItemClick(holder);
             }
         });
 

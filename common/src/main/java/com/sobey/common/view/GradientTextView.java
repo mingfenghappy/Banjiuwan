@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -28,6 +30,13 @@ public class GradientTextView extends TextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        CharSequence text = getText();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if(!TextUtils.isEmpty(text)&&text.length()<getMaxEms()){
+                super.onDraw(canvas);
+                return;
+            }
+        }
         Paint mPaint = getPaint();
         //获取字体颜色并计算渐变色
         int textColor = getCurrentTextColor();

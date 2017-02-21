@@ -24,6 +24,7 @@ public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAd
 
     private LayoutInflater inflater;
     private OnRecycleItemClickListener listener;
+
     public List<PoiInfo> getPoiInfoList() {
         return poiInfoList;
     }
@@ -42,12 +43,12 @@ public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAd
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         PoiInfo poiInfo = poiInfoList.get(position);
-        holder.location.setText(poiInfo.address);
+        holder.location.setText(poiInfo.name);
     }
 
     @Override
     public int getItemCount() {
-        return poiInfoList.size();
+        return poiInfoList != null ? poiInfoList.size() : 0;
     }
 
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {

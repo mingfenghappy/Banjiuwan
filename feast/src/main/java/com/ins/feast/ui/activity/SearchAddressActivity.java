@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -14,37 +13,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
-import com.baidu.mapapi.search.sug.SuggestionResult;
-import com.baidu.mapapi.search.sug.SuggestionSearch;
-import com.google.gson.reflect.TypeToken;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.ins.feast.R;
-import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
-import com.ins.feast.common.AppData;
-import com.ins.feast.common.CommonNet;
 import com.ins.feast.entity.Position;
+import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAddressActivity extends BaseBackActivity implements OnRecycleItemClickListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, View.OnClickListener {
+public class SearchAddressActivity extends BaseAppCompatActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
 
     private MapView mapView;
     private BaiduMap baiduMap;
@@ -61,8 +61,9 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     private View showin;
 
     //搜索建议
-    private SuggestionSearch mSuggestionSearch = null;
     private PoiSearch mPoiSearch = null;
+    //反向地理编码
+    private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
     //默认成都市
     private String city = "成都市";
@@ -84,8 +85,8 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     @Override
     protected void onDestroy() {
-        mSuggestionSearch.destroy();
         mPoiSearch.destroy();
+        baiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();
         mapView = null;
         super.onDestroy();
@@ -98,11 +99,12 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         if (getIntent().hasExtra("latLng")) {
             latLng = getIntent().getParcelableExtra("latLng");
         }
-        // 初始化建议搜索模块，注册建议搜索事件监听
-        mSuggestionSearch = SuggestionSearch.newInstance();
-        mSuggestionSearch.setOnGetSuggestionResultListener(this);
+        // 初始化POI搜索模块，注册建议搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
+        // 初始化反地理编码模块，注册事件监听
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(this);
     }
 
     private void initView() {
@@ -119,18 +121,31 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     }
 
     private void initData() {
-//        netGetArea(city);
+        geo(latLng);
     }
 
     private void initCtrl() {
+        //初始化百度地图
+        baiduMap.getUiSettings().setRotateGesturesEnabled(false);        //禁止旋转手势
+        baiduMap.getUiSettings().setOverlookingGesturesEnabled(false);   //禁止俯视手势
+        baiduMap.getUiSettings().setCompassEnabled(false);               //禁止指南针图层
+        mapView.showZoomControls(false);                                 //禁止缩放控件
+        mapView.showScaleControl(false);                                 //禁止比例尺
+        baiduMap.setMyLocationEnabled(true);                             //启用用户位置
+        //设置自己位置
+        baiduMap.setMyLocationData(new MyLocationData.Builder().latitude(latLng.latitude).longitude(latLng.longitude).build());
+        MapHelper.zoomByPoint(baiduMap, latLng);
+        //设置移动监听
+        //设置移动监听
+        baiduMap.setOnMapStatusChangeListener(onMapStatusChangeListener);
+
         adapter = new RecycleAdapterSearchAddress(this, results);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
-        MapHelper.zoomByPoint(baiduMap, latLng);
-
         btn_go_left.setText(city);
+
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -158,16 +173,27 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         });
     }
 
-    private void search(LatLng latLng, String key) {
-        //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
-        //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
-        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(key).pageCapacity(15).pageNum(0));//.sortType(PoiSortType.distance_from_near_to_far)
-    }
-
     private void freshCtrl() {
         adapter.notifyDataSetChanged();
     }
 
+    //发起POI检索
+    private void search(LatLng latLng, String key) {
+        //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+        //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
+        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(key).pageCapacity(15).pageNum(0).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
+    }
+
+    //发起Geo反地理编码查询关注点
+    private void geo(LatLng latLng) {
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+    }
+    ////////////////////////////////////
+    /////////监听回调
+    ////////////////////////////////////
+
+
+    //点击事件回调
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
@@ -184,57 +210,26 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         }
     }
 
+    //item点击事件回调
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        Position position = adapter.getResults().get(viewHolder.getLayoutPosition());
+        Position position = adapter.getResults().get(viewHolder.getAdapterPosition());
         position.setCity(city);
         EventBus.getDefault().post(position);
         finish();
+//        Position position = adapter.getResults().get(viewHolder.getLayoutPosition());
+//        MapHelper.zoomByPoint(baiduMap, position.getLatLng());
     }
 
-    private static final int RESULT_CITY = 0xf101;
-
-    //页面返回回调
+    //POI检索回调
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case RESULT_CITY:
-                if (resultCode == RESULT_OK) {
-//                    String city = data.getStringExtra("city");
-//                    String latlng = data.getStringExtra("latlng");
-//                    if (!StrUtils.isEmpty(city) && !StrUtils.isEmpty(latlng)) {
-//                        this.city = city;
-//                        latLng = MapHelper.str2LatLng(latlng);
-//                        btn_go_left.setText(city);
-//                        netGetArea(city);
-//                    }
-                }
-                break;
-        }
+    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
     }
-
+    //POI检索回调
     @Override
-    public void onGetSuggestionResult(SuggestionResult res) {
-        LoadingViewUtil.showout(showingroup, showin);
-        if (res == null || res.getAllSuggestions() == null) {
-            adapter.getResults().clear();
-            freshCtrl();
-            return;
-        }
-        List<Position> positions = new ArrayList<>();
-        for (SuggestionResult.SuggestionInfo suggest : res.getAllSuggestions()) {
-            if (suggest.key != null) {
-                if (city.contains(suggest.city)) {
-                    positions.add(new Position(suggest));
-                }
-            }
-        }
-        adapter.getResults().clear();
-        adapter.getResults().addAll(positions);
-        freshCtrl();
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
     }
-
+    //POI检索回调
     @Override
     public void onGetPoiResult(PoiResult result) {
         LoadingViewUtil.showout(showingroup, showin);
@@ -248,7 +243,6 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             List<Position> positions = new ArrayList<>();
             for (PoiInfo poi : result.getAllPoi()) {
-                Log.e("liao---search", poi.city);
                 if (city.contains(poi.city)) {
                     Position position = new Position(poi);
 //                    position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
@@ -261,15 +255,57 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         }
     }
 
+    //反检索回调
     @Override
-    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-        Log.e("liao---search", "onGetPoiDetailResult");
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        LoadingViewUtil.showout(showingroup, showin);
+        showin = null;
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+            adapter.getResults().clear();
+            freshCtrl();
+        } else {
+            List<Position> positions = new ArrayList<>();
+            List<PoiInfo> poiList = result.getPoiList();
+            for (PoiInfo poi : poiList) {
+//                if (city.contains(poi.city)) {
+                Position position = new Position(poi);
+//                    position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
+                positions.add(position);
+            }
+//            }
+            adapter.getResults().clear();
+            adapter.getResults().addAll(positions);
+            freshCtrl();
+        }
     }
 
+    //检索回调
     @Override
-    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
-        Log.e("liao---search", "onGetPoiIndoorResult");
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
     }
+
+    //百度地图状态监听回调
+    private BaiduMap.OnMapStatusChangeListener onMapStatusChangeListener = new BaiduMap.OnMapStatusChangeListener() {
+        @Override
+        public void onMapStatusChangeStart(MapStatus mapStatus) {
+        }
+
+        @Override
+        public void onMapStatusChange(MapStatus mapStatus) {
+        }
+
+        @Override
+        public void onMapStatusChangeFinish(MapStatus mapStatus) {
+            if (edit_search == null) return;
+            String key = edit_search.getText().toString();
+            if (StrUtils.isEmpty(key)) {
+                geo(mapStatus.target);
+            } else {
+                search(mapStatus.target, key);
+            }
+        }
+    };
 
 //    public void netGetArea(String city) {
 //        RequestParams params = new RequestParams(AppData.Url.getArea);

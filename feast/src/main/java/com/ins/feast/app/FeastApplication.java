@@ -16,7 +16,6 @@ package com.ins.feast.app;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.ins.feast.BuildConfig;
@@ -29,6 +28,7 @@ import org.xutils.x;
 import cn.jpush.android.api.JPushInterface;
 import im.fir.sdk.FIR;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 
 
 public class FeastApplication extends Application {
@@ -46,7 +46,6 @@ public class FeastApplication extends Application {
         initBugHd();
         initBaiduMap();
         initSetting();
-
     }
 
     private void initSetting() {

@@ -100,7 +100,6 @@
         <activity
             android:name=".ui.activity.ChooseLocationActivity"
             android:theme="@style/AppTheme.Back" />
-
         <activity
             android:name=".ui.activity.SearchAddressActivity"
             android:label="@string/title_activity_searchaddress"
@@ -108,9 +107,13 @@
             android:theme="@style/AppTheme.Back">
             <intent-filter>
                 <action android:name="kuaidi.SearchAddressActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.SearchLocationActivity"
+            android:theme="@style/AppTheme.Back" />
     </application>
 
 </manifest>

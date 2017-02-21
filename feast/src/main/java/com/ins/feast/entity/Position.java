@@ -2,7 +2,6 @@ package com.ins.feast.entity;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
-import com.baidu.mapapi.search.sug.SuggestionResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +24,9 @@ public class Position implements Serializable {
     //是否在区域内
     private boolean isIn;
 
+    //地理位置详细描述
+    private String address;
+
     public Position(LatLng latLng, String key, String city) {
         this.latLng = latLng;
         this.key = key;
@@ -38,18 +40,16 @@ public class Position implements Serializable {
         this.district = district;
     }
 
-    public Position(SuggestionResult.SuggestionInfo suggest) {
-        key = suggest.key;
-        city = suggest.city;
-        district = suggest.district;
-        latLng = suggest.pt;
-    }
-
     public Position(PoiInfo poi) {
         key = poi.name;
         city = poi.city;
         district = poi.address;
         latLng = poi.location;
+        address=poi.address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public boolean isIn() {
