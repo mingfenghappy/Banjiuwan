@@ -1,9 +1,11 @@
 package com.ins.feast.ui.activity;
 
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -18,13 +20,12 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
+import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.jsbridge.JSInterface;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
-import com.ins.feast.R;
-
 
 public class HomeActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
 
@@ -78,6 +79,13 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
             return true;
         }
 
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (!view.getSettings().getLoadsImagesAutomatically()) {
+                view.getSettings().setLoadsImagesAutomatically(true);
+            }
+        }
     };
     /**
      * 自定义WebChromeClient
@@ -94,8 +102,17 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebViewClient(mClient);
         webView.setWebChromeClient(mChromeClient);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
-        webView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setAppCacheEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setDomStorageEnabled(true);
+
+        settings.setLoadsImagesAutomatically(Build.VERSION.SDK_INT >= 19);
+        settings.setJavaScriptEnabled(true);
         webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }

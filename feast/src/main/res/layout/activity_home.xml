@@ -22,10 +22,10 @@
             <com.sobey.common.view.GradientTextView
                 android:id="@+id/title_location"
                 android:layout_width="wrap_content"
-                android:textColor="@color/white"
+                android:layout_height="wrap_content"
                 android:maxEms="7"
                 android:singleLine="true"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/text_toolbar_title"
@@ -35,12 +35,13 @@
                 android:text="办酒碗"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_big" />
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <!--com.tencent.smtt.sdk.WebView-->
-    <com.tencent.smtt.sdk.WebView
+    <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

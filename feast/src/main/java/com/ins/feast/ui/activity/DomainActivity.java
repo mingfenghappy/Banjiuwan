@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.sobey.common.utils.StrUtils;
@@ -111,11 +112,16 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
             }
         } else if (i == R.id.btn_go_test) {
-            Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("url",AppData.Url.app_homepage);
-            intent.putExtra("title","测试web");
+//            Intent intent = new Intent(this, WebActivity.class);
+//            intent.putExtra("url",AppData.Url.app_homepage);
+//            intent.putExtra("title","测试web");
+//            startActivity(intent);
+//            finish();
+
+            Intent intent = new Intent(this, SearchAddressActivity.class);
+            intent.putExtra("city", "成都市");
+            intent.putExtra("latLng", new LatLng(30.560514, 104.075222));
             startActivity(intent);
-            finish();
         }
     }
 
