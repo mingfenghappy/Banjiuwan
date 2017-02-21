@@ -78,13 +78,6 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
             return true;
         }
 
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            if (!view.getSettings().getLoadsImagesAutomatically()) {
-                view.getSettings().setLoadsImagesAutomatically(true);
-            }
-        }
     };
     /**
      * 自定义WebChromeClient
@@ -101,18 +94,8 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebViewClient(mClient);
         webView.setWebChromeClient(mChromeClient);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
 
-        WebSettings settings = webView.getSettings();
-        settings.setAppCacheEnabled(true);
-        settings.setUseWideViewPort(true);
-        settings.setDomStorageEnabled(true);
-
-        settings.setLoadsImagesAutomatically(Build.VERSION.SDK_INT >= 19);
-
-        settings.setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }
