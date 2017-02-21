@@ -18,6 +18,11 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
@@ -44,7 +49,7 @@ import org.xutils.http.RequestParams;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAddressActivity extends BaseBackActivity implements OnRecycleItemClickListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, View.OnClickListener {
+public class SearchAddressActivity extends BaseBackActivity implements OnRecycleItemClickListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, View.OnClickListener,OnGetGeoCoderResultListener {
 
     private MapView mapView;
     private BaiduMap baiduMap;
@@ -63,6 +68,8 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     //搜索建议
     private SuggestionSearch mSuggestionSearch = null;
     private PoiSearch mPoiSearch = null;
+    //反向地理编码
+    private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
     //默认成都市
     private String city = "成都市";
@@ -103,6 +110,10 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         mSuggestionSearch.setOnGetSuggestionResultListener(this);
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
+
+        // 初始化搜索模块，注册事件监听
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(this);
     }
 
     private void initView() {
@@ -120,6 +131,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     private void initData() {
 //        netGetArea(city);
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
     }
 
     private void initCtrl() {
@@ -236,6 +248,16 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     }
 
     @Override
+    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+        Log.e("liao---search", "onGetPoiDetailResult");
+    }
+
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+        Log.e("liao---search", "onGetPoiIndoorResult");
+    }
+
+    @Override
     public void onGetPoiResult(PoiResult result) {
         LoadingViewUtil.showout(showingroup, showin);
         showin = null;
@@ -261,14 +283,34 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         }
     }
 
+    //反检索回调
     @Override
-    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-        Log.e("liao---search", "onGetPoiDetailResult");
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        LoadingViewUtil.showout(showingroup, showin);
+        showin = null;
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+            adapter.getResults().clear();
+            freshCtrl();
+        }else {
+            List<Position> positions = new ArrayList<>();
+            List<PoiInfo> poiList = result.getPoiList();
+            for (PoiInfo poi : poiList) {
+//                if (city.contains(poi.city)) {
+                    Position position = new Position(poi);
+//                    position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
+                    positions.add(position);
+                }
+//            }
+            adapter.getResults().clear();
+            adapter.getResults().addAll(positions);
+            freshCtrl();
+        }
     }
 
+    //检索回调
     @Override
-    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
-        Log.e("liao---search", "onGetPoiIndoorResult");
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
     }
 
 //    public void netGetArea(String city) {

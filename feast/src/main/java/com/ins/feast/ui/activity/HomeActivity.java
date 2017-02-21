@@ -1,20 +1,9 @@
 package com.ins.feast.ui.activity;
 
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
-//import android.webkit.WebChromeClient;
-//import android.webkit.WebSettings;
-//import android.webkit.WebView;
-//import android.webkit.WebViewClient;
-
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -26,6 +15,10 @@ import com.ins.feast.jsbridge.JSInterface;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 public class HomeActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
 

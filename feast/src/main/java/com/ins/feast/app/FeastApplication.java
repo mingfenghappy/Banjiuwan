@@ -48,8 +48,6 @@ public class FeastApplication extends Application {
         initBugHd();
         initBaiduMap();
         initSetting();
-
-        initTencentX5();
     }
 
     private void initSetting() {
@@ -89,35 +87,4 @@ public class FeastApplication extends Application {
         SDKInitializer.initialize(this);
     }
 
-    private void initTencentX5() {
-        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-
-            @Override
-            public void onViewInitFinished(boolean arg0) {
-                Log.e("app", " onViewInitFinished is " + arg0);
-            }
-
-            @Override
-            public void onCoreInitFinished() {
-            }
-        };
-        QbSdk.setTbsListener(new TbsListener() {
-            @Override
-            public void onDownloadFinish(int i) {
-                Log.d("app","onDownloadFinish");
-            }
-
-            @Override
-            public void onInstallFinish(int i) {
-                Log.d("app","onInstallFinish");
-            }
-
-            @Override
-            public void onDownloadProgress(int i) {
-                Log.d("app","onDownloadProgress:"+i);
-            }
-        });
-
-        QbSdk.initX5Environment(getApplicationContext(),  cb);
-    }
 }
