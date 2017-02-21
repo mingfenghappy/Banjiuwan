@@ -1,7 +1,9 @@
 package com.ins.feast.ui.activity;
 
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -15,17 +17,13 @@ import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
-
-//import android.webkit.WebChromeClient;
-//import android.webkit.WebSettings;
-//import android.webkit.WebView;
-//import android.webkit.WebViewClient;
 
 
 public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback {
@@ -101,7 +99,9 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         webView.setWebViewClient(mClient);
         webView.setWebChromeClient(mChromeClient);
 
-        webView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = webView.getSettings();
+
+        settings.setJavaScriptEnabled(true);
         webView.loadUrl(AppData.Url.app_homepage);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
     }

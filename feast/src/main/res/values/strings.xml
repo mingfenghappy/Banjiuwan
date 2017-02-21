@@ -5,4 +5,5 @@
     <string name="chooseLocation_relocation">重新定位</string>
     <string name="chooseLocation_nearbyLocation">附近地址：</string>
     <string name="chooseLocation_moreLocation">更多地址</string>
+    <string name="title_activity_searchaddress">地址查询</string>
 </resources>
