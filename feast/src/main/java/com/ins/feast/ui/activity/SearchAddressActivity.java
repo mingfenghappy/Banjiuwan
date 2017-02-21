@@ -179,7 +179,7 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     private void search(LatLng latLng, String key) {
         //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
         //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
-        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(key).pageCapacity(15).pageNum(0).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
+        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(1000).keyword(key).pageCapacity(15).pageNum(0).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
     }
 
     //发起Geo反地理编码查询关注点
