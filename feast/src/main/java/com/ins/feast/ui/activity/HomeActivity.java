@@ -1,34 +1,35 @@
 package com.ins.feast.ui.activity;
 
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
-//import android.webkit.WebChromeClient;
-//import android.webkit.WebSettings;
-//import android.webkit.WebView;
-//import android.webkit.WebViewClient;
-
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
+import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.jsbridge.JSInterface;
+import com.jakewharton.rxbinding.view.RxView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
-import com.ins.feast.R;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.functions.Action1;
+
+//import android.webkit.WebChromeClient;
+//import android.webkit.WebSettings;
+//import android.webkit.WebView;
+//import android.webkit.WebViewClient;
 
 
-public class HomeActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
+public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback {
 
-    private Locationer locationer;
     private final static String LOG_TAG = "HomeActivity";
     private final static String JS_BRIDGE_NAME = "native";
     private WebView webView;
@@ -38,7 +39,7 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     private TextView title_center;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -51,9 +52,6 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     }
 
     private void initBase() {
-        //初始化定位
-        locationer = new Locationer(this);
-        locationer.setCallback(this);
         //双击返回键退出
         setNeedDoubleClickExit(true);
         //检查并申请权限
@@ -65,6 +63,14 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     private void initView() {
         title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
+
+        RxView.clicks(title_location).debounce(1, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                ChooseLocationActivity.start(HomeActivity.this);
+            }
+        });
+
         initWebView();
     }
 
@@ -101,20 +107,10 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        locationer.stopLocation();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        locationer.startlocation();
-    }
-
-    @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        title_location.setText(locationer.getAddrStr());
+        if(isFirst){
+            title_location.setText(locationer.getAddrStr());
+        }
     }
 
     @Override
@@ -136,4 +132,5 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         }
         super.onDestroy();
     }
+
 }

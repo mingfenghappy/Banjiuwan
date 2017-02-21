@@ -25,6 +25,7 @@
                 android:textColor="@color/white"
                 android:maxEms="7"
                 android:singleLine="true"
+                android:clickable="true"
                 android:layout_height="wrap_content" />
 
             <TextView

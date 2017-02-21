@@ -1,6 +1,7 @@
 package com.ins.baidumapsdk;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -15,6 +16,10 @@ import com.baidu.mapapi.model.LatLng;
 public class Locationer {
 
     private Context context;
+
+    public BDLocation getBdLocation() {
+        return new BDLocation(bdLocation);
+    }
 
     private BDLocation bdLocation;
 
@@ -32,6 +37,13 @@ public class Locationer {
         setLocationConfig();
     }
 
+    /**
+     * 返回LocOption以用作设置
+     * @return {@link LocationClientOption}
+     */
+    public @Nullable LocationClientOption getLocOption(){
+        return locationClient.getLocOption();
+    }
 
     private void setLocationConfig() {
         // 定位初始化
@@ -62,14 +74,14 @@ public class Locationer {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            Locationer.this.bdLocation=location;
+            Locationer.this.bdLocation = location;
             // map view 销毁后不在处理新接收的位置
-            if (location == null ) {
+            if (location == null) {
                 return;
             }
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             if (callback != null) {
-                callback.onLocation(latLng, location.getCity(),location.getDistrict(), isFirstLoc);
+                callback.onLocation(latLng, location.getCity(), location.getDistrict(), isFirstLoc);
             }
             isFirstLoc = false;
         }
@@ -98,7 +110,7 @@ public class Locationer {
         void onLocation(LatLng latLng, String city, String district, boolean isFirst);
     }
 
-    public String getAddrStr(){
+    public String getAddrStr() {
         return bdLocation.getAddrStr();
     }
 }
