@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wj_bk"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".ui.activity.SearchAddressActivity">
 
@@ -116,16 +116,15 @@
             android:orientation="vertical">
 
             <com.liaoinstan.springview.widget.SpringView
+                android:id="@+id/spring"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:footer="@layout/header_common"
-                app:header="@layout/header_common">
+                app:type="follow">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
+                    android:layout_height="match_parent" />
 
             </com.liaoinstan.springview.widget.SpringView>
         </LinearLayout>

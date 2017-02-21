@@ -2,6 +2,7 @@ package com.ins.feast.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -35,6 +36,9 @@ import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
+import com.liaoinstan.springview.container.AliFooter;
+import com.liaoinstan.springview.container.AliHeader;
+import com.liaoinstan.springview.widget.SpringView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.StrUtils;
@@ -53,6 +57,8 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     private List<Position> results = new ArrayList<>();
     private RecycleAdapterSearchAddress adapter;
 
+    private SpringView springView;
+
     private EditText edit_search;
     private TextView btn_cancel;
     private TextView btn_go_left;
@@ -68,8 +74,10 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     //默认成都市
     private String city = "成都市";
     private LatLng latLng;
-    //地理围栏
-    public List<List<LatLng>> ptsArray = new ArrayList<>();
+
+    //分页参数
+    private int page;
+    private final int PAGE_COUNT = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +118,7 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     private void initView() {
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        springView = (SpringView) findViewById(R.id.spring);
         edit_search = (EditText) findViewById(R.id.edit_search);
         btn_cancel = (TextView) findViewById(R.id.btn_cancel);
         btn_go_left = (TextView) findViewById(R.id.btn_go_left);
@@ -143,7 +152,35 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
+        springView.setHeader(new AliHeader(this, false));
+        springView.setFooter(new AliFooter(this, false));
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+                String key = edit_search.getText().toString();
+                if (!StrUtils.isEmpty(key)) {
+                    page = 0;
+                    search(key);
+                } else {
+                    springView.onFinishFreshAndLoad();
+                    Snackbar.make(showingroup, "没有更多的数据了", Snackbar.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onLoadmore() {
+                String key = edit_search.getText().toString();
+                if (!StrUtils.isEmpty(key)) {
+                    page++;
+                    search(key);
+                } else {
+                    springView.onFinishFreshAndLoad();
+                    Snackbar.make(showingroup, "没有更多的数据了", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //左上角城市设置数据
         btn_go_left.setText(city);
 
         /**
@@ -160,15 +197,17 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() <= 0) return;
+                if (s.length() <= 0) {
+                    geo(latLng);
+                    return;
+                }
                 /**
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
-
-                if (showin == null) {
+                if (showin == null)
                     showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-                }
-                search(latLng, s.toString());
+                page = 0;
+                search(s.toString());
             }
         });
     }
@@ -178,10 +217,10 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     }
 
     //发起POI检索
-    private void search(LatLng latLng, String key) {
+    private void search(String key) {
         //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
         //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
-        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(key).pageCapacity(15).pageNum(0).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
+        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(1000).keyword(key).pageCapacity(PAGE_COUNT).pageNum(page).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
     }
 
     //发起Geo反地理编码查询关注点
@@ -225,34 +264,58 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
     @Override
     public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
     }
+
     //POI检索回调
     @Override
     public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
     }
+
     //POI检索回调
     @Override
     public void onGetPoiResult(PoiResult result) {
-        LoadingViewUtil.showout(showingroup, showin);
-        showin = null;
+
+        springView.onFinishFreshAndLoad();
+
         if (result == null || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
-            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
-            adapter.getResults().clear();
-            freshCtrl();
+            if (page == 0) {
+//                Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+//                adapter.getResults().clear();
+//                freshCtrl();
+                setlackPage();
+            } else {
+                Snackbar.make(showingroup, "没有更多的数据了", Snackbar.LENGTH_SHORT).show();
+            }
             return;
+        }else {
+            LoadingViewUtil.showout(showingroup, showin);
+            showin = null;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             List<Position> positions = new ArrayList<>();
             for (PoiInfo poi : result.getAllPoi()) {
                 if (city.contains(poi.city)) {
                     Position position = new Position(poi);
-//                    position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
                     positions.add(position);
                 }
             }
-            adapter.getResults().clear();
+            if (page == 0) adapter.getResults().clear();
             adapter.getResults().addAll(positions);
-            freshCtrl();
+            if (StrUtils.isEmpty(adapter.getResults())){
+                setlackPage();
+            }else {
+                freshCtrl();
+            }
         }
+    }
+
+    private void setlackPage(){
+        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
+                search(edit_search.getText().toString());
+            }
+        });
     }
 
     //反检索回调
@@ -261,9 +324,10 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
         LoadingViewUtil.showout(showingroup, showin);
         showin = null;
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
-            adapter.getResults().clear();
-            freshCtrl();
+//            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+//            adapter.getResults().clear();
+//            freshCtrl();
+            setlackPage();
         } else {
             List<Position> positions = new ArrayList<>();
             List<PoiInfo> poiList = result.getPoiList();
@@ -302,7 +366,9 @@ public class SearchAddressActivity extends BaseAppCompatActivity implements OnRe
             if (StrUtils.isEmpty(key)) {
                 geo(mapStatus.target);
             } else {
-                search(mapStatus.target, key);
+                latLng = mapStatus.target;
+                page = 0;
+                search(key);
             }
         }
     };
