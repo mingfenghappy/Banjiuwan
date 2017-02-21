@@ -95,9 +95,6 @@ public class HomeActivity extends BaseAppCompatActivity implements Locationer.Lo
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebViewClient(mClient);
         webView.setWebChromeClient(mChromeClient);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
 
         WebSettings settings = webView.getSettings();
         settings.setAppCacheEnabled(true);

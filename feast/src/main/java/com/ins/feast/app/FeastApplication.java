@@ -23,8 +23,6 @@ import com.ins.feast.BuildConfig;
 import com.ins.feast.R;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
-import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.smtt.sdk.TbsListener;
 
 import org.xutils.x;
 
