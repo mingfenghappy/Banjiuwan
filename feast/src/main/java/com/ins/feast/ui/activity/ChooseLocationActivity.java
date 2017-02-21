@@ -3,23 +3,36 @@ package com.ins.feast.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiIndoorResult;
-import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
-import com.baidu.mapapi.search.poi.PoiResult;
-import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.ins.feast.R;
+import com.ins.feast.entity.Position;
+import com.ins.feast.ui.adapter.ChooseLocationAdapter;
+import com.ins.feast.utils.RxViewUtils;
+import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.L;
 
+import org.greenrobot.eventbus.EventBus;
 
-public class ChooseLocationActivity extends BaseMapActivity implements OnGetPoiSearchResultListener {
+import java.util.List;
+
+import static com.ins.feast.R.id.searchLocation;
+
+
+public class ChooseLocationActivity extends BaseMapActivity implements
+        View.OnClickListener,
+        OnGetGeoCoderResultListener, OnRecycleItemClickListener {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ChooseLocationActivity.class);
@@ -27,6 +40,8 @@ public class ChooseLocationActivity extends BaseMapActivity implements OnGetPoiS
     }
 
     private TextView nowLocation;
+    private RecyclerView nearbyLocations;
+    private ChooseLocationAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,41 +63,90 @@ public class ChooseLocationActivity extends BaseMapActivity implements OnGetPoiS
 
     private void initView() {
         nowLocation = (TextView) findViewById(R.id.nowLocation);
+        nearbyLocations = (RecyclerView) findViewById(R.id.nearbyLocationList);
+        nearbyLocations.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        View moreLocation = findViewById(R.id.moreLocationRoot);
+        RxViewUtils.throttleFirst(moreLocation, this);
+        RxViewUtils.throttleFirst(findViewById(R.id.searchLocation), this);
     }
+
+    private void startSearchLocationActivity() {
+        // TODO: 2017/2/21
+    }
+
+    private void startSearchAddressActivity() {
+        Intent intent = new Intent(ChooseLocationActivity.this, SearchAddressActivity.class);
+        intent.putExtra("city", city);
+        intent.putExtra("latLng", latLng);
+        startActivity(intent);
+    }
+
+    private String city = "成都市";
+
+    private LatLng latLng = new LatLng(30.560514, 104.075222);
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        nowLocation.setText(locationer.getAddrStr());
         locationer.stopLocation();
-        PoiSearch pS=PoiSearch.newInstance();
-        PoiNearbySearchOption option=new PoiNearbySearchOption();
-        option.location(latLng);
-        String networkLocationType = locationer.getBdLocation().getNetworkLocationType();
-        L.d(networkLocationType);
-        option.keyword(networkLocationType);
-        option.radius(1000);
-        option.pageCapacity(10).pageNum(1);
-        pS.setOnGetPoiSearchResultListener(this);
-        L.d("startSearch");
-        pS.searchNearby(option);
+        saveLocationInfoAndChangeUI(latLng, city);
+        searchNearbyLocation(latLng);
     }
 
-    public void relocation(View view) {
-            locationer.startlocation();
+    private void saveLocationInfoAndChangeUI(LatLng latLng, String city) {
+        this.latLng = latLng;
+        this.city = city;
+        nowLocation.setText(locationer.getAddrStr());
     }
 
-    @Override
-    public void onGetPoiResult(PoiResult poiResult) {
-        L.d("onGetPoiResult");
+    private void searchNearbyLocation(LatLng latLng) {
+        GeoCoder gC = GeoCoder.newInstance();
+        gC.setOnGetGeoCodeResultListener(this);
+        gC.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
     }
 
-    @Override
-    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-        L.d("onGetPoiDetailResult");
+    public void onClick_relocation(View view) {
+        locationer.startlocation();
     }
 
     @Override
-    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
-        L.d("onGetPoiIndoorResult");
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.moreLocationRoot:
+                startSearchAddressActivity();
+                break;
+            case searchLocation:
+                startSearchLocationActivity();
+                break;
+        }
+    }
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+        String address = reverseGeoCodeResult.getAddress();
+        L.d("reverseResult:" + address);
+        List<PoiInfo> poiList =
+                reverseGeoCodeResult.getPoiList();
+        poiList = poiList.subList(0, 3);
+        if (adapter == null) {
+            adapter = new ChooseLocationAdapter(this, poiList);
+            adapter.setOnItemClickListener(this);
+            nearbyLocations.setAdapter(adapter);
+        } else {
+            adapter.resetData(poiList);
+        }
+    }
+
+    @Override
+    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+        PoiInfo poiInfo = adapter.getPoiInfoList().get(viewHolder.getLayoutPosition());
+        Position position = new Position(poiInfo);
+        position.setCity(city);
+        EventBus.getDefault().post(position);
+        finish();
     }
 }

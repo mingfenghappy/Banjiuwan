@@ -1,25 +1,28 @@
 package com.ins.feast.ui.activity;
 
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
+import com.ins.feast.entity.Position;
 import com.ins.feast.jsbridge.JSInterface;
 import com.jakewharton.rxbinding.view.RxView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +43,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        EventBus.getDefault().register(this);
 
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -62,7 +66,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
 
-        RxView.clicks(title_location).debounce(1, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
+        RxView.clicks(title_location).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
                 ChooseLocationActivity.start(HomeActivity.this);
@@ -130,7 +134,16 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
             webView.destroy();
             webView = null;
         }
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    /**
+     * 接受地理位置选择的结果
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceivePostition(Position position){
+
     }
 
 }

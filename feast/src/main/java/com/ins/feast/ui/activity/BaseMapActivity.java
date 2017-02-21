@@ -5,6 +5,10 @@ import android.os.Bundle;
 import com.ins.baidumapsdk.Locationer;
 import com.sobey.common.utils.L;
 
+import org.greenrobot.eventbus.EventBus;
+
+import static com.baidu.location.b.g.P;
+
 /**
  * author 边凌
  * date 2017/2/21 10:04
@@ -45,4 +49,10 @@ public abstract class BaseMapActivity extends BaseAppCompatActivity implements L
             locationer.startlocation();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }

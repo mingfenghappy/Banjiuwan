@@ -32,8 +32,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <EditText
-        android:id="@+id/editText"
+    <TextView
+        android:id="@+id/searchLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/appBarLayout"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/searchLocation"
         android:text="@string/chooseLocation_nowLocation" />
 
     <LinearLayout
@@ -70,9 +70,9 @@
 
         <TextView
             android:id="@+id/relocation"
-            android:onClick="relocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClick_relocation"
             android:text="@string/chooseLocation_relocation" />
     </LinearLayout>
 
@@ -85,22 +85,30 @@
         android:layout_below="@+id/relocationRoot"
         android:text="@string/chooseLocation_nearbyLocation" />
 
-    <ListView
-        android:id="@+id/nearbyLocationList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView4" />
-
     <LinearLayout
-        android:id="@+id/moreLocationRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyLocationList"
-        android:orientation="horizontal">
+        android:layout_below="@id/textView4"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/chooseLocation_moreLocation" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/nearbyLocationList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/moreLocationRoot"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chooseLocation_moreLocation" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

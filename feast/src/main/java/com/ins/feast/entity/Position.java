@@ -5,12 +5,14 @@ import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/27.
  */
 
-public class Position implements Serializable{
+public class Position implements Serializable {
 
     //城市
     private String city;
@@ -42,6 +44,7 @@ public class Position implements Serializable{
         district = suggest.district;
         latLng = suggest.pt;
     }
+
     public Position(PoiInfo poi) {
         key = poi.name;
         city = poi.city;
@@ -87,5 +90,17 @@ public class Position implements Serializable{
 
     public void setLatLng(LatLng latLng) {
         this.latLng = latLng;
+    }
+
+    /**
+     * 将一个PoiInfo的List转为Position的List
+     */
+    public static List<Position> asPositionList(List<PoiInfo> poiInfos) {
+        List<Position> positions = new ArrayList<>();
+        for (PoiInfo poiInfo : poiInfos) {
+            Position position = new Position(poiInfo);
+            positions.add(position);
+        }
+        return positions;
     }
 }
