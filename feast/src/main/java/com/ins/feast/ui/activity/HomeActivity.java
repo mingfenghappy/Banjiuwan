@@ -1,8 +1,6 @@
 package com.ins.feast.ui.activity;
 
-import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -70,15 +68,20 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private WebViewClient mClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
             L.d(url);
+            if (url.toLowerCase().contains("detail")) {
+                DetailActivity.start(HomeActivity.this, url);
+            } else {
+                view.loadUrl(url);
+            }
             return true;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            titleViewHelper.processTitleWithUrlWhenGoNewPage(url);
+            String title = view.getTitle();
+            titleViewHelper.processTitleWithUrl(url, title);
         }
     };
 
@@ -117,7 +120,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
-            titleViewHelper.processTitleWithUrlWhenGoBack();
         } else {
             super.onBackPressed();
         }

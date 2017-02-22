@@ -1,16 +1,11 @@
 package com.ins.feast.ui.activity;
 
-import android.support.annotation.IdRes;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.feast.R;
 import com.ins.feast.utils.RxViewUtils;
-import com.sobey.common.utils.L;
-
-import java.util.Stack;
 
 /**
  * author 边凌
@@ -20,33 +15,16 @@ import java.util.Stack;
 
 class TitleViewHelper implements View.OnClickListener {
     private final static String KEY_HOME = "app/page/index";
-    private final static String KEY_CAR = "app/page/car";
-    private final static String KEY_FIND = "app/page/find";
-    private final static String KEY_CUSTOMER = "app/page/customer";
-    private final static String KEY_MY = "app/page/my";
-    //菜单
-    private final static String KEY_COOKBOOK = "app/page/cookbook";
-    //坝坝宴
-    private final static String KEY_BAMYAN = "app/page/bamYan";
-    //套餐
-    private final static String KEY_SETMEAL = "app/page/setMeal";
-    //修改个人资料
-    private final static String KEY_PERSONAL_DATA = "app/page/personData";
+    private final static String KEY_CENTER_LEFTICON = "app/page/car";
+    private final static String KEY_CENTER = "app/page/find";
+    private final static String KEY_TRANSLUCENT = "app/page/customer";
+
     private TextView title_location;
     private TextView title_center;
     private View iconRight;
     private HomeActivity homeActivity;
     private ImageView iconLeft;
     private View appBarLayout;
-
-    private Stack<TitleInfo> urlStack = new Stack<>();
-
-    public void setOnClickListener(@IdRes int id, View.OnClickListener listener) {
-        View viewById = homeActivity.findViewById(id);
-        if (viewById != null) {
-            viewById.setOnClickListener(listener);
-        }
-    }
 
     TitleViewHelper(HomeActivity homeActivity) {
         title_center = (TextView) homeActivity.findViewById(R.id.text_toolbar_title);
@@ -55,7 +33,6 @@ class TitleViewHelper implements View.OnClickListener {
         appBarLayout = homeActivity.findViewById(R.id.appBarLayout);
         iconRight = homeActivity.findViewById(R.id.icon_right);
         this.homeActivity = homeActivity;
-        urlStack.push(new TitleInfo(KEY_HOME,"办酒碗"));
         initListener();
     }
 
@@ -67,54 +44,27 @@ class TitleViewHelper implements View.OnClickListener {
         RxViewUtils.throttleFirst(title_location, this);
     }
 
-    private String processTitleWithUrl(String url) {
-        L.d("processTitleWithUrl");
-        String key = null;
-        if (url.contains(KEY_HOME)) {
-            showTitleBarHome();
-            key = KEY_HOME;
-        } else if (url.contains(KEY_FIND)) {
-            showTitleBarOnlyCenter();
-            key = KEY_FIND;
-        } else if (url.contains(KEY_CUSTOMER)) {
-            showTitleBarCustomer();
-            key = KEY_CUSTOMER;
-        } else if (url.contains(KEY_CAR)) {
-            showTitleBarOnlyCenterAndBackIcon();
-            key = KEY_CAR;
-        } else if (url.contains(KEY_MY)) {
-            showTitleBarOnlyCenter();
-            key = KEY_MY;
-        } else if (url.contains(KEY_COOKBOOK)) {
-            showTitleBarOnlyCenterAndBackIcon();
-            key = KEY_COOKBOOK;
-        } else if (url.contains(KEY_BAMYAN)) {
-            showTitleBarOnlyCenterAndBackIcon();
-            key = KEY_BAMYAN;
-        } else if (url.contains(KEY_SETMEAL)) {
-            showTitleBarOnlyCenterAndBackIcon();
-            key = KEY_SETMEAL;
-        } else if (url.contains(KEY_PERSONAL_DATA)) {
-            showTitleBarOnlyCenterAndBackIcon();
-            key = KEY_PERSONAL_DATA;
-        }
-        L.d("key:"+key);
-        return key;
+    void processTitleWithUrl(String url, String title) {
+        title_center.setText(title);
+        String tag = url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
+        switchTitleByTag(tag);
     }
 
-    void processTitleWithUrlWhenGoNewPage(String url) {
-        String key = processTitleWithUrl(url);
-        if (!TextUtils.isEmpty(key)) {
-            urlStack.push(new TitleInfo(key,title_center.getText().toString()));
-            L.d("goNewPage:"+key+"\nurlStack:"+urlStack);
+    private void switchTitleByTag(String tag) {
+        switch (tag) {
+            case KEY_HOME:
+                showTitleBarHome();
+                break;
+            case KEY_CENTER:
+                showTitleBarOnlyCenter();
+                break;
+            case KEY_TRANSLUCENT:
+                showTitleBarTranslucent();
+                break;
+            case KEY_CENTER_LEFTICON:
+                showTitleBarOnlyCenterAndBackIcon();
+                break;
         }
-    }
-
-    void processTitleWithUrlWhenGoBack() {
-        TitleInfo pop = urlStack.pop();
-        title_center.setText(urlStack.peek().title);
-        L.d("whenGoBack:"+pop);
-        processTitleWithUrl(urlStack.peek().urlKey);
     }
 
     /**
@@ -127,19 +77,23 @@ class TitleViewHelper implements View.OnClickListener {
     }
 
     /**
-     * 仅有中间标题和左侧返回键的样式
+     * 仅有中间标题的标题栏布局
      */
     private void showTitleBarOnlyCenter() {
         appBarLayout.setVisibility(View.VISIBLE);
         setIconVisibility(View.GONE);
     }
 
-    //客服
-    private void showTitleBarCustomer() {
+    /**
+     *
+     */
+    private void showTitleBarTranslucent() {
         appBarLayout.setVisibility(View.GONE);
     }
 
-    //购物车
+    /**
+     * 待返回键和中部title的标题栏布局
+     */
     private void showTitleBarOnlyCenterAndBackIcon() {
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_leftarrow_white);
@@ -148,7 +102,9 @@ class TitleViewHelper implements View.OnClickListener {
         title_location.setVisibility(View.GONE);
     }
 
-    //首页
+    /**
+     * 仅用于首页的标题栏布局
+     */
     private void showTitleBarHome() {
         if (title_location.getVisibility() == View.VISIBLE) {
             return;
@@ -170,21 +126,4 @@ class TitleViewHelper implements View.OnClickListener {
         }
     }
 
-    private class TitleInfo{
-        String urlKey;
-        String title;
-
-        TitleInfo(String urlKey, String title) {
-            this.urlKey = urlKey;
-            this.title = title;
-        }
-
-        @Override
-        public String toString() {
-            return "TitleInfo{" +
-                    "urlKey='" + urlKey + '\'' +
-                    ", title='" + title + '\'' +
-                    '}';
-        }
-    }
 }

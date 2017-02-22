@@ -79,6 +79,22 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    public static String saveBitmap(Context context, Bitmap bm, String picName) {
+        File f = new File(context.getExternalCacheDir(), picName);
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            return f.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static String saveBitmap(Bitmap bm, String path) {
         Log.e("", "保存图片");

@@ -2,6 +2,8 @@ package com.sobey.common.utils;
 
 import android.util.Log;
 
+import java.io.PrintStream;
+
 /**
  * LOG工具类
  */
@@ -29,8 +31,7 @@ public class L {
         try {
             Log.v(tag, message.toString());
         } catch (NullPointerException e) {
-            Log.e(tag, "L.v(Object message),object is null");
-            e.printStackTrace();
+            printError(e);
         }
     }
 
@@ -46,8 +47,7 @@ public class L {
         try {
             Log.i(tag, message.toString());
         } catch (NullPointerException e) {
-            Log.e(tag, "L.i(Object message),object is null");
-            e.printStackTrace();
+            printError(e);
         }
     }
 
@@ -63,8 +63,7 @@ public class L {
         try {
             Log.e(tag, message.toString());
         } catch (NullPointerException e) {
-            Log.e(tag, "L.e(Object message),object is null");
-            e.printStackTrace();
+            printError(e);
         }
     }
 
@@ -80,8 +79,16 @@ public class L {
         try {
             Log.d(tag, message.toString());
         } catch (NullPointerException e) {
-            Log.e(tag, "L.d(Object message),object is null");
-            e.printStackTrace();
+            printError(e);
+        }
+    }
+
+    private static void printError(Exception e) {
+        PrintStream err = System.err;
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        err.println("L.e(Object message),object is null:\n" + e.getMessage());
+        for (StackTraceElement stackTraceElement : stackTrace) {
+            err.println("\tat " + stackTraceElement);
         }
     }
 }
