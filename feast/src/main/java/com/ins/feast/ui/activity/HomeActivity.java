@@ -1,8 +1,10 @@
 package com.ins.feast.ui.activity;
 
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -30,6 +32,8 @@ import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
 
+import static android.R.id.edit;
+
 
 public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback, View.OnClickListener {
 
@@ -42,6 +46,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private View iconRight;
     private ImageView iconLeft;
     private View appBarLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +74,9 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private void initView() {
         title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
-        iconLeft= (ImageView) findViewById(R.id.icon_left);
-        appBarLayout=findViewById(R.id.appBarLayout);
-        iconRight=findViewById(R.id.icon_right);
+        iconLeft = (ImageView) findViewById(R.id.icon_left);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        iconRight = findViewById(R.id.icon_right);
         RxView.clicks(title_location).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
@@ -99,11 +104,14 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     private int height_webView;
     private int height_barLayout;
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        height_webView =webView.getHeight();
-        height_barLayout =appBarLayout.getHeight();
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (height_webView == 0) {
+            height_webView = webView.getHeight();
+            height_barLayout = appBarLayout.getHeight();
+        }
     }
 
     private final static String KEY_HOME = "app/page/index";
@@ -138,7 +146,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     //客服
     private void showTitleBarCustomer() {
-        setWebViewHeight(height_webView+height_barLayout);
+        setWebViewHeight(height_webView + height_barLayout);
         appBarLayout.setVisibility(View.GONE);
     }
 
@@ -161,6 +169,9 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     //首页
     private void showTitleBarHome() {
+        if (title_location.getVisibility() == View.VISIBLE) {
+            return;
+        }
         setWebViewHeight(height_webView);
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_mark);
@@ -173,11 +184,19 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         title_location.setVisibility(visible);
     }
 
-    public void setWebViewHeight(int height){
-
-//        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) webView.getLayoutParams();
-//        layoutParams.height=height;
+    public void setWebViewHeight(int height) {
+//        ViewGroup.LayoutParams layoutParams = webView.getLayoutParams();
+//        layoutParams.height = height;
 //        webView.setLayoutParams(layoutParams);
+//        L.d("scrollTo");
+//        int y = 0;
+//        if (height == height_webView) {
+//            y = (int) (appBarLayout.getY() + appBarLayout.getHeight());
+//        } else if (height == height_barLayout) {
+//            y = 0;
+//        }
+//        L.d(y);
+//        webView.scrollTo((int) appBarLayout.getX(), y);
     }
 
     /**
@@ -241,7 +260,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.icon_left:
                 onBackPressed();
                 break;
