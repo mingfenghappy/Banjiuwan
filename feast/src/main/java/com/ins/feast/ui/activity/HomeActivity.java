@@ -40,9 +40,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         EventBus.getDefault().register(this);
         setHandleLocationLifeCycleBySubclass(true);
 
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
         initBase();
         initView();
     }

@@ -29,11 +29,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- 腾讯tbs浏览服务 x5内核 -->
-        <meta-data
-            android:name="QBSDKAppKey"
-            android:value="lz31w2kitk2XIC0eHVBfLsS/" />
-
         <!-- bugHD -->
         <meta-data
             android:name="BUG_HD_SDK_GENERAL_KEY"
@@ -42,7 +37,7 @@
         <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="l1Sz6jjzSn0ueMrG6C7RXbo40IKhgiSM" />
+            android:value="o2vxb2r8Ey6rUs8g5uyg0EQBm1BnqOoi" /><!--l1Sz6jjzSn0ueMrG6C7RXbo40IKhgiSM-->
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
