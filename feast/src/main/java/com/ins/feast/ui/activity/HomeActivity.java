@@ -75,6 +75,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         settings.setDatabaseEnabled(true);
         settings.setDomStorageEnabled(true);//开启DOM缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
         settings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
 

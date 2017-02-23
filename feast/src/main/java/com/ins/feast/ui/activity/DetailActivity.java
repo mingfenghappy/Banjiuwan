@@ -57,7 +57,7 @@ public class DetailActivity extends BaseAppCompatActivity {
         settings.setDatabaseEnabled(true);
         settings.setDomStorageEnabled(true);//开启DOM缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-
+        settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
         webView.loadUrl(url);
     }
 
