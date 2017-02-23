@@ -1,7 +1,6 @@
 package com.ins.feast.ui.activity;
 
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,7 +13,7 @@ import com.ins.feast.utils.RxViewUtils;
 /**
  * author 边凌
  * date 2017/2/22 11:07
- * desc ${TODO}
+ * desc ${标题栏样式辅助类}
  */
 
 class TitleViewHelper implements View.OnClickListener {
@@ -92,23 +91,8 @@ class TitleViewHelper implements View.OnClickListener {
 
     private Window window;
 
-    // FIXME: 2017/2/23 
-    private void setTranslucentFlags(boolean hasTranslucentFlags) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-            if (window == null) {
-                window = homeActivity.getWindow();
-            }
-            if (hasTranslucentFlags) {
-                window.addFlags(flagTranslucentStatus);
-            } else {
-                window.clearFlags(flagTranslucentStatus);
-            }
-        }
-    }
-
     /**
-     *
+     *标题栏透明的布局
      */
     private void showTitleBarTranslucent() {
         appBarLayout.setVisibility(View.GONE);
@@ -135,6 +119,21 @@ class TitleViewHelper implements View.OnClickListener {
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_mark);
         setIconVisibility(View.VISIBLE);
+    }
+
+    // FIXME: 2017/2/23
+    private void setTranslucentFlags(boolean hasTranslucentFlags) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            if (window == null) {
+                window = homeActivity.getWindow();
+            }
+            if (hasTranslucentFlags) {
+                window.addFlags(flagTranslucentStatus);
+            } else {
+                window.clearFlags(flagTranslucentStatus);
+            }
+        }
     }
 
     @Override

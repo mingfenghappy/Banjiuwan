@@ -23,13 +23,17 @@ public class DetailActivity extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        initSetting();
-        initWebView();
+        initBase();
+        initView();
+        initWebViewSetting();
     }
 
-    private void initSetting() {
-        webView = (WebView) findViewById(R.id.webView_detail);
+    private void initBase() {
         url = getIntent().getStringExtra(KEY_URL);
+    }
+
+    private void initView() {
+        webView = (WebView) findViewById(R.id.webView_detail);
     }
 
     private WebChromeClient chromeClient = new WebChromeClient() {
@@ -43,12 +47,34 @@ public class DetailActivity extends BaseAppCompatActivity {
         }
     };
 
-    private void initWebView() {
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
+    private void initWebViewSetting() {
         webView.setWebChromeClient(chromeClient);
         webView.setWebViewClient(viewClient);
+
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setAppCacheEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setDomStorageEnabled(true);//开启DOM缓存
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
         webView.loadUrl(url);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.onResume();
+        }
     }
 
     @Override

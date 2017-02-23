@@ -40,6 +40,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
         initBase();
         initView();
+        initWebViewSetting();
     }
 
     private void initBase() {
@@ -50,16 +51,34 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         //检查更新
         new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
         locationer.startlocation();
+        titleViewHelper = new TitleViewHelper(this);
     }
 
+    //用于处理标题栏样式
     private TitleViewHelper titleViewHelper;
 
     private void initView() {
         title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
-        titleViewHelper = new TitleViewHelper(this);
+        webView = (WebView) findViewById(R.id.webView);
+    }
 
-        initWebView();
+    /**
+     * WebView配置
+     */
+    private void initWebViewSetting() {
+        webView.setWebViewClient(mClient);
+        webView.setWebChromeClient(mChromeClient);
+
+        WebSettings settings = webView.getSettings();
+        settings.setAppCacheEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setDomStorageEnabled(true);//开启DOM缓存
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
+
+        webView.loadUrl(AppData.Url.app_homepage);
     }
 
     /**
@@ -70,6 +89,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             L.d(url);
             if (url.toLowerCase().contains("detail")) {
+                //详情页面跳转处理
                 DetailActivity.start(HomeActivity.this, url);
             } else {
                 view.loadUrl(url);
@@ -95,21 +115,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         }
     };
 
-    /**
-     * WebView配置
-     */
-    private void initWebView() {
-        webView = (WebView) findViewById(R.id.webView);
-        webView.setWebViewClient(mClient);
-        webView.setWebChromeClient(mChromeClient);
-
-        WebSettings settings = webView.getSettings();
-
-        settings.setJavaScriptEnabled(true);
-        webView.loadUrl(AppData.Url.app_homepage);
-        webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
-    }
-
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         locationer.stopLocation();
@@ -122,6 +127,22 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
             webView.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.onResume();
         }
     }
 
@@ -144,7 +165,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     public void onReceivePostition(Position position) {
         String key = position.getKey();
         title_location.setText(key);
-        L.d("receivePositionIn-- HomeActivity:" + key);
     }
 
 }
