@@ -118,7 +118,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
+        if (webView != null && webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();

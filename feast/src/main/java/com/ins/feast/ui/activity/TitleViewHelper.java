@@ -1,6 +1,10 @@
 package com.ins.feast.ui.activity;
 
+import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +69,8 @@ class TitleViewHelper implements View.OnClickListener {
                 showTitleBarOnlyCenterAndBackIcon();
                 break;
         }
+
+//        setTranslucentFlags(TextUtils.equals(tag, KEY_TRANSLUCENT));
     }
 
     /**
@@ -82,6 +88,23 @@ class TitleViewHelper implements View.OnClickListener {
     private void showTitleBarOnlyCenter() {
         appBarLayout.setVisibility(View.VISIBLE);
         setIconVisibility(View.GONE);
+    }
+
+    private Window window;
+
+    // FIXME: 2017/2/23 
+    private void setTranslucentFlags(boolean hasTranslucentFlags) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            if (window == null) {
+                window = homeActivity.getWindow();
+            }
+            if (hasTranslucentFlags) {
+                window.addFlags(flagTranslucentStatus);
+            } else {
+                window.clearFlags(flagTranslucentStatus);
+            }
+        }
     }
 
     /**

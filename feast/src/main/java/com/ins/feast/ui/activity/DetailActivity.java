@@ -51,6 +51,26 @@ public class DetailActivity extends BaseAppCompatActivity {
         webView.loadUrl(url);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (webView != null) {
+            webView.clearHistory();
+            webView.removeAllViews();
+            webView.destroy();
+            webView=null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView != null&&webView.canGoBack()) {
+            webView.goBack();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     public static void start(Context context, String url) {
         Intent starter = new Intent(context, DetailActivity.class);
         starter.putExtra(KEY_URL, url);
