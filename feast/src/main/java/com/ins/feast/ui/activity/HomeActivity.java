@@ -17,7 +17,8 @@ import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.web.HomeActivityWebChromeClient;
-import com.ins.feast.web.JSInterface;
+import com.ins.feast.web.HomeJSInterface;
+import com.ins.feast.web.HomeWebView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -30,7 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback {
 
     private final static String JS_BRIDGE_NAME = "native";
-    private WebView webView;
+    private HomeWebView webView;
     //标题栏定位Tv
     private TextView title_location;
 
@@ -63,11 +64,12 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
-        webView = (WebView) findViewById(R.id.webView);
+        webView = (HomeWebView) findViewById(R.id.webView);
     }
 
 
     private HomeActivityWebChromeClient webChromeClient;
+    private HomeJSInterface homeJsInterface;
     /**
      * WebView配置
      */
@@ -88,7 +90,8 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         }
 
         settings.setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
+        homeJsInterface =new HomeJSInterface(this,webView);
+        webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
 
         webView.loadUrl(AppData.Url.app_homepage);
@@ -102,7 +105,8 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             L.d(url);
-            if (url.toLowerCase().contains("detail")) {
+            String lowerCaseUrl = url.toLowerCase();
+            if (lowerCaseUrl.contains("detail")&&!lowerCaseUrl.contains("orderdetail")) {
                 //详情页面跳转处理
                 DetailActivity.start(HomeActivity.this, url);
             } else {
@@ -190,5 +194,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        homeJsInterface.onActivityResult(requestCode,resultCode,data);
     }
 }

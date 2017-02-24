@@ -40,6 +40,7 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     private final static String CITY_KEY = "key";
     private final static String TRANSITION_1 ="transitionView1";
     private final static String TRANSITION_2 ="transitionView2";
+    private static final String TRANSITION_3 = "transitionView3";
     private String city;
     private PoiSearch poiSearch;
     private SearchLocationAdapter adapter;
