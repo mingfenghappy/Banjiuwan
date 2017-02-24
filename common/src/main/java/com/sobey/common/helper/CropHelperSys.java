@@ -2,6 +2,7 @@ package com.sobey.common.helper;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -122,8 +123,16 @@ public class CropHelperSys {
     public void startCamera() {
         path = FileUtil.getPhotoFullPath();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
-
+        if (android.os.Build.VERSION.SDK_INT < 24) {
+            //Android 7.0以下，直接获取启调
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
+        } else {
+            //适配到android 7.0
+            ContentValues contentValues = new ContentValues(1);
+            contentValues.put(MediaStore.Images.Media.DATA, new File(path).getAbsolutePath());
+            Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
         if (cropInterface instanceof Activity) {
             ((Activity) cropInterface).startActivityForResult(intent, PHOTO_CAPTURE);
         } else if (cropInterface instanceof Fragment) {
