@@ -8,4 +8,6 @@
     <string name="title_activity_searchaddress">地址查询</string>
     <string name="chooseLocation_chooseLocation">选择地址</string>
     <string name="chooseLocation_pleaseInput">请输入地址</string>
+    <string name="searchLocation_hint">请输入地址</string>
+    <string name="cancel">取消</string>
 </resources>

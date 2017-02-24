@@ -15,35 +15,32 @@ import java.util.List;
 
 /**
  * author 边凌
- * date 2017/2/21 14:23
+ * date 2017/2/24 11:31
  * desc ${TODO}
  */
 
-public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAdapter.Holder> {
+public class SearchLocationAdapter extends RecyclerView.Adapter<SearchLocationAdapter.Holder> {
     private List<PoiInfo> poiInfoList;
 
     private LayoutInflater inflater;
     private OnRecycleItemClickListener listener;
-
-    public List<PoiInfo> getPoiInfoList() {
-        return poiInfoList;
-    }
-
-    public ChooseLocationAdapter(Context context, List<PoiInfo> poiInfoList) {
+    public SearchLocationAdapter(Context context, List<PoiInfo> poiInfoList) {
         this.poiInfoList = poiInfoList;
         inflater = LayoutInflater.from(context);
     }
 
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = inflater.inflate(R.layout.item_chooselocation, parent, false);
+        View inflate = inflater.inflate(R.layout.item_searchlocation, parent, false);
         return new Holder(inflate);
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         PoiInfo poiInfo = poiInfoList.get(position);
-        holder.location.setText(poiInfo.name);
+        holder.address.setText(poiInfo.address);
+        holder.name.setText(poiInfo.name);
     }
 
     @Override
@@ -51,12 +48,19 @@ public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAd
         return poiInfoList != null ? poiInfoList.size() : 0;
     }
 
-    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView location;
+    public void setListener(OnRecycleItemClickListener listener) {
+        this.listener = listener;
+    }
 
+    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private TextView name;
+
+        private TextView address;
         Holder(View itemView) {
             super(itemView);
-            location = (TextView) itemView.findViewById(R.id.location);
+            name = (TextView) itemView.findViewById(R.id.searchLocation_name);
+            address = (TextView) itemView.findViewById(R.id.searchLocation_address);
             itemView.setOnClickListener(this);
         }
 
@@ -66,14 +70,14 @@ public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAd
                 listener.onItemClick(this);
             }
         }
+
+    }
+    public List<PoiInfo> getPoiInfoList() {
+        return poiInfoList;
     }
 
     public void resetData(List<PoiInfo> poiInfoList) {
         this.poiInfoList = poiInfoList;
         notifyDataSetChanged();
-    }
-
-    public void setOnItemClickListener(OnRecycleItemClickListener listener) {
-        this.listener = listener;
     }
 }

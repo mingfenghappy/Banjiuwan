@@ -113,6 +113,13 @@
         <activity
             android:name=".ui.activity.DetailActivity"
             android:theme="@style/AppTheme.Back.NoAnimation" />
+
+        <receiver android:name=".receiver.NetStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
