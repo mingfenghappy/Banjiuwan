@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -18,7 +18,7 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
-import com.ins.feast.ui.adapter.ChooseLocationAdapter;
+import com.ins.feast.ui.adapter.SearchLocationAdapter;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.L;
@@ -26,14 +26,16 @@ import com.sobey.common.utils.L;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 public class SearchLocationActivity extends BaseAppCompatActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
     private final static String CITY_KEY = "key";
     private String city;
     private PoiSearch poiSearch;
-    private ChooseLocationAdapter adapter;
+    private SearchLocationAdapter adapter;
     private RecyclerView searchResult;
 
     @Override
@@ -53,7 +55,11 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     private void initView() {
         EditText editText = (EditText) findViewById(R.id.editText);
         searchResult = (RecyclerView) findViewById(R.id.searchResult);
-        RxTextView.textChanges(editText).subscribe(new Action1<CharSequence>() {
+        RxTextView.
+                textChanges(editText).
+                debounce(300, TimeUnit.MILLISECONDS).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Action1<CharSequence>() {
             @Override
             public void call(CharSequence charSequence) {
                 search(charSequence);
@@ -62,6 +68,10 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     }
 
     private void search(CharSequence charSequence) {
+        if(TextUtils.isEmpty(charSequence)){
+            setAdapterData(null);
+            return;
+        }
         PoiCitySearchOption poiCitySearchOption = new PoiCitySearchOption();
         poiCitySearchOption.city(city).keyword(charSequence.toString());
         poiSearch.searchInCity(poiCitySearchOption);
@@ -81,10 +91,14 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     public void onGetPoiResult(PoiResult poiResult) {
         List<PoiInfo> allPoi = poiResult.getAllPoi();
         L.d("searchResultSize:" + (allPoi != null ? allPoi.size() : 0));
+        setAdapterData(allPoi);
+    }
+
+    private void setAdapterData(List<PoiInfo> allPoi) {
         if (adapter == null) {
-            adapter = new ChooseLocationAdapter(this, allPoi);
+            adapter = new SearchLocationAdapter(this, allPoi);
             searchResult.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            adapter.setOnItemClickListener(this);
+            adapter.setListener(this);
             searchResult.setAdapter(adapter);
         } else {
             adapter.resetData(allPoi);

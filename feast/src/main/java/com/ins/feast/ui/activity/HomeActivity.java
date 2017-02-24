@@ -1,5 +1,6 @@
 package com.ins.feast.ui.activity;
 
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -11,8 +12,10 @@ import com.baidu.mapapi.model.LatLng;
 import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
+import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.jsbridge.JSInterface;
+import com.ins.feast.receiver.NetStateReceiver;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -52,6 +55,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
         locationer.startlocation();
         titleViewHelper = new TitleViewHelper(this);
+        NetStateReceiver.registerAboveSDK21(this);
     }
 
     //用于处理标题栏样式
@@ -63,6 +67,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         webView = (WebView) findViewById(R.id.webView);
     }
 
+
     /**
      * WebView配置
      */
@@ -73,13 +78,15 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         WebSettings settings = webView.getSettings();
         settings.setAppCacheEnabled(true);
         settings.setDatabaseEnabled(true);
-        settings.setDomStorageEnabled(true);//开启DOM缓存
+        settings.setDomStorageEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
+
         settings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.app_homepage);
+
     }
 
     /**
@@ -168,4 +175,19 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         title_location.setText(key);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveNetStateChanged(NetStateChangedEvent event) {
+        NetworkInfo activeInfo = event.getActiveInfo();
+        if (activeInfo != null && webView != null) {
+            if (activeInfo.isAvailable()) {
+                webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+                locationer.startlocation();
+                webView.reload();
+                L.d("NetChanged:available");
+            } else {
+                webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                L.d("NetChanged:not available");
+            }
+        }
+    }
 }
