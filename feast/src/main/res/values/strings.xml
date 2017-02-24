@@ -6,6 +6,7 @@
     <string name="chooseLocation_nearbyLocation">附近地址：</string>
     <string name="chooseLocation_moreLocation">更多地址</string>
     <string name="title_activity_searchaddress">地址查询</string>
+    <string name="title_activity_test">测试</string>
     <string name="chooseLocation_chooseLocation">选择地址</string>
     <string name="chooseLocation_pleaseInput">请输入地址</string>
     <string name="searchLocation_hint">请输入地址</string>

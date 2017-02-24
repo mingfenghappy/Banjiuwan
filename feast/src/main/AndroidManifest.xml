@@ -101,11 +101,12 @@
             android:label="@string/title_activity_searchaddress"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back">
-            <intent-filter>
-                <action android:name="kuaidi.SearchAddressActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.TestActivity"
+            android:label="@string/title_activity_test"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
         </activity>
         <activity
             android:name=".ui.activity.SearchLocationActivity"
