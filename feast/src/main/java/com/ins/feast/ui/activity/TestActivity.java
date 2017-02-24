@@ -12,7 +12,7 @@ import com.ins.feast.utils.GlideUtil;
 import com.sobey.common.helper.CropHelperSys;
 import com.sobey.common.utils.PermissionsUtil;
 
-public class TestActivity extends BaseAppCompatActivity implements CropHelperSys.CropInterface {
+public class TestActivity extends BaseBackActivity implements CropHelperSys.CropInterface {
 
     //图片选择辅助类 setNeedCrop(boolean):设置是否需要裁剪(默认false)  setNeedPress(boolean):设置是否需要进行压缩(默认true)
     private CropHelperSys cropHelper = new CropHelperSys(this);
@@ -25,7 +25,7 @@ public class TestActivity extends BaseAppCompatActivity implements CropHelperSys
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        setToolbar();
+        setToolbar(null, false);
 
         initBase();
 
