@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -38,9 +37,9 @@ import rx.functions.Action1;
 
 public class SearchLocationActivity extends BaseAppCompatActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
     private final static String CITY_KEY = "key";
-    private final static String TRANSITION_1 ="transitionView1";
-    private final static String TRANSITION_2 ="transitionView2";
-    private static final String TRANSITION_3 = "transitionView3";
+    private final static String TRANSITION_RED_BG ="redBg";
+    private final static String TRANSITION_WHITE_BG ="whiteBg";
+    private static final String TRANSITION_TEXT = "text";
     private String city;
     private PoiSearch poiSearch;
     private SearchLocationAdapter adapter;
@@ -50,8 +49,6 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_location);
-        ViewCompat.setTransitionName(findViewById(R.id.transitionView1), TRANSITION_1);
-        ViewCompat.setTransitionName(findViewById(R.id.editText),TRANSITION_2);
 
         initSetting();
         initView();
@@ -91,13 +88,15 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     public static void start(ChooseLocationActivity activity, String city) {
         Intent starter = new Intent(activity, SearchLocationActivity.class);
         starter.putExtra(CITY_KEY, city);
-        View transitionView1=activity.findViewById(R.id.searchLocation);
-        View transitionView2=activity.findViewById(R.id.transitionView2);
+        View redBg=activity.findViewById(R.id.searchLocation);
+        View whiteBg=activity.findViewById(R.id.transition_whiteBg);
+        View text = activity.findViewById(R.id.transition_text);
         ActivityOptionsCompat optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                         activity,
-                        new Pair<>(transitionView1, TRANSITION_1),
-                        new Pair<>(transitionView2, TRANSITION_2));
+                        Pair.create(redBg, TRANSITION_RED_BG),
+                        Pair.create(whiteBg, TRANSITION_WHITE_BG),
+                        Pair.create(text, TRANSITION_TEXT));
 
         ActivityCompat.startActivity(activity, starter, optionsCompat.toBundle());
     }
