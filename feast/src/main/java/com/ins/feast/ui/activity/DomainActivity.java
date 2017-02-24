@@ -118,9 +118,12 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 //            startActivity(intent);
 //            finish();
 
-            Intent intent = new Intent(this, SearchAddressActivity.class);
-            intent.putExtra("city", "成都市");
-            intent.putExtra("latLng", new LatLng(30.560514, 104.075222));
+//            Intent intent = new Intent(this, SearchAddressActivity.class);
+//            intent.putExtra("city", "成都市");
+//            intent.putExtra("latLng", new LatLng(30.560514, 104.075222));
+//            startActivity(intent);
+
+            Intent intent = new Intent(this, TestActivity.class);
             startActivity(intent);
         }
     }
