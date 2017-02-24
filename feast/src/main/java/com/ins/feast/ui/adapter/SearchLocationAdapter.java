@@ -1,6 +1,7 @@
 package com.ins.feast.ui.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +77,7 @@ public class SearchLocationAdapter extends RecyclerView.Adapter<SearchLocationAd
         return poiInfoList;
     }
 
-    public void resetData(List<PoiInfo> poiInfoList) {
+    public void resetData(@Nullable List<PoiInfo> poiInfoList) {
         this.poiInfoList = poiInfoList;
         notifyDataSetChanged();
     }

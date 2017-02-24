@@ -1,8 +1,12 @@
 package com.ins.feast.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,7 +25,6 @@ import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.SearchLocationAdapter;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
-import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,8 +34,12 @@ import java.util.concurrent.TimeUnit;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
+
+
 public class SearchLocationActivity extends BaseAppCompatActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
     private final static String CITY_KEY = "key";
+    private final static String TRANSITION_1 ="transitionView1";
+    private final static String TRANSITION_2 ="transitionView2";
     private String city;
     private PoiSearch poiSearch;
     private SearchLocationAdapter adapter;
@@ -42,6 +49,9 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_location);
+        ViewCompat.setTransitionName(findViewById(R.id.transitionView1), TRANSITION_1);
+        ViewCompat.setTransitionName(findViewById(R.id.editText),TRANSITION_2);
+
         initSetting();
         initView();
     }
@@ -53,22 +63,22 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     }
 
     private void initView() {
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText search = (EditText) findViewById(R.id.editText);
         searchResult = (RecyclerView) findViewById(R.id.searchResult);
         RxTextView.
-                textChanges(editText).
+                textChanges(search).
                 debounce(300, TimeUnit.MILLISECONDS).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new Action1<CharSequence>() {
-            @Override
-            public void call(CharSequence charSequence) {
-                search(charSequence);
-            }
-        });
+                    @Override
+                    public void call(CharSequence charSequence) {
+                        search(charSequence);
+                    }
+                });
     }
 
     private void search(CharSequence charSequence) {
-        if(TextUtils.isEmpty(charSequence)){
+        if (TextUtils.isEmpty(charSequence)) {
             setAdapterData(null);
             return;
         }
@@ -77,10 +87,18 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
         poiSearch.searchInCity(poiCitySearchOption);
     }
 
-    public static void start(Context context, String city) {
-        Intent starter = new Intent(context, SearchLocationActivity.class);
+    public static void start(ChooseLocationActivity activity, String city) {
+        Intent starter = new Intent(activity, SearchLocationActivity.class);
         starter.putExtra(CITY_KEY, city);
-        context.startActivity(starter);
+        View transitionView1=activity.findViewById(R.id.searchLocation);
+        View transitionView2=activity.findViewById(R.id.transitionView2);
+        ActivityOptionsCompat optionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        activity,
+                        new Pair<>(transitionView1, TRANSITION_1),
+                        new Pair<>(transitionView2, TRANSITION_2));
+
+        ActivityCompat.startActivity(activity, starter, optionsCompat.toBundle());
     }
 
     public void onClick_back(View view) {
@@ -90,11 +108,10 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
     @Override
     public void onGetPoiResult(PoiResult poiResult) {
         List<PoiInfo> allPoi = poiResult.getAllPoi();
-        L.d("searchResultSize:" + (allPoi != null ? allPoi.size() : 0));
         setAdapterData(allPoi);
     }
 
-    private void setAdapterData(List<PoiInfo> allPoi) {
+    private void setAdapterData(@Nullable List<PoiInfo> allPoi) {
         if (adapter == null) {
             adapter = new SearchLocationAdapter(this, allPoi);
             searchResult.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -125,4 +142,9 @@ public class SearchLocationActivity extends BaseAppCompatActivity implements OnG
         EventBus.getDefault().post(position);
         finish();
     }
+
+    public void onClick_cancel(View view) {
+        onBackPressed();
+    }
+
 }

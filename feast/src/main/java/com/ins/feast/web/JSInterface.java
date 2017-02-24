@@ -1,4 +1,4 @@
-package com.ins.feast.jsbridge;
+package com.ins.feast.web;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
@@ -18,6 +18,11 @@ public class JSInterface {
 
     @JavascriptInterface
     public void test() {
+
+    }
+
+    @JavascriptInterface
+    public void openImageSelector(){
 
     }
 }

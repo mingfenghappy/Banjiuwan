@@ -95,7 +95,7 @@
             android:theme="@style/AppTheme.Back" />
         <activity
             android:name=".ui.activity.ChooseLocationActivity"
-            android:theme="@style/AppTheme.Back" />
+            android:theme="@style/AppTheme.Back.Transition" />
         <activity
             android:name=".ui.activity.SearchAddressActivity"
             android:label="@string/title_activity_searchaddress"
@@ -109,7 +109,7 @@
         </activity>
         <activity
             android:name=".ui.activity.SearchLocationActivity"
-            android:theme="@style/AppTheme.Back" />
+            android:theme="@style/AppTheme.Back.Transition" />
         <activity
             android:name=".ui.activity.DetailActivity"
             android:theme="@style/AppTheme.Back.NoAnimation" />

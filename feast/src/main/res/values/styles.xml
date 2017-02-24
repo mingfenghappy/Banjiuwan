@@ -19,7 +19,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="AppTheme.Back.Transition" parent="AppTheme.Back"/>
     <style name="AppTheme.Back.NoAnimation" parent="AppTheme.Back">
         <item name="android:windowAnimationStyle">@style/noAnimation</item>
         <item name="android:windowNoTitle">true</item>

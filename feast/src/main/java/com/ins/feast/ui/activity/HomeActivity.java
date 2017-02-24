@@ -1,8 +1,9 @@
 package com.ins.feast.ui.activity;
 
+import android.content.Intent;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -14,8 +15,9 @@ import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
-import com.ins.feast.jsbridge.JSInterface;
 import com.ins.feast.receiver.NetStateReceiver;
+import com.ins.feast.web.HomeActivityWebChromeClient;
+import com.ins.feast.web.JSInterface;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -31,8 +33,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private WebView webView;
     //标题栏定位Tv
     private TextView title_location;
-    //标题栏中间title
-    private TextView title_center;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,18 +62,19 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private TitleViewHelper titleViewHelper;
 
     private void initView() {
-        title_center = (TextView) findViewById(R.id.text_toolbar_title);
         title_location = (TextView) findViewById(R.id.title_location);
         webView = (WebView) findViewById(R.id.webView);
     }
 
 
+    private HomeActivityWebChromeClient webChromeClient;
     /**
      * WebView配置
      */
     private void initWebViewSetting() {
         webView.setWebViewClient(mClient);
-        webView.setWebChromeClient(mChromeClient);
+        webChromeClient=new HomeActivityWebChromeClient(this);
+        webView.setWebChromeClient(webChromeClient);
 
         WebSettings settings = webView.getSettings();
         settings.setAppCacheEnabled(true);
@@ -81,9 +82,14 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         settings.setDomStorageEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
+        settings.setAllowFileAccess(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            settings.setAllowFileAccessFromFileURLs(true);
+        }
 
         settings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(this), JS_BRIDGE_NAME);
+
 
         webView.loadUrl(AppData.Url.app_homepage);
 
@@ -110,16 +116,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
             super.onPageFinished(view, url);
             String title = view.getTitle();
             titleViewHelper.processTitleWithUrl(url, title);
-        }
-    };
-
-    /**
-     * 自定义WebChromeClient
-     */
-    private WebChromeClient mChromeClient = new WebChromeClient() {
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            title_center.setText(title);
         }
     };
 
@@ -189,5 +185,10 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
                 L.d("NetChanged:not available");
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
