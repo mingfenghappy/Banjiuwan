@@ -65,12 +65,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/tallerBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="3dp" />
     <com.ins.feast.web.HomeWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <RelativeLayout
         android:id="@+id/noNetRoot"
         android:visibility="gone"

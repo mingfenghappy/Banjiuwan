@@ -1,19 +1,12 @@
 package com.ins.feast.web;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.view.View;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.ins.feast.R;
 import com.ins.feast.ui.activity.DetailActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.TitleViewHelper;
-import com.ins.feast.ui.view.NoNetView;
 import com.sobey.common.utils.L;
 
 import java.io.File;
@@ -26,14 +19,12 @@ import java.io.FileNotFoundException;
  * desc ${TODO}
  */
 
-public class HomeActivityWebViewClient extends WebViewClient {
+public class HomeActivityWebViewClient extends BaseWebViewClient {
     private HomeActivity homeActivity;
     private TitleViewHelper titleViewHelper;
-    private WebView webView;
-    private View noNetRoot;
-    private NoNetView noNetView;
 
     public HomeActivityWebViewClient(HomeActivity homeActivity) {
+        super((WebView) homeActivity.findViewById(R.id.webView));
         this.homeActivity = homeActivity;
         this.titleViewHelper = new TitleViewHelper(homeActivity);
     }
@@ -75,27 +66,4 @@ public class HomeActivityWebViewClient extends WebViewClient {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
-        if (error.getErrorCode() == ERROR_CONNECT) {
-            noNetProcess();
-        }
-
-    }
-
-    @Override
-    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-        super.onReceivedError(view, errorCode, description, failingUrl);
-        if (errorCode == ERROR_CONNECT) {
-            noNetProcess();
-        }
-    }
-
-    /**
-     * 无网络处理
-     */
-    private void noNetProcess() {
-    }
 }

@@ -19,7 +19,9 @@ public class HomeJSInterface implements CropHelperSys.CropInterface {
     private HomeWebView homeWebView;
     private DialogPopupPhoto imagePicker;
     private CropHelperSys cropHelperSys;
-    private enum OnActivityResultAction{OpenImageSelector}
+
+    private enum OnActivityResultAction {OpenImageSelector}
+
     private volatile OnActivityResultAction action;
 
     public HomeJSInterface(Context context, HomeWebView homeWebView) {
@@ -28,8 +30,8 @@ public class HomeJSInterface implements CropHelperSys.CropInterface {
     }
 
     @JavascriptInterface
-    public void openImageSelector(){
-        action=OnActivityResultAction.OpenImageSelector;
+    public void openImageSelector() {
+        action = OnActivityResultAction.OpenImageSelector;
         if (imagePicker == null) {
             imagePickerInit();
         }
@@ -37,9 +39,9 @@ public class HomeJSInterface implements CropHelperSys.CropInterface {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (action){
+        switch (action) {
             case OpenImageSelector:
-                cropHelperSys.onActivityResult(requestCode,resultCode,data);
+                cropHelperSys.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
@@ -50,8 +52,8 @@ public class HomeJSInterface implements CropHelperSys.CropInterface {
     }
 
     private void imagePickerInit() {
-        imagePicker=new DialogPopupPhoto(context);
-        cropHelperSys =new CropHelperSys(this);
+        imagePicker = new DialogPopupPhoto(context);
+        cropHelperSys = new CropHelperSys(this);
         imagePicker.setOnCameraListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.TextView;
 
@@ -67,12 +66,13 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
+
     /**
      * WebView配置
      */
     private void initWebViewSetting() {
-        webViewClient=new HomeActivityWebViewClient(this);
-        webChromeClient=new HomeActivityWebChromeClient(this);
+        webViewClient = new HomeActivityWebViewClient(this);
+        webChromeClient = new HomeActivityWebChromeClient(this);
 
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
@@ -94,7 +94,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         }
 
         settings.setJavaScriptEnabled(true);
-        homeJsInterface =new HomeJSInterface(this,webView);
+        homeJsInterface = new HomeJSInterface(this, webView);
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
 
@@ -135,10 +135,11 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     @Override
     protected void onDestroy() {
-        if (webView != null) {
+        if (webView != null&&webViewClient!=null) {
             webView.clearHistory();
             webView.removeAllViews();
             webView.destroy();
+            webViewClient.destroy();
             webView = null;
         }
         EventBus.getDefault().unregister(this);
@@ -157,14 +158,11 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveNetStateChanged(NetStateChangedEvent event) {
         NetworkInfo activeInfo = event.getActiveInfo();
-        if (activeInfo != null && webView != null) {
+        if (activeInfo != null) {
             if (activeInfo.isAvailable()) {
-                webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
                 locationer.startlocation();
-                webView.reload();
                 L.d("NetChanged:available");
             } else {
-                webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 L.d("NetChanged:not available");
             }
         }
@@ -173,7 +171,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        homeJsInterface.onActivityResult(requestCode,resultCode,data);
+        homeJsInterface.onActivityResult(requestCode, resultCode, data);
     }
 
 }

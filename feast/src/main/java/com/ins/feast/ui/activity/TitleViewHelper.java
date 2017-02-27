@@ -45,13 +45,17 @@ public class TitleViewHelper implements View.OnClickListener {
     private void initListener() {
         iconLeft.setOnClickListener(this);
         RxViewUtils.throttleFirst(title_location, this);
-        RxViewUtils.throttleFirst(iconRight,this);
+        RxViewUtils.throttleFirst(iconRight, this);
     }
 
     public void processTitleWithUrl(String url, String title) {
         title_center.setText(title);
-        String tag = url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
-        switchTitleByTag(tag);
+        try {
+            String tag = url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
+            switchTitleByTag(tag);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void switchTitleByTag(String tag) {
@@ -93,7 +97,7 @@ public class TitleViewHelper implements View.OnClickListener {
     private Window window;
 
     /**
-     *标题栏透明的布局
+     * 标题栏透明的布局
      */
     private void showTitleBarTranslucent() {
         appBarLayout.setVisibility(View.GONE);
