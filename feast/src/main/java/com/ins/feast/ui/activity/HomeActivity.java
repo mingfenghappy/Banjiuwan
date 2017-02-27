@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
@@ -17,6 +16,7 @@ import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.web.HomeActivityWebChromeClient;
+import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
 import com.shelwee.update.UpdateHelper;
@@ -55,12 +55,8 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         //检查更新
         new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
         locationer.startlocation();
-        titleViewHelper = new TitleViewHelper(this);
         NetStateReceiver.registerAboveSDK21(this);
     }
-
-    //用于处理标题栏样式
-    private TitleViewHelper titleViewHelper;
 
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
@@ -69,13 +65,16 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
 
     private HomeActivityWebChromeClient webChromeClient;
+    private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
     /**
      * WebView配置
      */
     private void initWebViewSetting() {
-        webView.setWebViewClient(mClient);
+        webViewClient=new HomeActivityWebViewClient(this);
         webChromeClient=new HomeActivityWebChromeClient(this);
+
+        webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
 
         WebSettings settings = webView.getSettings();
@@ -102,31 +101,6 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         webView.loadUrl(AppData.Url.app_homepage);
 
     }
-
-    /**
-     * 自定义WebViewClient
-     */
-    private WebViewClient mClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            L.d(url);
-            String lowerCaseUrl = url.toLowerCase();
-            if (lowerCaseUrl.contains("detail")&&!lowerCaseUrl.contains("orderdetail")) {
-                //详情页面跳转处理
-                DetailActivity.start(HomeActivity.this, url);
-            } else {
-                view.loadUrl(url);
-            }
-            return true;
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            String title = view.getTitle();
-            titleViewHelper.processTitleWithUrl(url, title);
-        }
-    };
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
@@ -201,4 +175,5 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         super.onActivityResult(requestCode, resultCode, data);
         homeJsInterface.onActivityResult(requestCode,resultCode,data);
     }
+
 }

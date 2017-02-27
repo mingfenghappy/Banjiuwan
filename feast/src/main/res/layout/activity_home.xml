@@ -56,11 +56,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:background="@android:color/transparent"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:transitionName="transitionSearch"
-                android:background="@android:color/transparent"
-                android:src="@mipmap/ic_search_white" />
+                android:src="@mipmap/ic_search_white"
+                android:transitionName="transitionSearch" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -71,4 +71,20 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <RelativeLayout
+        android:id="@+id/noNetRoot"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ins.feast.ui.view.NoNetView
+            android:id="@+id/noNetView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/noNet"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+    </RelativeLayout>
 </LinearLayout>

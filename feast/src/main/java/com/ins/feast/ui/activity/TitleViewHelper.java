@@ -16,7 +16,7 @@ import com.ins.feast.utils.RxViewUtils;
  * desc ${标题栏样式辅助类}
  */
 
-class TitleViewHelper implements View.OnClickListener {
+public class TitleViewHelper implements View.OnClickListener {
     private final static String KEY_HOME = "app/page/index";
     private final static String KEY_CENTER_LEFTICON = "app/page/car";
     private final static String KEY_CENTER = "app/page/find";
@@ -29,7 +29,7 @@ class TitleViewHelper implements View.OnClickListener {
     private ImageView iconLeft;
     private View appBarLayout;
 
-    TitleViewHelper(HomeActivity homeActivity) {
+    public TitleViewHelper(HomeActivity homeActivity) {
         title_center = (TextView) homeActivity.findViewById(R.id.text_toolbar_title);
         title_location = (TextView) homeActivity.findViewById(R.id.title_location);
         iconLeft = (ImageView) homeActivity.findViewById(R.id.icon_left);
@@ -48,7 +48,7 @@ class TitleViewHelper implements View.OnClickListener {
         RxViewUtils.throttleFirst(iconRight,this);
     }
 
-    void processTitleWithUrl(String url, String title) {
+    public void processTitleWithUrl(String url, String title) {
         title_center.setText(title);
         String tag = url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
         switchTitleByTag(tag);
