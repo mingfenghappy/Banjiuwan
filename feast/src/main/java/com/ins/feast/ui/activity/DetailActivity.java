@@ -59,6 +59,11 @@ public class DetailActivity extends BaseAppCompatActivity {
         webView.setWebViewClient(viewClient);
 
         WebSettings settings = webView.getSettings();
+        ///
+        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        ///
         settings.setJavaScriptEnabled(true);
         settings.setAppCacheEnabled(true);
         settings.setDatabaseEnabled(true);

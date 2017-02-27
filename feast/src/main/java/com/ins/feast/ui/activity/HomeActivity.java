@@ -79,6 +79,11 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         webView.setWebChromeClient(webChromeClient);
 
         WebSettings settings = webView.getSettings();
+        ///
+        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        ///
         settings.setAppCacheEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setDomStorageEnabled(true);
