@@ -11,7 +11,7 @@ import android.webkit.WebView;
 
 public class WebPickerChromeClient extends WebChromeClient {
 
-    private WebPickerHelper webPickerHelper2;
+    protected WebPickerHelper webPickerHelper2;
 
     public WebPickerChromeClient(WebPickerHelper webPickerHelper) {
         this.webPickerHelper2 = webPickerHelper;
