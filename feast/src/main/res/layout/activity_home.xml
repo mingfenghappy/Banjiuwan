@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:id="@+id/root"
     tools:context="com.ins.feast.ui.activity.HomeActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -55,8 +55,10 @@
                 android:id="@+id/icon_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
+                android:layout_gravity="end"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:transitionName="transitionSearch"
                 android:background="@android:color/transparent"
                 android:src="@mipmap/ic_search_white" />
         </android.support.v7.widget.Toolbar>

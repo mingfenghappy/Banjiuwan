@@ -45,6 +45,7 @@ class TitleViewHelper implements View.OnClickListener {
     private void initListener() {
         iconLeft.setOnClickListener(this);
         RxViewUtils.throttleFirst(title_location, this);
+        RxViewUtils.throttleFirst(iconRight,this);
     }
 
     void processTitleWithUrl(String url, String title) {
@@ -144,6 +145,9 @@ class TitleViewHelper implements View.OnClickListener {
                 break;
             case R.id.title_location:
                 ChooseLocationActivity.start(homeActivity);
+                break;
+            case R.id.icon_right:
+                SearchDishesActivity.start(homeActivity);
                 break;
         }
     }
