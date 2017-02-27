@@ -86,24 +86,25 @@
             android:theme="@style/AppTheme.Back" />
         <activity
             android:name=".ui.activity.ChooseLocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back.Transition" />
         <activity
             android:name=".ui.activity.SearchAddressActivity"
             android:label="@string/title_activity_searchaddress"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back" />
         <activity
             android:name=".ui.activity.TestActivity"
             android:label="@string/title_activity_test"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back" />
         <activity
             android:name=".ui.activity.SearchLocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back.Transition" />
         <activity
             android:name=".ui.activity.DetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back.NoAnimation" />
 
         <receiver android:name=".receiver.NetStateReceiver">
