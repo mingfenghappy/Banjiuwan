@@ -113,6 +113,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.activity.SearchDishesActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

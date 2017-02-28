@@ -119,6 +119,7 @@ public class AppData {
     public static class Config {
         public static boolean showVali = false;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
+        public static String ERROR_PAGE_TITLE = "error.html";
     }
 
     /**

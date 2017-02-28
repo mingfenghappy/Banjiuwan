@@ -11,7 +11,7 @@ public class L {
 
     private static String TAG = "LOG";
 
-    private static boolean DEBUG = true;
+    private volatile static boolean DEBUG = true;
 
     public static void setDEBUG(boolean DEBUG) {
         L.DEBUG = DEBUG;
