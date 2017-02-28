@@ -14,15 +14,9 @@ import com.sobey.common.helper.CropHelperSys;
  * desc ${与js交互的类}
  */
 
-public class HomeJSInterface implements CropHelperSys.CropInterface {
-    private Context context;
+public class HomeJSInterface {
     private HomeWebView homeWebView;
-    private DialogPopupPhoto imagePicker;
-    private CropHelperSys cropHelperSys;
-
-    private enum OnActivityResultAction {OpenImageSelector}
-
-    private volatile OnActivityResultAction action;
+    private Context context;
 
     public HomeJSInterface(Context context, HomeWebView homeWebView) {
         this.context = context;
@@ -30,43 +24,8 @@ public class HomeJSInterface implements CropHelperSys.CropInterface {
     }
 
     @JavascriptInterface
-    public void openImageSelector() {
-        action = OnActivityResultAction.OpenImageSelector;
-        if (imagePicker == null) {
-            imagePickerInit();
-        }
-        imagePicker.show();
+    public void test(){
+        
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (action) {
-            case OpenImageSelector:
-                cropHelperSys.onActivityResult(requestCode, resultCode, data);
-                break;
-        }
-    }
-
-    @Override
-    public void cropResult(String path) {
-        homeWebView.setImageSelectResult(path);
-    }
-
-    private void imagePickerInit() {
-        imagePicker = new DialogPopupPhoto(context);
-        cropHelperSys = new CropHelperSys(this);
-        imagePicker.setOnCameraListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePicker.hide();
-                cropHelperSys.startCamera();
-            }
-        });
-        imagePicker.setOnPhotoListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePicker.hide();
-                cropHelperSys.startPhoto();
-            }
-        });
-    }
 }
