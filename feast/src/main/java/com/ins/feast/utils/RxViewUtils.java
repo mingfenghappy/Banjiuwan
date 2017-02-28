@@ -20,8 +20,6 @@ public class RxViewUtils {
 
     /**
      * 快速点击过滤
-     * @param view
-     * @param listener
      */
     public static void throttleFirst(final View view, final View.OnClickListener listener) {
         RxView.clicks(view).throttleFirst(DEFAULT_INTERVAL, TimeUnit.MILLISECONDS).subscribe(new Action1<Void>() {

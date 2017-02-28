@@ -65,7 +65,7 @@ dependencies {
     compile project(':library_version')
     compile files('libs/libammsdk.jar')
     compile project(':baidumapsdk')
-
+    //RxView
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'

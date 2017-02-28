@@ -1,19 +1,23 @@
 package com.ins.feast.web;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.CallSuper;
+import android.os.Bundle;
 import android.webkit.WebView;
 
-import com.ins.feast.ui.activity.WebPickerChromeClient;
-import com.ins.feast.ui.activity.WebPickerHelper;
+import com.sobey.common.helper.WebPickerChromeClient;
+import com.sobey.common.helper.WebPickerHelper;
+
 
 /**
  * author 边凌
  * date 2017/2/27 17:58
- * desc ${TODO}
+ * desc ${处理了Html 打开本机文件和相机的{@link android.webkit.WebChromeClient}基类}
+ * <p>
+ * 注意，该类的实例必须在Activity的{@link Activity#onCreate(Bundle)}之后创建
  */
 
-public class BaseWebChromeClient extends WebPickerChromeClient{
+public class BaseWebChromeClient extends WebPickerChromeClient {
     public BaseWebChromeClient(WebPickerHelper webPickerHelper) {
         super(webPickerHelper);
     }
@@ -24,6 +28,6 @@ public class BaseWebChromeClient extends WebPickerChromeClient{
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        webPickerHelper2.onActivityResult(requestCode,resultCode,intent);
+        webPickerHelper.onActivityResult(requestCode, resultCode, intent);
     }
 }
