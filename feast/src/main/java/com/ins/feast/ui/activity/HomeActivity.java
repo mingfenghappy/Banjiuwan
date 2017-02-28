@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback {
 
-    private final static String JS_BRIDGE_NAME = "native";
+    private final static String JS_BRIDGE_NAME = "JSBridge";
     private HomeWebView webView;
     //标题栏定位Tv
     private TextView title_location;

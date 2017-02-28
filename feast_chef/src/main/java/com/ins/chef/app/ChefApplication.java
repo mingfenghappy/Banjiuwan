@@ -19,8 +19,10 @@ import android.support.multidex.MultiDex;
 
 import com.ins.chef.BuildConfig;
 import com.ins.chef.R;
+import com.ins.chef.common.AppData;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.StrUtils;
 
 import org.xutils.x;
 
@@ -58,6 +60,14 @@ public class ChefApplication extends Application {
     private void initJPush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
+        saveJPushId();
+    }
+
+    private void saveJPushId() {
+        String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
+        if (!StrUtils.isEmpty(registrationID)) {
+            AppData.App.saveJpushId(registrationID);
+        }
     }
 
     private void initXUtils() {

@@ -1,5 +1,8 @@
 package com.ins.chef.common;
 
+import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.PreferenceUtil;
+
 /**
  * author 边凌
  * date 2017/2/27 10:21
@@ -13,5 +16,16 @@ public class AppData {
          * 厨师端入口页
          */
         public final static String FEAST_CHEF_HOMEPAGE = DOMAIN + "/Banjiuwan/app/page/cookLogin";
+    }
+    public static class App {
+        private static final String KEY_JPUSHID = "jpushid";
+
+        public static String getJpushId() {
+            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_JPUSHID);
+            return token;
+        }
+        public static void saveJpushId(String token) {
+            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_JPUSHID, token);
+        }
     }
 }

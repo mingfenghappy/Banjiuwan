@@ -1,12 +1,7 @@
 package com.ins.feast.web;
 
 import android.content.Context;
-import android.content.Intent;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-
-import com.ins.feast.ui.dialog.DialogPopupPhoto;
-import com.sobey.common.helper.CropHelperSys;
 
 /**
  * author 边凌
@@ -14,7 +9,7 @@ import com.sobey.common.helper.CropHelperSys;
  * desc ${与js交互的类}
  */
 
-public class HomeJSInterface {
+public class HomeJSInterface extends BaseJSInterface {
     private HomeWebView homeWebView;
     private Context context;
 
@@ -25,7 +20,7 @@ public class HomeJSInterface {
 
     @JavascriptInterface
     public void test(){
-        
+
     }
 
 }
