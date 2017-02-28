@@ -171,7 +171,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        homeJsInterface.onActivityResult(requestCode, resultCode, data);
+//        homeJsInterface.onActivityResult(requestCode, resultCode, data);
         webChromeClient.onActivityResult(requestCode,resultCode,data);
     }
 

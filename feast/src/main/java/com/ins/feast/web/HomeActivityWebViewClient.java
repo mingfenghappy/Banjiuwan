@@ -49,21 +49,21 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         titleViewHelper.processTitleWithUrl(url, title);
     }
 
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        String key = "http://localhost";
-        if (url.contains(key)) {
-            String imgPath = url.replace(key, "");
-            try {
-                FileInputStream fileInputStream = new FileInputStream(new File(imgPath));
-                return new WebResourceResponse("image/png", "UTF-8", fileInputStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return super.shouldInterceptRequest(view, url);
-            }
-        } else {
-            return super.shouldInterceptRequest(view, url);
-        }
-    }
+//    @Override
+//    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+//        String key = "http://localhost";
+//        if (url.contains(key)) {
+//            String imgPath = url.replace(key, "");
+//            try {
+//                FileInputStream fileInputStream = new FileInputStream(new File(imgPath));
+//                return new WebResourceResponse("image/png", "UTF-8", fileInputStream);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//                return super.shouldInterceptRequest(view, url);
+//            }
+//        } else {
+//            return super.shouldInterceptRequest(view, url);
+//        }
+//    }
 
 }

@@ -39,7 +39,7 @@ public class WebPickerHelper {
 
     private ValueCallback<Uri[]> mUploadMessageForAndroid5;
 
-    public void onenFileChooseImpleForAndroid(ValueCallback<Uri[]> filePathCallback) {
+    public void openFileChooserImplForAndroid(ValueCallback<Uri[]> filePathCallback) {
         mUploadMessageForAndroid5 = filePathCallback;
         Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
         contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);

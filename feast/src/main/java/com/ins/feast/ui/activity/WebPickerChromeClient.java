@@ -34,7 +34,7 @@ public class WebPickerChromeClient extends WebChromeClient {
 
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-        webPickerHelper2.onenFileChooseImpleForAndroid(filePathCallback);
+        webPickerHelper2.openFileChooserImplForAndroid(filePathCallback);
         return true;
     }
 }
