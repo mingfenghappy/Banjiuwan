@@ -1,7 +1,9 @@
-package com.ins.feast.ui.dialog;
+package com.sobey.common.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.ins.feast.R;
+import com.sobey.common.R;
 
 
 /**
@@ -37,7 +39,6 @@ public class DialogPopupPhoto extends Dialog {
         text_photo.setOnClickListener(listener);
         text_camera.setOnClickListener(listener);
 
-
         this.setCanceledOnTouchOutside(true);    //点击外部关闭
 
         Window win = this.getWindow();
@@ -56,14 +57,14 @@ public class DialogPopupPhoto extends Dialog {
         super.show();
     }
 
-    /**
-     * 取消键监听器
-     *
-     * @param listener
-     */
-    public void setOnCancelListener(View.OnClickListener listener) {
-        text_cancel.setOnClickListener(listener);
-    }
+//    /**
+//     * 取消键监听器
+//     *
+//     * @param listener
+//     */
+//    public void setOnCancelListener(View.OnClickListener listener) {
+//        text_cancel.setOnClickListener(listener);
+//    }
 
     /**
      * 相册键监听器
@@ -81,6 +82,18 @@ public class DialogPopupPhoto extends Dialog {
      */
     public void setOnCameraListener(View.OnClickListener listener) {
         text_camera.setOnClickListener(listener);
+    }
+
+    @Override
+    public void setOnCancelListener(final OnCancelListener listener) {
+        super.setOnCancelListener(listener);
+        text_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onCancel(DialogPopupPhoto.this);
+                DialogPopupPhoto.this.dismiss();
+            }
+        });
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {

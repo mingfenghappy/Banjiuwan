@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 
-import com.ins.feast.ui.dialog.DialogPopupPhoto;
+import com.sobey.common.ui.dialog.DialogPopupPhoto;
 import com.sobey.common.helper.CropHelperSys;
 
 /**
