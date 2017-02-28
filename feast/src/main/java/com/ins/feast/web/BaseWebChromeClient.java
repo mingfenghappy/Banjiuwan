@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.support.annotation.CallSuper;
 import android.webkit.WebView;
 
-import com.ins.feast.ui.activity.WebPickerChromeClient;
-import com.ins.feast.ui.activity.WebPickerHelper;
+import com.sobey.common.helper.WebPickerChromeClient;
+import com.sobey.common.helper.WebPickerHelper;
+
 
 /**
  * author 边凌
@@ -13,7 +14,7 @@ import com.ins.feast.ui.activity.WebPickerHelper;
  * desc ${TODO}
  */
 
-public class BaseWebChromeClient extends WebPickerChromeClient{
+public class BaseWebChromeClient extends WebPickerChromeClient {
     public BaseWebChromeClient(WebPickerHelper webPickerHelper) {
         super(webPickerHelper);
     }
@@ -24,6 +25,6 @@ public class BaseWebChromeClient extends WebPickerChromeClient{
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        webPickerHelper2.onActivityResult(requestCode,resultCode,intent);
+        webPickerHelper.onActivityResult(requestCode,resultCode,intent);
     }
 }

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.ins.feast.R;
 import com.ins.feast.ui.activity.HomeActivity;
-import com.ins.feast.ui.activity.WebPickerHelper;
+import com.sobey.common.helper.WebPickerHelper;
 
 /**
  * author 边凌
