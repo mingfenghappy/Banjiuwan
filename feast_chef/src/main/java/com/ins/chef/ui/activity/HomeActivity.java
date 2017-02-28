@@ -1,8 +1,6 @@
 package com.ins.chef.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -11,8 +9,9 @@ import android.widget.TextView;
 
 import com.ins.chef.R;
 import com.ins.chef.common.AppData;
+import com.sobey.common.base.BaseAppCompatActivity;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseAppCompatActivity {
     private WebView webView;
     private TextView toolbar_title;
 

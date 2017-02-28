@@ -7,7 +7,7 @@ import com.ins.feast.common.AppData;
 /**
  * author 边凌
  * date 2017/2/28 10:23
- * desc ${TODO}
+ * desc ${Js桥基类}
  */
 
 public class BaseJSInterface {

@@ -54,13 +54,14 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     }
 
     private void initSetting() {
-        LocationClientOption locOption = locationer.getLocOption();
+        LocationClientOption locOption = getLocOption();
         if (locOption != null) {
             locOption.setScanSpan(0);
         }
         setHandleLocationLifeCycleBySubclass(false);
 
-        locationer.startlocation();
+        startLocation();
+        setShowLocationLoadProgress(true);
     }
 
     private void initView() {
@@ -70,11 +71,12 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         View moreLocation = findViewById(R.id.moreLocationRoot);
         RxViewUtils.throttleFirst(moreLocation, this);
         RxViewUtils.throttleFirst(findViewById(R.id.searchLocation), this);
-        RxViewUtils.throttleFirst(nowLocation,this);
+        RxViewUtils.throttleFirst(nowLocation, this);
+        RxViewUtils.throttleFirst(findViewById(R.id.relocation), 300, this);
     }
 
     private void startSearchLocationActivity() {
-        SearchLocationActivity.start(this,city);
+        SearchLocationActivity.start(this, city);
     }
 
     private void startSearchAddressActivity() {
@@ -87,30 +89,34 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private String city = "成都市";
 
     private LatLng latLng = new LatLng(30.560514, 104.075222);
-    private String district="";
+    private String district = "";
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        locationer.stopLocation();
-        saveLocationInfoAndChangeUI(latLng, city,district);
+        stopLocation();
+        saveLocationInfoAndChangeUI(latLng, city, district);
         searchNearbyLocation(latLng);
     }
 
     private void saveLocationInfoAndChangeUI(LatLng latLng, String city, String district) {
         this.latLng = latLng;
         this.city = city;
-        this.district=district;
-        nowLocation.setText(locationer.getAddrStr());
+        this.district = district;
+        nowLocation.setText(getAddStr());
     }
 
+    private GeoCoder gC;
+
     private void searchNearbyLocation(LatLng latLng) {
-        GeoCoder gC = GeoCoder.newInstance();
-        gC.setOnGetGeoCodeResultListener(this);
+        if (gC == null) {
+            gC = GeoCoder.newInstance();
+            gC.setOnGetGeoCodeResultListener(this);
+        }
         gC.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
     }
 
     public void onClick_relocation(View view) {
-        locationer.startlocation();
+        startLocation();
     }
 
     @Override
@@ -125,11 +131,14 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             case R.id.nowLocation:
                 chooseNowLocation();
                 break;
+            case R.id.relocation:
+                startLocation();
+                break;
         }
     }
 
     private void chooseNowLocation() {
-        Position position=new Position();
+        Position position = new Position();
         position.setKey(nowLocation.getText().toString());
         position.setCity(city);
         position.setLatLng(latLng);
@@ -177,7 +186,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     @Subscribe
     public void onReceivePosition(Position position) {
-        L.d("receivePosition-- ChooseLocationActivity:"+position.getKey());
+        L.d("receivePosition-- ChooseLocationActivity:" + position.getKey());
         finish();
     }
 

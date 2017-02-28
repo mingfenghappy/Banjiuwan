@@ -9,7 +9,7 @@ import android.webkit.WebView;
 /**
  * author 边凌
  * date 2017/2/24 16:10
- * desc ${TODO}
+ * desc ${主页使用的{@link WebView}}
  */
 
 public class HomeWebView extends WebView {
@@ -34,10 +34,4 @@ public class HomeWebView extends WebView {
         super(context, attrs, defStyleAttr, privateBrowsing);
     }
 
-    /**
-     * 打开图片选择器拿到结果后，在这里通知h5页面
-     */
-    public void setImageSelectResult(String path) {
-        // TODO: 2017/2/24
-    }
 }

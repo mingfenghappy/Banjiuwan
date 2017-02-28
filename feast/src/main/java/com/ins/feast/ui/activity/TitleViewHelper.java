@@ -1,6 +1,8 @@
 package com.ins.feast.ui.activity;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -8,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.feast.R;
+import com.ins.feast.common.AppData;
 import com.ins.feast.utils.RxViewUtils;
 
 /**
  * author 边凌
  * date 2017/2/22 11:07
- * desc ${标题栏样式辅助类}
+ * desc ${标题栏样式辅助类，功能包括设置标题，标题栏样式切换以及标题栏按键点击事件}
  */
 
 public class TitleViewHelper implements View.OnClickListener {
@@ -48,17 +51,41 @@ public class TitleViewHelper implements View.OnClickListener {
         RxViewUtils.throttleFirst(iconRight, this);
     }
 
+    /**
+     * 根据url切换标题栏样式
+     *
+     * @param url   当前网页的url
+     * @param title 标题栏标题
+     */
     public void processTitleWithUrl(String url, String title) {
-        title_center.setText(title);
+        if (!TextUtils.equals(title, AppData.Config.ERROR_PAGE_TITLE)) {
+            title_center.setText(title);
+        }
         try {
-            String tag = url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
-            switchTitleByTag(tag);
+            String tag = generateTag(url);
+            switchTitleStyleByTag(tag);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void switchTitleByTag(String tag) {
+    /**
+     * 根据当前网页的url解析出tag
+     *
+     * @param url url
+     * @return tag
+     */
+    @NonNull
+    private String generateTag(String url) {
+        return url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
+    }
+
+    /**
+     * 根据tag处理标题栏样式
+     *
+     * @param tag {@link #generateTag(String)}根据Url获取tag
+     */
+    private void switchTitleStyleByTag(String tag) {
         switch (tag) {
             case KEY_HOME:
                 showTitleBarHome();

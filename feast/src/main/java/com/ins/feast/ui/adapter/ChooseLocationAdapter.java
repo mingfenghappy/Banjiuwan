@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * author 边凌
  * date 2017/2/21 14:23
- * desc ${TODO}
+ * desc ${@link com.ins.feast.ui.activity.ChooseLocationActivity}
  */
 
 public class ChooseLocationAdapter extends RecyclerView.Adapter<ChooseLocationAdapter.Holder> {

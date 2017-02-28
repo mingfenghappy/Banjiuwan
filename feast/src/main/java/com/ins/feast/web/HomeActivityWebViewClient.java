@@ -1,6 +1,5 @@
 package com.ins.feast.web;
 
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
@@ -9,14 +8,10 @@ import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.TitleViewHelper;
 import com.sobey.common.utils.L;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 /**
  * author 边凌
  * date 2017/2/27 11:44
- * desc ${TODO}
+ * desc ${主页使用的{@link android.webkit.WebViewClient}}
  */
 
 public class HomeActivityWebViewClient extends BaseWebViewClient {
@@ -42,6 +37,9 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         return true;
     }
 
+    /**
+     * 在网页加载结束时处理标题栏样式
+     */
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);

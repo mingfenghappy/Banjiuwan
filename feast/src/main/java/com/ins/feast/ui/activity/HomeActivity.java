@@ -53,7 +53,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         PermissionsUtil.checkAndRequestPermissions(this);
         //检查更新
         new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
-        locationer.startlocation();
+        startLocation();
         NetStateReceiver.registerAboveSDK21(this);
     }
 
@@ -104,8 +104,8 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        locationer.stopLocation();
-        title_location.setText(locationer.getAddrStr());
+        stopLocation();
+        title_location.setText(getAddStr());
     }
 
     @Override
@@ -160,7 +160,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         NetworkInfo activeInfo = event.getActiveInfo();
         if (activeInfo != null) {
             if (activeInfo.isAvailable()) {
-                locationer.startlocation();
+                startLocation();
                 L.d("NetChanged:available");
             } else {
                 L.d("NetChanged:not available");

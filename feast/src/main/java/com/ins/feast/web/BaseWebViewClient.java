@@ -13,12 +13,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.ins.feast.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.ins.feast.common.AppData.Config.ERROR_PAGE_URL;
+
 
 /**
  * author 边凌
@@ -29,12 +33,12 @@ import org.greenrobot.eventbus.ThreadMode;
 public class BaseWebViewClient extends WebViewClient {
     private WebView webView;
     /**
-     * 无网络页html链接
+     * 无网络页html链接，存储在本地assets中
      */
-    private final static String ERROR_PAGE_URL = "file:///android_asset/error.html";
 
     public BaseWebViewClient(final WebView webView) {
         this.webView = webView;
+        //点击无网络页重载网页
         webView.setOnTouchListener(new View.OnTouchListener() {
             /**
              * 判断为无网络页时，点击WebView则重新加载最近一次的URL
@@ -83,8 +87,8 @@ public class BaseWebViewClient extends WebViewClient {
     }
 
     /**
-     * 保存最近一次非{@link #ERROR_PAGE_URL}的URL，用于在网络恢复后重新访问
-     */
+     * 保存最近一次非{@link AppData.Config#ERROR_PAGE_URL}的URL，用于在网络恢复后重新访问
+        */
     private String lastUrl;
 
     /**

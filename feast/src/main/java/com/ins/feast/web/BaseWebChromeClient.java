@@ -27,6 +27,9 @@ public class BaseWebChromeClient extends WebPickerChromeClient {
         super.onReceivedTitle(view, title);
     }
 
+    /**
+     * 若需要对h5中的file标签处理，则在{@link Activity#onActivityResult(int, int, Intent)}中必须调用该方法
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         webPickerHelper.onActivityResult(requestCode, resultCode, intent);
     }

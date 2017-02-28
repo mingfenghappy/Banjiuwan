@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * author 边凌
  * date 2017/2/24 11:31
- * desc ${TODO}
+ * desc ${@link com.ins.feast.ui.activity.SearchLocationActivity}
  */
 
 public class SearchLocationAdapter extends RecyclerView.Adapter<SearchLocationAdapter.Holder> {

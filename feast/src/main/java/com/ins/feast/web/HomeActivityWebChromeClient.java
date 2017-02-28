@@ -13,23 +13,21 @@ import com.sobey.common.helper.WebPickerHelper;
 /**
  * author 边凌
  * date 2017/2/24 14:52
- * desc ${TODO}
+ * desc ${主页使用的{@link android.webkit.WebChromeClient}}
  */
 
 public class HomeActivityWebChromeClient extends BaseWebChromeClient {
-    //标题栏title
-    private TextView title_center;
     private ProgressBar bar;
+
     public HomeActivityWebChromeClient(HomeActivity homeActivity) {
         super(new WebPickerHelper(homeActivity));
-        title_center = (TextView) homeActivity.findViewById(R.id.text_toolbar_title);
-        bar= (ProgressBar) homeActivity.findViewById(R.id.progress);
-    }
-    @Override
-    public void onReceivedTitle(WebView view, String title) {
-        title_center.setText(title);
+        bar = (ProgressBar) homeActivity.findViewById(R.id.progress);
     }
 
+
+    /**
+     * 网页加载进度条设置
+     */
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         bar.setProgress(newProgress);
@@ -39,7 +37,7 @@ public class HomeActivityWebChromeClient extends BaseWebChromeClient {
                 public void run() {
                     bar.setVisibility(View.GONE);
                 }
-            },200);
+            }, 200);
         } else {
             bar.setVisibility(View.VISIBLE);
         }

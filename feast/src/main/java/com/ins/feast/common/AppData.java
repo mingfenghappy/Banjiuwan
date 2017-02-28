@@ -5,6 +5,8 @@ import com.ins.feast.entity.User;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.PreferenceUtil;
 
+import static com.baidu.location.b.g.S;
+
 /**
  * 该类封装了app中所有静态数据和持久化数据的读写操作
  * 所有持久化数据都保存在preferences文件中，包括简单数据类型，和复杂数据类型
@@ -120,6 +122,7 @@ public class AppData {
         public static boolean showVali = false;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
         public static String ERROR_PAGE_TITLE = "error.html";
+        public static String ERROR_PAGE_URL="file:///android_asset/error.html";
     }
 
     /**
