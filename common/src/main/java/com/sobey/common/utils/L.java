@@ -9,6 +9,10 @@ import java.io.PrintStream;
  */
 public class L {
 
+    public static void setTAG(String TAG) {
+        L.TAG = TAG;
+    }
+
     private static String TAG = "LOG";
 
     private volatile static boolean DEBUG = true;

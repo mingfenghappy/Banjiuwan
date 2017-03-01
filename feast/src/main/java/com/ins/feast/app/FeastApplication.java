@@ -24,6 +24,7 @@ import com.ins.feast.R;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.x;
 
 import cn.jpush.android.api.JPushInterface;
@@ -50,6 +51,9 @@ public class FeastApplication extends Application {
 
     private void initSetting() {
         L.setDEBUG(BuildConfig.DEBUG);
+        String logTag = getString(R.string.app_name);
+        L.setTAG(logTag);
+        EventBus.TAG = logTag;
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()

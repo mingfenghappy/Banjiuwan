@@ -1,6 +1,7 @@
 package com.ins.feast.web;
 
 import android.net.NetworkInfo;
+import android.os.SystemClock;
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
