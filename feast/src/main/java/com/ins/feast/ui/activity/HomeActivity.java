@@ -89,6 +89,10 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
         settings.setAllowFileAccess(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
         }

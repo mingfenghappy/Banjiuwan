@@ -14,7 +14,7 @@ public class BaseJSInterface {
     //返回设备id，0代表android
     @JavascriptInterface
     public int getDeviceType() {
-        return 0;
+        return AppData.Config.DEVICE_TYPE;
     }
 
     //返回token，值为JpushId

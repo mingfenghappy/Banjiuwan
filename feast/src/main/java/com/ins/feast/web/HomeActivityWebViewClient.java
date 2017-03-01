@@ -3,7 +3,6 @@ package com.ins.feast.web;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
-import com.ins.feast.ui.activity.DetailActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.TitleViewHelper;
 import com.sobey.common.utils.L;
@@ -44,7 +43,7 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         String title = view.getTitle();
-        titleViewHelper.processTitleWithUrl(url, title);
+        titleViewHelper.handleTitleWithUrl(url, title);
     }
 
 //    @Override

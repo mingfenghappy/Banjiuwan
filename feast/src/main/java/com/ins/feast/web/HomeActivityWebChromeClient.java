@@ -1,12 +1,7 @@
 package com.ins.feast.web;
 
-import android.os.Handler;
-import android.view.View;
 import android.webkit.WebView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.ins.feast.R;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.sobey.common.helper.WebPickerHelper;
 
@@ -17,11 +12,11 @@ import com.sobey.common.helper.WebPickerHelper;
  */
 
 public class HomeActivityWebChromeClient extends BaseWebChromeClient {
-    private ProgressBar bar;
+//    private ProgressBar bar;
 
     public HomeActivityWebChromeClient(HomeActivity homeActivity) {
         super(new WebPickerHelper(homeActivity));
-        bar = (ProgressBar) homeActivity.findViewById(R.id.progress);
+//        bar = (ProgressBar) homeActivity.findViewById(R.id.progress);
     }
 
 
@@ -30,17 +25,17 @@ public class HomeActivityWebChromeClient extends BaseWebChromeClient {
      */
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
-        bar.setProgress(newProgress);
-        if (newProgress == 100) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    bar.setVisibility(View.GONE);
-                }
-            }, 200);
-        } else {
-            bar.setVisibility(View.VISIBLE);
-        }
+//        bar.setProgress(newProgress);
+//        if (newProgress == 100) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    bar.setVisibility(View.GONE);
+//                }
+//            }, 200);
+//        } else {
+//            bar.setVisibility(View.VISIBLE);
+//        }
         super.onProgressChanged(view, newProgress);
     }
 }

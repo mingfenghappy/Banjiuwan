@@ -15,6 +15,7 @@ package com.ins.feast.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -28,7 +29,6 @@ import org.xutils.x;
 import cn.jpush.android.api.JPushInterface;
 import im.fir.sdk.FIR;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
 
 
 public class FeastApplication extends Application {
@@ -50,6 +50,14 @@ public class FeastApplication extends Application {
 
     private void initSetting() {
         L.setDEBUG(BuildConfig.DEBUG);
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyFlashScreen()
+                    .build()
+            );
+        }
     }
 
     @Override
@@ -77,11 +85,11 @@ public class FeastApplication extends Application {
     }
 
 
-    private void initBugHd(){
+    private void initBugHd() {
         FIR.init(this);
     }
 
-    private void initBaiduMap(){
+    private void initBaiduMap() {
         SDKInitializer.initialize(this);
     }
 

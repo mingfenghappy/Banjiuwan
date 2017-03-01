@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.utils.RxViewUtils;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.UrlUtil;
 
 /**
@@ -23,12 +24,13 @@ import com.sobey.common.utils.UrlUtil;
 public class TitleViewHelper implements View.OnClickListener {
     private final static String TAG_NAME = "isOpen";
     //仅有中间标题的标题栏布局
-    private final static String KEY_CENTER = "0";
+    private final static String TAG_CENTER = "0";
     //带返回键和中部title的标题栏布局
-    private final static String KEY_CENTER_LEFTICON = "1";
+    private final static String TAG_CENTER_LEFTICON = "1";
     //仅用于首页的标题栏布局
-    private final static String KEY_HOME = "2";
-    private final static String KEY_NO_TITLE = "app/page/customer";
+    private final static String TAG_HOME = "2";
+    //没有标题栏的布局
+    private final static String TAG_NO_TITLE = "app/page/customer";
 
     private TextView title_location;
     private TextView title_center;
@@ -38,13 +40,17 @@ public class TitleViewHelper implements View.OnClickListener {
     private View appBarLayout;
 
     public TitleViewHelper(HomeActivity homeActivity) {
+        this.homeActivity = homeActivity;
+        findView(homeActivity);
+        initListener();
+    }
+
+    private void findView(HomeActivity homeActivity) {
         title_center = (TextView) homeActivity.findViewById(R.id.text_toolbar_title);
         title_location = (TextView) homeActivity.findViewById(R.id.title_location);
         iconLeft = (ImageView) homeActivity.findViewById(R.id.icon_left);
         appBarLayout = homeActivity.findViewById(R.id.appBarLayout);
         iconRight = homeActivity.findViewById(R.id.icon_right);
-        this.homeActivity = homeActivity;
-        initListener();
     }
 
     /**
@@ -62,13 +68,13 @@ public class TitleViewHelper implements View.OnClickListener {
      * @param url   当前网页的url
      * @param title 标题栏标题
      */
-    public void processTitleWithUrl(String url, String title) {
+    public void handleTitleWithUrl(String url, String title) {
         if (!TextUtils.equals(title, AppData.Config.ERROR_PAGE_TITLE)) {
             title_center.setText(title);
         }
         try {
             String tag = generateTag(url);
-            switchTitleStyleByTag(tag);
+            handleTitleStyleByTag(tag);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,22 +97,22 @@ public class TitleViewHelper implements View.OnClickListener {
      *
      * @param tag {@link #generateTag(String)}根据Url获取tag
      */
-    private void switchTitleStyleByTag(String tag) {
+    private void handleTitleStyleByTag(String tag) {
         if (TextUtils.isEmpty(tag)) {
             return;
         }
         switch (tag) {
-            case KEY_HOME:
-                showTitleBarHome();
+            case TAG_HOME:
+                homeStyle();
                 break;
-            case KEY_CENTER:
-                showTitleBarOnlyCenter();
+            case TAG_CENTER:
+                onlyCenterStyle();
                 break;
-            case KEY_NO_TITLE:
-                showTitleBarNon();
+            case TAG_NO_TITLE:
+                noTitleStyle();
                 break;
-            case KEY_CENTER_LEFTICON:
-                showTitleBarOnlyCenterAndBackIcon();
+            case TAG_CENTER_LEFTICON:
+                centerAndBackIconStyle();
                 break;
         }
     }
@@ -123,24 +129,22 @@ public class TitleViewHelper implements View.OnClickListener {
     /**
      * 仅有中间标题的标题栏布局
      */
-    private void showTitleBarOnlyCenter() {
+    private void onlyCenterStyle() {
         appBarLayout.setVisibility(View.VISIBLE);
         setIconVisibility(View.GONE);
     }
 
-    private Window window;
-
     /**
      * 标题栏透明的布局
      */
-    private void showTitleBarNon() {
+    private void noTitleStyle() {
         appBarLayout.setVisibility(View.GONE);
     }
 
     /**
      * 带返回键和中部title的标题栏布局
      */
-    private void showTitleBarOnlyCenterAndBackIcon() {
+    private void centerAndBackIconStyle() {
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_leftarrow_white);
         iconLeft.setVisibility(View.VISIBLE);
@@ -151,7 +155,7 @@ public class TitleViewHelper implements View.OnClickListener {
     /**
      * 仅用于首页的标题栏布局
      */
-    private void showTitleBarHome() {
+    private void homeStyle() {
         if (title_location.getVisibility() == View.VISIBLE) {
             return;
         }
@@ -160,8 +164,16 @@ public class TitleViewHelper implements View.OnClickListener {
         setIconVisibility(View.VISIBLE);
     }
 
+    private Window window;
+
+    private boolean lastHasFlags = false;
+
     // FIXME: 2017/2/23
     private void setTranslucentFlags(boolean hasTranslucentFlags) {
+        L.d("setTranslucent:" + hasTranslucentFlags);
+        if (lastHasFlags == hasTranslucentFlags) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             if (window == null) {
@@ -173,6 +185,7 @@ public class TitleViewHelper implements View.OnClickListener {
                 window.clearFlags(flagTranslucentStatus);
             }
         }
+        lastHasFlags = hasTranslucentFlags;
     }
 
     @Override

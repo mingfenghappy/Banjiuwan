@@ -121,6 +121,8 @@ public class AppData {
     public static class Config {
         public static boolean showVali = false;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
+        //设备类型，供web获取
+        public static int DEVICE_TYPE=0;
         public static String ERROR_PAGE_TITLE = "error.html";
         public static String ERROR_PAGE_URL="file:///android_asset/error.html";
     }
