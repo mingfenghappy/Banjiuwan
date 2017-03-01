@@ -1,7 +1,7 @@
 package com.ins.feast.ui.activity;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.utils.RxViewUtils;
+import com.sobey.common.utils.UrlUtil;
 
 /**
  * author 边凌
@@ -20,10 +21,14 @@ import com.ins.feast.utils.RxViewUtils;
  */
 
 public class TitleViewHelper implements View.OnClickListener {
-    private final static String KEY_HOME = "app/page/index";
-    private final static String KEY_CENTER_LEFTICON = "app/page/car";
-    private final static String KEY_CENTER = "app/page/find";
-    private final static String KEY_TRANSLUCENT = "app/page/customer";
+    private final static String TAG_NAME = "isOpen";
+    //仅有中间标题的标题栏布局
+    private final static String KEY_CENTER = "0";
+    //带返回键和中部title的标题栏布局
+    private final static String KEY_CENTER_LEFTICON = "1";
+    //仅用于首页的标题栏布局
+    private final static String KEY_HOME = "2";
+    private final static String KEY_NO_TITLE = "app/page/customer";
 
     private TextView title_location;
     private TextView title_center;
@@ -75,9 +80,10 @@ public class TitleViewHelper implements View.OnClickListener {
      * @param url url
      * @return tag
      */
-    @NonNull
-    private String generateTag(String url) {
-        return url.substring(url.indexOf("Banjiuwan/") + "Banjiuwan/".length(), url.length());
+    private
+    @Nullable
+    String generateTag(String url) {
+        return UrlUtil.getQueryString(url, TAG_NAME);
     }
 
     /**
@@ -86,6 +92,9 @@ public class TitleViewHelper implements View.OnClickListener {
      * @param tag {@link #generateTag(String)}根据Url获取tag
      */
     private void switchTitleStyleByTag(String tag) {
+        if (TextUtils.isEmpty(tag)) {
+            return;
+        }
         switch (tag) {
             case KEY_HOME:
                 showTitleBarHome();
@@ -93,15 +102,13 @@ public class TitleViewHelper implements View.OnClickListener {
             case KEY_CENTER:
                 showTitleBarOnlyCenter();
                 break;
-            case KEY_TRANSLUCENT:
-                showTitleBarTranslucent();
+            case KEY_NO_TITLE:
+                showTitleBarNon();
                 break;
             case KEY_CENTER_LEFTICON:
                 showTitleBarOnlyCenterAndBackIcon();
                 break;
         }
-
-//        setTranslucentFlags(TextUtils.equals(tag, KEY_TRANSLUCENT));
     }
 
     /**
@@ -126,12 +133,12 @@ public class TitleViewHelper implements View.OnClickListener {
     /**
      * 标题栏透明的布局
      */
-    private void showTitleBarTranslucent() {
+    private void showTitleBarNon() {
         appBarLayout.setVisibility(View.GONE);
     }
 
     /**
-     * 待返回键和中部title的标题栏布局
+     * 带返回键和中部title的标题栏布局
      */
     private void showTitleBarOnlyCenterAndBackIcon() {
         appBarLayout.setVisibility(View.VISIBLE);

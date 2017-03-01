@@ -27,13 +27,13 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         L.d(url);
-        String lowerCaseUrl = url.toLowerCase();
-        if (lowerCaseUrl.contains("detail") && !lowerCaseUrl.contains("orderdetail")) {
-            //详情页面跳转处理
-            DetailActivity.start(homeActivity, url);
-        } else {
-            view.loadUrl(url);
-        }
+//        String lowerCaseUrl = url.toLowerCase();
+//        if (lowerCaseUrl.contains("detail") && !lowerCaseUrl.contains("orderdetail")) {
+//            //详情页面跳转处理
+//            DetailActivity.start(homeActivity, url);
+//        } else {
+        view.loadUrl(url);
+//        }
         return true;
     }
 

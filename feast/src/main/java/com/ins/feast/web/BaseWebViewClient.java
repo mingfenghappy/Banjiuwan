@@ -1,14 +1,10 @@
 package com.ins.feast.web;
 
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.support.annotation.CallSuper;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -54,30 +50,38 @@ public class BaseWebViewClient extends WebViewClient {
                 return false;
             }
         });
-        EventBus.getDefault().register(this);
+
+        try {
+            EventBus.getDefault().register(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
      * 反注册EventBus
      */
     public final void destroy() {
-        EventBus.getDefault().unregister(this);
+        try {
+            EventBus.getDefault().unregister(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
+//    /**
+//     * 加载URL错误时的回调
+//     */
+//    @CallSuper
+//    @Override
+//    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+//        super.onReceivedError(view, request, error);
+//        int errorCode = error.getErrorCode();
+//        netErrorProcess(errorCode, request.getUrl().toString());
+//    }
 
     /**
      * 加载URL错误时的回调
-     */
-    @CallSuper
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
-        int errorCode = error.getErrorCode();
-        netErrorProcess(errorCode, request.getUrl().toString());
-    }
-
-    /**
-     * 兼容API23以下
      */
     @CallSuper
     @Override
