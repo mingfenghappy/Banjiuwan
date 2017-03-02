@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
-import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.receiver.NetStateReceiver;
+import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
@@ -27,12 +29,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 
-public class HomeActivity extends BaseMapActivity implements Locationer.LocationCallback {
+public class HomeActivity extends BaseMapActivity implements
+        RadioGroup.OnCheckedChangeListener {
 
-    private final static String JS_BRIDGE_NAME = "JSBridge";
     private HomeWebView webView;
     //标题栏定位Tv
     private TextView title_location;
+
+    private RadioGroup tabRg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,12 +61,15 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         NetStateReceiver.registerAboveSDK21(this);
     }
 
+    private HomeTitleHelper homeTitleHelper;
+
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
         webView = (HomeWebView) findViewById(R.id.webView);
+        tabRg = (RadioGroup) findViewById(R.id.radioGroup);
+        tabRg.setOnCheckedChangeListener(this);
+        homeTitleHelper=new HomeTitleHelper(this);
     }
-
-
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
@@ -102,7 +109,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
 
-        webView.loadUrl(AppData.Url.app_homepage);
+        webView.loadUrl(AppData.Url.app_home);
 
     }
 
@@ -139,7 +146,7 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
 
     @Override
     protected void onDestroy() {
-        if (webView != null&&webViewClient!=null) {
+        if (webView != null && webViewClient != null) {
             webView.clearHistory();
             webView.removeAllViews();
             webView.destroy();
@@ -176,7 +183,37 @@ public class HomeActivity extends BaseMapActivity implements Locationer.Location
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 //        homeJsInterface.onActivityResult(requestCode, resultCode, data);
-        webChromeClient.onActivityResult(requestCode,resultCode,data);
+        webChromeClient.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        String url = null;
+        switch (checkedId) {
+            case R.id.rb_home:
+                url = AppData.Url.app_home;
+                homeTitleHelper.setTitleText("办酒碗");
+                break;
+            case R.id.rb_cart:
+                url = AppData.Url.app_cart;
+                homeTitleHelper.setTitleText("购物车");
+                break;
+            case R.id.rb_find:
+                url = AppData.Url.app_find;
+                homeTitleHelper.setTitleText("发现");
+                break;
+            case R.id.rb_customerService:
+                url = AppData.Url.app_customer_service;
+                homeTitleHelper.setTitleText("");
+                break;
+            case R.id.rb_mine:
+                url = AppData.Url.app_mine;
+                homeTitleHelper.setTitleText("我的");
+                break;
+        }
+        if (!TextUtils.isEmpty(url) && webView != null) {
+            homeTitleHelper.handleTitleWithUrl(url);
+            webView.loadUrl(url);
+        }
+    }
 }

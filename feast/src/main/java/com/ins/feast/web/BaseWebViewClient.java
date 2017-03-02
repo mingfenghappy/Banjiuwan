@@ -29,9 +29,6 @@ import static com.ins.feast.common.AppData.Config.ERROR_PAGE_URL;
 
 public class BaseWebViewClient extends WebViewClient {
     private WebView webView;
-    /**
-     * 无网络页html链接，存储在本地assets中
-     */
 
     public BaseWebViewClient(final WebView webView) {
         this.webView = webView;

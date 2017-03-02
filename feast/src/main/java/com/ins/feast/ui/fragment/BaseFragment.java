@@ -31,7 +31,7 @@ public class BaseFragment extends Fragment {
             toolbar.setTitleTextColor(ContextCompat.getColor(getActivity(),R.color.sb_text_blank));
             toolbar.setTitle("");
             //设置toobar居中文字
-            TextView text_title = (TextView) root.findViewById(R.id.text_toolbar_title);
+            TextView text_title = (TextView) root.findViewById(R.id.toolbar_title);
             if (text_title != null) {
                 if (!StrUtils.isEmpty(title)) {
                     text_title.setText(title);

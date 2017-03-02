@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.ins.feast.R;
 import com.sobey.common.common.MyActivityCollector;
-import com.sobey.common.utils.StatusBarTextUtil;
 import com.sobey.common.utils.StrUtils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -23,6 +22,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class BaseAppCompatActivity extends AppCompatActivity {
 
+    protected final static String JS_BRIDGE_NAME = "JSBridge";
     protected Toolbar toolbar;
 
     @Override
@@ -63,7 +63,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         setToolbar(null, true);
     }
 
-    public void setToolbar(String title){
+    public void setToolbar(String title) {
         setToolbar(title, true);
     }
 
@@ -81,7 +81,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(needback);
         }
         //设置toobar居中文字
-        TextView text_title = (TextView) findViewById(R.id.text_toolbar_title);
+        TextView text_title = (TextView) findViewById(R.id.toolbar_title);
         if (text_title != null) {
             if (!StrUtils.isEmpty(title)) {
                 text_title.setText(title);
@@ -93,6 +93,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     //双击退出
     private boolean needDoubleClickExit = false;
     private long exitTime;
+
     @Override
     public void onBackPressed() {
         //双击退出
@@ -103,10 +104,11 @@ public class BaseAppCompatActivity extends AppCompatActivity {
             } else {
                 super.finish();
             }
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
+
     public void setNeedDoubleClickExit(boolean needDoubleClickExit) {
         this.needDoubleClickExit = needDoubleClickExit;
     }

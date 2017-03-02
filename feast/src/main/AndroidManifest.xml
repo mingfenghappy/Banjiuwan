@@ -114,7 +114,13 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.activity.SearchDishesActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.SearchDishesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.CommonWebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back" />
     </application>
 
 </manifest>

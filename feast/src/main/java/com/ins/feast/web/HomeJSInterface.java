@@ -26,11 +26,6 @@ public class HomeJSInterface extends BaseJSInterface {
     }
 
     @JavascriptInterface
-    public void test() {
-
-    }
-
-    @JavascriptInterface
     public void call(String phoneNumber) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             PermissionsUtil.requestPermissions(context, new String[]{Manifest.permission.CALL_PHONE});

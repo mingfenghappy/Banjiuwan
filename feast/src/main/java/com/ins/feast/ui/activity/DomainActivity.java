@@ -113,7 +113,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             }
         } else if (i == R.id.btn_go_test) {
 //            Intent intent = new Intent(this, WebActivity.class);
-//            intent.putExtra("url",AppData.Url.app_homepage);
+//            intent.putExtra("url",AppData.Url.app_home);
 //            intent.putExtra("title","测试web");
 //            startActivity(intent);
 //            finish();

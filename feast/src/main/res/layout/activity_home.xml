@@ -5,6 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -25,10 +26,10 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <ImageView
-                android:id="@+id/icon_left"
-                android:paddingRight="5dp"
+                android:id="@+id/toolbar_leftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingRight="5dp"
                 android:src="@mipmap/ic_mark" />
 
             <com.sobey.common.view.GradientTextView
@@ -43,7 +44,7 @@
                 tools:text="中国四川省..." />
 
             <TextView
-                android:id="@+id/text_toolbar_title"
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -66,15 +67,90 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--<ProgressBar-->
-        <!--android:id="@+id/progress"-->
-        <!--style="@style/tallerBarStyle"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="3dp" />-->
+    <!--android:id="@+id/progress"-->
+    <!--style="@style/tallerBarStyle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="3dp" />-->
 
     <com.ins.feast.web.HomeWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_weight="1"
+        android:clipChildren="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clipChildren="false"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_tab_bg" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img"
+            android:background="@android:color/white"
+            android:clipChildren="false"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_home"
+                style="@style/HomeTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:drawableTop="@drawable/selector_home"
+                android:text="@string/tab_home" />
+
+            <RadioButton
+                android:id="@+id/rb_cart"
+                style="@style/HomeTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/selector_car"
+                android:text="@string/tab_cart" />
+
+            <RadioButton
+                android:id="@+id/rb_find"
+                style="@style/HomeTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="-14dp"
+                android:drawableTop="@mipmap/ic_tab_find" />
+
+            <RadioButton
+                android:id="@+id/rb_customerService"
+                style="@style/HomeTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/selector_custom"
+                android:text="@string/tab_custom_service" />
+
+            <RadioButton
+                android:id="@+id/rb_mine"
+                style="@style/HomeTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/selector_mine"
+                android:text="@string/tab_mine" />
+        </RadioGroup>
+    </RelativeLayout>
 </LinearLayout>

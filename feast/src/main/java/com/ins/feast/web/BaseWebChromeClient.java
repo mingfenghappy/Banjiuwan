@@ -18,8 +18,8 @@ import com.sobey.common.helper.WebPickerHelper;
  */
 
 public class BaseWebChromeClient extends WebPickerChromeClient {
-    public BaseWebChromeClient(WebPickerHelper webPickerHelper) {
-        super(webPickerHelper);
+    public BaseWebChromeClient(Activity activity) {
+        super(new WebPickerHelper(activity));
     }
 
     @Override

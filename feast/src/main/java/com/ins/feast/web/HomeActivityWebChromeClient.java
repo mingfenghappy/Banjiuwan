@@ -3,7 +3,6 @@ package com.ins.feast.web;
 import android.webkit.WebView;
 
 import com.ins.feast.ui.activity.HomeActivity;
-import com.sobey.common.helper.WebPickerHelper;
 
 /**
  * author 边凌
@@ -15,7 +14,7 @@ public class HomeActivityWebChromeClient extends BaseWebChromeClient {
 //    private ProgressBar bar;
 
     public HomeActivityWebChromeClient(HomeActivity homeActivity) {
-        super(new WebPickerHelper(homeActivity));
+        super(homeActivity);
 //        bar = (ProgressBar) homeActivity.findViewById(R.id.progress);
     }
 
