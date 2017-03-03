@@ -15,6 +15,8 @@ import com.ins.feast.ui.activity.CommonWebActivity;
 public class CommonWebTitleHelper extends TitleHelper implements View.OnClickListener {
     private CommonWebActivity commonWebActivity;
     private View leftIcon;
+    private View leftIcon_gray;
+    private View rootView;
     private TextView titleCenter;
 
     public CommonWebTitleHelper(CommonWebActivity commonWebActivity) {
@@ -25,10 +27,13 @@ public class CommonWebTitleHelper extends TitleHelper implements View.OnClickLis
 
     private void setListener() {
         leftIcon.setOnClickListener(this);
+        leftIcon_gray.setOnClickListener(this);
     }
 
     private void findView() {
         leftIcon = commonWebActivity.findViewById(R.id.toolbar_leftIcon);
+        leftIcon_gray = commonWebActivity.findViewById(R.id.toolbar_leftIcon_gray);
+        rootView = commonWebActivity.findViewById(R.id.appBarLayout);
         titleCenter = (TextView) commonWebActivity.findViewById(R.id.toolbar_title);
     }
 
@@ -36,10 +41,18 @@ public class CommonWebTitleHelper extends TitleHelper implements View.OnClickLis
     public void handleTitleStyleByTag(TitleType type) {
         switch (type) {
             case centerAndBackIcon:
+                rootView.setVisibility(View.VISIBLE);
                 leftIcon.setVisibility(View.VISIBLE);
+                leftIcon_gray.setVisibility(View.GONE);
                 break;
             case onlyCenter:
+                rootView.setVisibility(View.VISIBLE);
                 leftIcon.setVisibility(View.GONE);
+                leftIcon_gray.setVisibility(View.GONE);
+                break;
+            case noTitle:
+                rootView.setVisibility(View.GONE);
+                leftIcon_gray.setVisibility(View.VISIBLE);
                 break;
         }
     }
