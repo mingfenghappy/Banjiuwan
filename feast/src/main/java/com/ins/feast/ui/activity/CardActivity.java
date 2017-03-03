@@ -1,5 +1,7 @@
 package com.ins.feast.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -55,7 +57,10 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
         if (dialogLoading != null) dialogLoading.dismiss();
     }
 
+    private AppData.CardDetail cardDetail;
+
     private void initBase() {
+        cardDetail = (AppData.CardDetail) getIntent().getSerializableExtra(KEY_CARD_DETAIL);
         dialogLoading = new DialogLoading(this);
     }
 
@@ -156,6 +161,16 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Card card = adapter.getResults().get(viewHolder.getLayoutPosition());
-        Toast.makeText(this, "click:" + card.getName(), Toast.LENGTH_SHORT).show();
+        int id = card.getId();
+        CommonWebActivity.start(this, cardDetail.getBaseUrl() + "?id=" + id);
+    }
+
+
+    private final static String KEY_CARD_DETAIL = "cardDetail";
+
+    public static void start(Context context, AppData.CardDetail cardDetail) {
+        Intent starter = new Intent(context, CardActivity.class);
+        starter.putExtra(KEY_CARD_DETAIL, cardDetail);
+        context.startActivity(starter);
     }
 }

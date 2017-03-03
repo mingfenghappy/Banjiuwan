@@ -145,7 +145,39 @@ public class AppData {
         public static String app_find              = domain + "app/page/find";
         public static String app_customer_service  = domain + "app/page/customer";
         public static String app_mine              = domain + "app/page/my";
-
+        public static String app_setMeal           = domain + "app/page/setMealDetail";
+        public static String app_bamYan            = domain + "app/page/bamYanDetail";
         public static String queryByCategory       = domain + "app/food/queryByCategory";
+    }
+
+
+    /**
+     * 启动卡片式页面的辅助枚举，携带url拦截关键字以及用于拼装跳转URL的baseUrl
+     */
+    public enum CardDetail{
+        setMeal {
+            @Override
+            public String getTag() {
+                return "setMeal";
+            }
+
+            @Override
+            public String getBaseUrl() {
+                return Url.app_setMeal;
+            }
+        },
+        bamYan {
+            @Override
+            public String getTag() {
+                return "bamYan";
+            }
+
+            @Override
+            public String getBaseUrl() {
+                return Url.app_bamYan;
+            }
+        };
+        public abstract String getTag();
+        public abstract String getBaseUrl();
     }
 }

@@ -83,6 +83,7 @@ public class CommonWebActivity extends BaseBackActivity {
 
     private void initSetting() {
         urlOfThisPage = getIntent().getStringExtra(KEY_URL);
+        L.d(urlOfThisPage);
         titleHelper = new CommonWebTitleHelper(this);
         titleHelper.handleTitleWithUrl(urlOfThisPage);
     }
