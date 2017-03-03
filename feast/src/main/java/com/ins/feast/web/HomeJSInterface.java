@@ -16,7 +16,8 @@ import com.sobey.common.utils.PermissionsUtil;
  * desc ${与js交互的类}
  */
 
-public class HomeJSInterface extends BaseJSInterface {
+public class HomeJSInterface extends
+        BaseJSInterface {
     private HomeWebView homeWebView;
     private Activity context;
 

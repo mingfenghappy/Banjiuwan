@@ -59,6 +59,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void setToolbar(boolean needback) {
+        setToolbar(null, needback);
+    }
+
     public void setToolbar() {
         setToolbar(null, true);
     }

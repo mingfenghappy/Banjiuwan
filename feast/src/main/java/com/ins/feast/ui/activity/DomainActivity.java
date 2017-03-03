@@ -16,9 +16,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
 import com.ins.feast.common.AppData;
+import io.dcloud.H52EEACAF.wxapi.WXPayEntryActivity;
 import com.sobey.common.utils.StrUtils;
 
 import java.io.Serializable;
@@ -64,11 +64,13 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.btn_go).setOnClickListener(this);
         findViewById(R.id.btn_go_test).setOnClickListener(this);
+        findViewById(R.id.btn_go_pay).setOnClickListener(this);
     }
 
     private void initData() {
         results.clear();
         results.add(new Domain("192.168.118.206:8080", "(Web开发服务器)"));
+        results.add(new Domain("192.168.118.194:8080", "(开发服务器：谢启谋)"));
     }
 
     private void initCtrl() {
@@ -100,34 +102,32 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent();
         int i = v.getId();
-        if (i == R.id.btn_go) {
-            String domainIP = edit_domain.getText().toString();
-            if (!StrUtils.isEmpty(domainIP)) {
-                modify(domainIP);
-                AppData.App.saveDomain(domainIP);
 
-                Intent intent = new Intent(this, LoadUpActivity.class);
+        //检查输入，替换服务器域名
+        String domainIP = edit_domain.getText().toString();
+        if (!StrUtils.isEmpty(domainIP)) {
+            modify(domainIP);
+            AppData.App.saveDomain(domainIP);
+        } else {
+            return;
+        }
+
+        switch (i) {
+            case R.id.btn_go:
+                intent.setClass(this, LoadUpActivity.class);
                 startActivity(intent);
                 finish();
-            }
-        } else if (i == R.id.btn_go_test) {
-//            Intent intent = new Intent(this, WebActivity.class);
-//            intent.putExtra("url",AppData.Url.app_home);
-//            intent.putExtra("title","测试web");
-//            startActivity(intent);
-//            finish();
-
-//            Intent intent = new Intent(this, SearchAddressActivity.class);
-//            intent.putExtra("city", "成都市");
-//            intent.putExtra("latLng", new LatLng(30.560514, 104.075222));
-//            startActivity(intent);
-
-//            Intent intent = new Intent(this, TestActivity.class);
-//            startActivity(intent);
-
-            Intent intent = new Intent(this, CardActivity.class);
-            startActivity(intent);
+                break;
+            case R.id.btn_go_test:
+                intent.setClass(this, CardActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_go_pay:
+                intent.setClass(this, WXPayEntryActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
