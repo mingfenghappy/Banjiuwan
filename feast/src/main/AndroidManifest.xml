@@ -124,6 +124,10 @@
             android:name=".ui.activity.CommonWebActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back" />
+        <activity
+            android:name=".ui.activity.CardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -92,4 +92,13 @@ public class AppHelper {
 
         void callback();
     }
+
+    public static String getStarsStr(int count) {
+        if (count == 0) return "";
+        String ret = "";
+        for (int i = 0; i < count; i++) {
+            ret += "★";
+        }
+        return ret;
+    }
 }

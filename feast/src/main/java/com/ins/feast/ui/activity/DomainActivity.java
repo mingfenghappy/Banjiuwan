@@ -123,7 +123,10 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 //            intent.putExtra("latLng", new LatLng(30.560514, 104.075222));
 //            startActivity(intent);
 
-            Intent intent = new Intent(this, TestActivity.class);
+//            Intent intent = new Intent(this, TestActivity.class);
+//            startActivity(intent);
+
+            Intent intent = new Intent(this, CardActivity.class);
             startActivity(intent);
         }
     }

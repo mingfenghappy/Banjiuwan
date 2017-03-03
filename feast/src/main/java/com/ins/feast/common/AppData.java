@@ -138,12 +138,14 @@ public class AppData {
         /**
          * 接口请求地址
          */
-        public static String version_passenger = domain + "updateAPK/version_passenger.json";                                    //检查更新
-        public static String getInfo = domain + "mobile/user/getInfo";                                                //token登陆
-        public static String app_home = domain + "Banjiuwan/app/page/index";
-        public static String app_cart = domain + "Banjiuwan/app/page/car";
-        public static String app_find = domain + "Banjiuwan/app/page/find";
-        public static String app_customer_service = domain + "Banjiuwan/app/page/customer";
-        public static String app_mine = domain + "Banjiuwan/app/page/my";
+        public static String version_passenger     = domain + "updateAPK/version_passenger.json";                                    //检查更新
+        public static String getInfo               = domain + "mobile/user/getInfo";                                                //token登陆
+        public static String app_home              = domain + "Banjiuwan/app/page/index";
+        public static String app_cart              = domain + "Banjiuwan/app/page/car";
+        public static String app_find              = domain + "Banjiuwan/app/page/find";
+        public static String app_customer_service  = domain + "Banjiuwan/app/page/customer";
+        public static String app_mine              = domain + "Banjiuwan/app/page/my";
+
+        public static String queryByCategory       = domain + "Banjiuwan/app/food/queryByCategory";
     }
 }

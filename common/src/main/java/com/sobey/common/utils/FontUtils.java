@@ -35,4 +35,12 @@ public class FontUtils {
             textView.getPaint().setFakeBoldText(true);
         }
     }
+
+    public static void boldText(View view) {
+        if (view instanceof TextView) {
+            if (view != null) {
+                ((TextView) view).getPaint().setFakeBoldText(true);
+            }
+        }
+    }
 }
