@@ -15,6 +15,7 @@ import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
 import com.ins.feast.ui.dialog.DialogLoading;
+import com.ins.feast.utils.AppHelper;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
@@ -127,6 +128,8 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
                     if (!StrUtils.isEmpty(users)) {
                         results.clear();
                         results.addAll(users);
+                        //给数据设置Index标志，标示dotview的位置
+                        AppHelper.initIndex(results);
                         Collections.reverse(CardActivity.this.results);
                         freshCtrl();
                     }

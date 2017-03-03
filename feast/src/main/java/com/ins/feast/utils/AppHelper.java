@@ -4,9 +4,12 @@ import android.os.Handler;
 
 import com.dd.CircularProgressButton;
 import com.ins.feast.common.AppData;
+import com.ins.feast.entity.Card;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.StrUtils;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -100,5 +103,13 @@ public class AppHelper {
             ret += "★";
         }
         return ret;
+    }
+
+    public static void initIndex(List<Card> cards) {
+        if (StrUtils.isEmpty(cards)) return;
+        for (int i = 0; i < cards.size(); i++) {
+            Card card = cards.get(i);
+            card.setIndex(i);
+        }
     }
 }
