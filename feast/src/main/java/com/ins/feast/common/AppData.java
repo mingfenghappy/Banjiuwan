@@ -133,19 +133,19 @@ public class AppData {
         /**
          * 服务器域名
          */
-        public static String domain = "http://192.168.118.206:8080/";                                //外网测试服务器(二)
+        public static String domain = "http://192.168.118.206:8080/Banjiuwan/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
          */
         public static String version_passenger     = domain + "updateAPK/version_passenger.json";                                    //检查更新
         public static String getInfo               = domain + "mobile/user/getInfo";                                                //token登陆
-        public static String app_home              = domain + "Banjiuwan/app/page/index";
-        public static String app_cart              = domain + "Banjiuwan/app/page/car";
-        public static String app_find              = domain + "Banjiuwan/app/page/find";
-        public static String app_customer_service  = domain + "Banjiuwan/app/page/customer";
-        public static String app_mine              = domain + "Banjiuwan/app/page/my";
+        public static String app_home              = domain + "app/page/index";
+        public static String app_cart              = domain + "app/page/car";
+        public static String app_find              = domain + "app/page/find";
+        public static String app_customer_service  = domain + "app/page/customer";
+        public static String app_mine              = domain + "app/page/my";
 
-        public static String queryByCategory       = domain + "Banjiuwan/app/food/queryByCategory";
+        public static String queryByCategory       = domain + "app/food/queryByCategory";
     }
 }
