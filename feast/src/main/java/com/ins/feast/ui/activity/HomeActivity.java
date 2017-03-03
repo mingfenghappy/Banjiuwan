@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.webkit.WebSettings;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -17,6 +17,7 @@ import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
+import com.ins.feast.ui.helper.TitleHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
@@ -28,6 +29,9 @@ import com.sobey.common.utils.PermissionsUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 
 public class HomeActivity extends BaseMapActivity implements
@@ -108,13 +112,11 @@ public class HomeActivity extends BaseMapActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
         }
-
         settings.setJavaScriptEnabled(true);
         homeJsInterface = new HomeJSInterface(this, webView);
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.app_home);
-
     }
 
     @Override
@@ -127,8 +129,31 @@ public class HomeActivity extends BaseMapActivity implements
     public void onBackPressed() {
         if (webView != null && webView.canGoBack()) {
             webView.goBack();
+            String originalUrl = webView.getOriginalUrl();
+            checkTabByUrl(originalUrl);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void checkTabByUrl(String url) {
+        int buttonId = 0;
+        if (url.contains("index")) {
+            buttonId = R.id.rb_home;
+        } else if (url.contains("car")) {
+            buttonId = R.id.rb_cart;
+        } else if (url.contains("find")) {
+            buttonId = R.id.rb_find;
+        } else if (url.contains("customer")) {
+            buttonId = R.id.rb_customerService;
+        } else if (url.contains("my")) {
+            buttonId = R.id.rb_mine;
+        }
+
+        RadioButton radioButton = (RadioButton) findViewById(buttonId);
+        if (radioButton != null) {
+            radioButton.setChecked(true);
+            handleTitleByCheckedId(buttonId);
         }
     }
 
@@ -186,37 +211,44 @@ public class HomeActivity extends BaseMapActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        homeJsInterface.onActivityResult(requestCode, resultCode, data);
         webChromeClient.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        handleTitleByCheckedId(checkedId);
+    }
+
+    private void handleTitleByCheckedId(int checkedId) {
         String url = null;
         switch (checkedId) {
             case R.id.rb_home:
                 url = AppData.Url.app_home;
+                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.home);
                 homeTitleHelper.setTitleText("办酒碗");
                 break;
             case R.id.rb_cart:
                 url = AppData.Url.app_cart;
+                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
                 homeTitleHelper.setTitleText("购物车");
                 break;
             case R.id.rb_find:
                 url = AppData.Url.app_find;
+                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
                 homeTitleHelper.setTitleText("发现");
                 break;
             case R.id.rb_customerService:
                 url = AppData.Url.app_customer_service;
+                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.noTitle);
                 homeTitleHelper.setTitleText("");
                 break;
             case R.id.rb_mine:
                 url = AppData.Url.app_mine;
+                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
                 homeTitleHelper.setTitleText("我的");
                 break;
         }
-        if (!TextUtils.isEmpty(url) && webView != null) {
-            homeTitleHelper.handleTitleWithUrl(url);
+        if (webView != null) {
             webView.loadUrl(url);
         }
     }

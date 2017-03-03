@@ -16,8 +16,8 @@ import com.ins.feast.web.CommonWebJSInterface;
 import com.sobey.common.utils.L;
 
 public class CommonWebActivity extends BaseBackActivity {
-    private final static String KEY_URL = "url";
-    private String url;
+    private final static String KEY_URL = "urlOfThisPage";
+    private String urlOfThisPage;
     private WebView webView;
     private CommonWebTitleHelper titleHelper;
 
@@ -43,11 +43,12 @@ public class CommonWebActivity extends BaseBackActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 L.d(url);
-                if (CommonWebActivity.this.url.contains("login")) {
+                if (urlOfThisPage.contains("login")) {
                     finish();
                 } else {
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }
+
                 return true;
             }
         });
@@ -73,7 +74,7 @@ public class CommonWebActivity extends BaseBackActivity {
             settings.setAllowFileAccessFromFileURLs(true);
         }
         settings.setJavaScriptEnabled(true);
-        webView.loadUrl(url);
+        webView.loadUrl(urlOfThisPage);
     }
 
     private void findView() {
@@ -81,9 +82,9 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void initSetting() {
-        url = getIntent().getStringExtra(KEY_URL);
+        urlOfThisPage = getIntent().getStringExtra(KEY_URL);
         titleHelper = new CommonWebTitleHelper(this);
-        titleHelper.handleTitleWithUrl(url);
+        titleHelper.handleTitleWithUrl(urlOfThisPage);
     }
 
     public static void start(Context context, String url) {

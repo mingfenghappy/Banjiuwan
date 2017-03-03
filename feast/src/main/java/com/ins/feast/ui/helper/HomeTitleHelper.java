@@ -117,37 +117,10 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
      * 仅用于首页的标题栏布局
      */
     private void homeStyle() {
-        if (title_location.getVisibility() == View.VISIBLE) {
-            return;
-        }
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_mark);
         setIconVisibility(View.VISIBLE);
     }
-
-//    private Window window;
-//
-//    private boolean lastHasFlags = false;
-//
-//    // FIXME: 2017/2/23
-//    private void setTranslucentFlags(boolean hasTranslucentFlags) {
-//        L.d("setTranslucent:" + hasTranslucentFlags);
-//        if (lastHasFlags == hasTranslucentFlags) {
-//            return;
-//        }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-//            if (window == null) {
-//                window = homeActivity.getWindow();
-//            }
-//            if (hasTranslucentFlags) {
-//                window.addFlags(flagTranslucentStatus);
-//            } else {
-//                window.clearFlags(flagTranslucentStatus);
-//            }
-//        }
-//        lastHasFlags = hasTranslucentFlags;
-//    }
 
     @Override
     public void onClick(View v) {
