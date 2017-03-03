@@ -148,6 +148,9 @@ public class AppData {
         public static String app_setMeal           = domain + "app/page/setMealDetail";
         public static String app_bamYan            = domain + "app/page/bamYanDetail";
         public static String queryByCategory       = domain + "app/food/queryByCategory";
+
+        public static String sign                  = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
+        public static String signWeixin            = domain + "app/wxPay/sign";             							        //请求微信支付签名
     }
 
 

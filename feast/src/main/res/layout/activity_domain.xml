@@ -61,7 +61,14 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:text="测试 pick photo" />
+            android:text="测试 CardActivity" />
+
+        <Button
+            android:id="@+id/btn_go_pay"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:text="测试 支付" />
 
     </LinearLayout>
 </ScrollView>
