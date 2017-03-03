@@ -10,7 +10,7 @@ import com.ins.feast.common.AppData;
  * desc ${Js桥基类}
  */
 
-public class BaseJSInterface {
+class BaseJSInterface {
     //返回设备id，0代表android
     @JavascriptInterface
     public int getDeviceType() {

@@ -48,6 +48,7 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,//读写SD卡
             Manifest.permission.CAMERA, //摄像头
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,   //获取位置信息
+            Manifest.permission.CHANGE_NETWORK_STATE, Manifest.permission.WRITE_SETTINGS    //改变网络状态，修改系统设置
     };
 
     public static void checkAndRequestPermissions(final Activity activity) {
@@ -60,25 +61,29 @@ public class PermissionsUtil {
 
     public static boolean requsetVideo(final Activity activity, View showgroup) {
         String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-        return checkAndRequestLocalPermissions(activity, showgroup, permissions);
+        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【拍照和录像】【录音】权限");
     }
 
     public static boolean requsetVoice(final Activity activity, View showgroup) {
         String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
-        return checkAndRequestLocalPermissions(activity, showgroup, permissions);
+        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【录音】权限");
     }
 
     public static boolean requsetPhoto(final Activity activity, View showgroup) {
         String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        return checkAndRequestLocalPermissions(activity, showgroup, permissions);
+        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【拍照和录像】权限");
     }
 
-    public static boolean requsetScan(final Activity activity, View showgroup) {
-        String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        return checkAndRequestLocalPermissions(activity, showgroup, permissions);
+    public static boolean requsetSetting(final Activity activity, View showgroup) {
+        String[] permissions = new String[]{Manifest.permission.CHANGE_NETWORK_STATE, Manifest.permission.WRITE_SETTINGS};
+        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【修改系统设置】权限");
     }
 
     private static boolean checkAndRequestLocalPermissions(final Activity activity, View showgroup, String[] pemissions) {
+        return checkAndRequestLocalPermissions(activity, showgroup, pemissions, "使用这个功能需要您授予权限");
+    }
+
+    private static boolean checkAndRequestLocalPermissions(final Activity activity, View showgroup, String[] pemissions, String msg) {
 
         // 一个list，用来存放没有被授权的权限
         ArrayList<String> denidArray = new ArrayList<>();
@@ -102,7 +107,7 @@ public class PermissionsUtil {
                 if (!showRationaleUI(activity, permission)) {
                     // 判断App是否是首次启动
                     if (!isAppFirstRun(activity)) {
-                        showSnack(activity, showgroup, "使用这个功能需要您授予权限");
+                        showSnack(activity, showgroup, msg);
                     }
                 }
                 break;

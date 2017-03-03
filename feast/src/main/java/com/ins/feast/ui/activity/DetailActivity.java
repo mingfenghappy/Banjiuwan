@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.ins.feast.R;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.web.BaseWebViewClient;
+import com.sobey.common.utils.PermissionsUtil;
 
 public class DetailActivity extends BaseAppCompatActivity {
 
@@ -28,7 +29,9 @@ public class DetailActivity extends BaseAppCompatActivity {
 
     private void initBase() {
         url = getIntent().getStringExtra(KEY_URL);
-        NetStateReceiver.registerAboveSDK21(this);
+        if (PermissionsUtil.requsetSetting(this, findViewById(R.id.showingroup))) {
+            NetStateReceiver.registerAboveSDK21(this);
+        }
     }
 
     private void initView() {

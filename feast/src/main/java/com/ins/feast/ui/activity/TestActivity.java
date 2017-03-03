@@ -10,7 +10,7 @@ import com.sobey.common.helper.CropHelperSys;
 import com.sobey.common.helper.WebPickerChromeClient;
 import com.sobey.common.helper.WebPickerHelper;
 
-public class TestActivity extends AppCompatActivity implements CropHelperSys.CropInterface{
+public class TestActivity extends AppCompatActivity{
 
     private WebPickerHelper webPickerHelper;// = new WebPickerHelper(this);
 
@@ -36,10 +36,5 @@ public class TestActivity extends AppCompatActivity implements CropHelperSys.Cro
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         webPickerHelper.onActivityResult(requestCode, resultCode, intent);
-    }
-
-    @Override
-    public void cropResult(String path) {
-
     }
 }
