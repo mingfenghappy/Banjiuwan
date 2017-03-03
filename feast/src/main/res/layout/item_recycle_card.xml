@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_rect_corner_white"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.sobey.common.view.SquareHeightImagView
+            android:id="@+id/img_card_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="宴席前便餐260"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#333333"
+                android:textSize="24sp" />
+
+
+            <TextView
+                android:id="@+id/text_card_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="5dp"
+                android:maxLines="3"
+                android:text="办酒碗最具性价比的坝坝宴套餐，最合理的价格享受最优质的菜品。"
+                android:textColor="#999999"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总销量" />
+
+                <TextView
+                    android:id="@+id/text_card_salecount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="79"
+                    android:textColor="@color/jw_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="份" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_card_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥260.00"
+                    android:textColor="@color/jw_red_deep"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/text_card_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="/桌"
+                    android:textColor="#555555"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="推荐指数:" />
+
+                <TextView
+                    android:id="@+id/text_card_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="★★★★★"
+                    android:textColor="@color/jw_red_deep"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</FrameLayout>

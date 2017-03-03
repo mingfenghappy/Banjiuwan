@@ -1,5 +1,6 @@
 package com.ins.feast.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -62,7 +63,10 @@ public class HomeActivity extends BaseMapActivity implements
         //检查更新
         new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
         startLocation();
-        NetStateReceiver.registerAboveSDK21(this);
+
+        if (PermissionsUtil.requsetSetting(this, findViewById(R.id.showingroup))) {
+            NetStateReceiver.registerAboveSDK21(this);
+        }
     }
 
     private HomeTitleHelper homeTitleHelper;

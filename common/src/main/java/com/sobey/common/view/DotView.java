@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,7 +16,7 @@ import com.sobey.common.R;
 /**
  * Created by Administrator on 2016/6/6 0006.
  */
-public class DotView extends LinearLayout{
+public class DotView extends LinearLayout {
 
     private Context context;
     private ViewPager pager;
@@ -53,14 +54,14 @@ public class DotView extends LinearLayout{
         mUnSelectedGradientDrawable.setShape(GradientDrawable.OVAL);
         mSelectedGradientDrawable.setSize(dot_size, dot_size);
         mUnSelectedGradientDrawable.setSize(dot_size, dot_size);
-        if (selectedColor!=0){
+        if (selectedColor != 0) {
             mSelectedGradientDrawable.setColor(selectedColor);
-        }else {
+        } else {
             mSelectedGradientDrawable.setColor(Color.rgb(255, 255, 255));
         }
-        if (unSelectedColor!=0){
+        if (unSelectedColor != 0) {
             mUnSelectedGradientDrawable.setColor(unSelectedColor);
-        }else {
+        } else {
             mUnSelectedGradientDrawable.setColor(Color.argb(33, 255, 255, 255));
         }
 
@@ -83,16 +84,16 @@ public class DotView extends LinearLayout{
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.rightMargin = 10;
             imageView.setLayoutParams(lp);
-            if (i==0){
-                if (mSelectedSrc!=0){
+            if (i == 0) {
+                if (mSelectedSrc != 0) {
                     imageView.setImageResource(mSelectedSrc);
-                }else{
+                } else {
                     imageView.setImageDrawable(mSelectedGradientDrawable);
                 }
-            }else {
-                if (mUnSelectedSrc!=0){
+            } else {
+                if (mUnSelectedSrc != 0) {
                     imageView.setImageResource(mUnSelectedSrc);
-                }else {
+                } else {
                     imageView.setImageDrawable(mUnSelectedGradientDrawable);
                 }
             }
@@ -101,30 +102,31 @@ public class DotView extends LinearLayout{
         }
     }
 
-    private void setIndicator(int position) {
-        for (int i=0;i<getChildCount();i++){
-            ImageView child = (ImageView)getChildAt(i);
-            if (position == i){
-                if (mSelectedSrc!=0){
+    public void setIndicator(int position) {
+        for (int i = 0; i < getChildCount(); i++) {
+            ImageView child = (ImageView) getChildAt(i);
+            if (position == i) {
+                if (mSelectedSrc != 0) {
                     child.setImageResource(mSelectedSrc);
-                }else {
+                } else {
                     child.setImageDrawable(mSelectedGradientDrawable);
                 }
-            }else {
-                if (mUnSelectedSrc!=0){
+            } else {
+                if (mUnSelectedSrc != 0) {
                     child.setImageResource(mUnSelectedSrc);
-                }else {
+                } else {
                     child.setImageDrawable(mUnSelectedGradientDrawable);
                 }
             }
         }
     }
 
-    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
         }
+
         @Override
         public void onPageSelected(int position) {
             if (DEFAULT_BANNER_SIZE != -1) {
@@ -132,6 +134,7 @@ public class DotView extends LinearLayout{
             }
             setIndicator(position);
         }
+
         @Override
         public void onPageScrollStateChanged(int state) {
 
@@ -142,6 +145,7 @@ public class DotView extends LinearLayout{
     //###对外暴露方法
     //###########################################
     public void setViewPager(ViewPager pager) {
+        this.recyclerView = null;
         this.pager = pager;
         if (pager.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
@@ -152,29 +156,38 @@ public class DotView extends LinearLayout{
 
     public void setViewPager(ViewPager pager, int DEFAULT_BANNER_SIZE) {
         this.DEFAULT_BANNER_SIZE = DEFAULT_BANNER_SIZE;
-        this.pager = pager;
-        if (pager.getAdapter() == null) {
-            throw new IllegalStateException("ViewPager does not have adapter instance.");
-        }
-        pager.addOnPageChangeListener(new MyOnPageChangeListener());
-        notifyDataSetChanged();
+        setViewPager(pager);
     }
 
     public void notifyDataSetChanged() {
         removeAllViews();
         if (DEFAULT_BANNER_SIZE != -1) {
-            tabCount =  DEFAULT_BANNER_SIZE;
-        }else {
-            tabCount = pager.getAdapter().getCount();
+            tabCount = DEFAULT_BANNER_SIZE;
+        } else {
+            if (pager != null) tabCount = pager.getAdapter().getCount();
+            if (recyclerView != null) tabCount = recyclerView.getChildCount();
         }
         addDots(tabCount);
     }
 
-    public void setSelectedDotResource(int mSelectedSrc){
+    public void setSelectedDotResource(int mSelectedSrc) {
         this.mSelectedSrc = mSelectedSrc;
     }
 
-    public void setUnSelectedDotResource(int mUnSelectedSrc){
+    public void setUnSelectedDotResource(int mUnSelectedSrc) {
         this.mUnSelectedSrc = mUnSelectedSrc;
+    }
+
+    private RecyclerView recyclerView;
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.pager = null;
+        this.recyclerView = recyclerView;
+        notifyDataSetChanged();
+    }
+
+    public void setDots(int count){
+        removeAllViews();
+        addDots(count);
     }
 }

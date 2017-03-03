@@ -1,5 +1,6 @@
 package com.ins.feast.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -90,5 +91,14 @@ public class CommonWebActivity extends BaseBackActivity {
         Intent starter = new Intent(context, CommonWebActivity.class);
         starter.putExtra(KEY_URL, url);
         context.startActivity(starter);
+        //手动设置进场动画
+        ((Activity)context).overridePendingTransition(R.anim.translate_enter, 0);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        //手动设置出场动画
+        overridePendingTransition(0, R.anim.translate_exit);
     }
 }

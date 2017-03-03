@@ -12,6 +12,7 @@ import com.ins.feast.common.CommonNet;
 import com.ins.feast.entity.User;
 import com.ins.feast.utils.AppHelper;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
@@ -64,6 +65,8 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     }
 
     private void initBase() {
+        //检查并申请权限
+        PermissionsUtil.checkAndRequestPermissions(this);
         String registrationID = JPushInterface.getRegistrationID(ApplicationHelp.getApplicationContext());
         if (!StrUtils.isEmpty(registrationID)) {
             AppData.App.saveJpushId(registrationID);

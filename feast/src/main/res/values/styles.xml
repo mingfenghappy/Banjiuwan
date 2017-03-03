@@ -15,6 +15,7 @@
 
     <style name="ActivityJumpAnim">
         <item name="android:windowEnterAnimation">@anim/translate_enter</item>
+        <item name="android:windowExitAnimation">@anim/translate_exit</item>
     </style>
 
     <style name="AppTheme.Back">

@@ -1,155 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/showingroup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.ins.feast.ui.activity.HomeActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clipChildren="false"
+        android:clipToPadding="true"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:gravity="center_vertical"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:gravity="center_vertical"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <ImageView
+                    android:id="@+id/toolbar_leftIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="5dp"
+                    android:src="@mipmap/ic_mark" />
+
+                <com.sobey.common.view.GradientTextView
+                    android:id="@+id/title_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableRight="@mipmap/ic_rightarrow_white"
+                    android:maxLength="6"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    tools:text="中国四川省..." />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="办酒碗"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big" />
+
+                <ImageButton
+                    android:id="@+id/icon_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@android:color/transparent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:src="@mipmap/ic_search_white"
+                    android:transitionName="transitionSearch" />
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <!--<ProgressBar-->
+        <!--android:id="@+id/progress"-->
+        <!--style="@style/tallerBarStyle"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp" />-->
+
+        <com.ins.feast.web.HomeWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
 
             <ImageView
-                android:id="@+id/toolbar_leftIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingRight="5dp"
-                android:src="@mipmap/ic_mark" />
-
-            <com.sobey.common.view.GradientTextView
-                android:id="@+id/title_location"
-                android:layout_width="wrap_content"
+                android:id="@+id/img"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:drawableRight="@mipmap/ic_rightarrow_white"
-                android:maxLength="6"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                tools:text="中国四川省..." />
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="办酒碗"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_big" />
-
-            <ImageButton
-                android:id="@+id/icon_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:background="@android:color/transparent"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:src="@mipmap/ic_search_white"
-                android:transitionName="transitionSearch" />
-        </android.support.v7.widget.Toolbar>
+                android:clipChildren="false"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_tab_bg" />
 
-    </android.support.design.widget.AppBarLayout>
-
-    <!--<ProgressBar-->
-    <!--android:id="@+id/progress"-->
-    <!--style="@style/tallerBarStyle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="3dp" />-->
-
-    <com.ins.feast.web.HomeWebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="-10dp"
-        android:layout_weight="1"
-        android:clipChildren="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
-
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:clipChildren="false"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_tab_bg" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/img"
-            android:background="@android:color/white"
-            android:clipChildren="false"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_home"
-                style="@style/HomeTab"
-                android:layout_width="0dp"
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:drawableTop="@drawable/selector_home"
-                android:text="@string/tab_home" />
+                android:layout_alignBottom="@id/img"
+                android:background="@android:color/white"
+                android:clipChildren="false"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_cart"
-                style="@style/HomeTab"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/selector_car"
-                android:text="@string/tab_cart" />
+                <RadioButton
+                    android:id="@+id/rb_home"
+                    style="@style/HomeTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:drawableTop="@drawable/selector_home"
+                    android:text="@string/tab_home" />
 
-            <RadioButton
-                android:id="@+id/rb_find"
-                style="@style/HomeTab"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawablePadding="-14dp"
-                android:drawableTop="@mipmap/ic_tab_find" />
+                <RadioButton
+                    android:id="@+id/rb_cart"
+                    style="@style/HomeTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/selector_car"
+                    android:text="@string/tab_cart" />
 
-            <RadioButton
-                android:id="@+id/rb_customerService"
-                style="@style/HomeTab"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/selector_custom"
-                android:text="@string/tab_custom_service" />
+                <RadioButton
+                    android:id="@+id/rb_find"
+                    style="@style/HomeTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="-14dp"
+                    android:drawableTop="@mipmap/ic_tab_find" />
 
-            <RadioButton
-                android:id="@+id/rb_mine"
-                style="@style/HomeTab"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/selector_mine"
-                android:text="@string/tab_mine" />
-        </RadioGroup>
-    </RelativeLayout>
-</LinearLayout>
+                <RadioButton
+                    android:id="@+id/rb_customerService"
+                    style="@style/HomeTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/selector_custom"
+                    android:text="@string/tab_custom_service" />
+
+                <RadioButton
+                    android:id="@+id/rb_mine"
+                    style="@style/HomeTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/selector_mine"
+                    android:text="@string/tab_mine" />
+            </RadioGroup>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
