@@ -15,6 +15,7 @@ import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
 import com.ins.feast.ui.dialog.DialogLoading;
+import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.DotView;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardActivity extends BaseAppCompatActivity {
+public class CardActivity extends BaseAppCompatActivity implements OnRecycleItemClickListener {
 
     private RecyclerView recyclerView;
     private List<Card> results = new ArrayList<>();
@@ -92,6 +93,7 @@ public class CardActivity extends BaseAppCompatActivity {
 
     private void initCtrl() {
         adapter = new RecycleAdapterCard(this, results);
+        adapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new CardLayoutManager());
         recyclerView.setAdapter(adapter);
 
@@ -146,5 +148,11 @@ public class CardActivity extends BaseAppCompatActivity {
                 dialogLoading.hide();
             }
         });
+    }
+
+    @Override
+    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+        Card card = adapter.getResults().get(viewHolder.getLayoutPosition());
+        Toast.makeText(this, "click:" + card.getName(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,6 +12,7 @@ import com.ins.feast.R;
 import com.ins.feast.entity.Card;
 import com.ins.feast.utils.AppHelper;
 import com.ins.feast.utils.GlideUtil;
+import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.SpannableStringUtils;
 import com.sobey.common.utils.StrUtils;
 
@@ -39,6 +40,12 @@ public class RecycleAdapterCard extends RecyclerView.Adapter<RecycleAdapterCard.
 
     @Override
     public void onBindViewHolder(final RecycleAdapterCard.Holder holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) listener.onItemClick(holder);
+            }
+        });
         Card card = results.get(position);
 
         holder.text_title.setText(card.getName());
@@ -77,5 +84,11 @@ public class RecycleAdapterCard extends RecyclerView.Adapter<RecycleAdapterCard.
             text_card_unit = (TextView) itemView.findViewById(R.id.text_card_unit);
             text_card_star = (TextView) itemView.findViewById(R.id.text_card_star);
         }
+    }
+
+    private OnRecycleItemClickListener listener;
+
+    public void setOnItemClickListener(OnRecycleItemClickListener listener) {
+        this.listener = listener;
     }
 }
