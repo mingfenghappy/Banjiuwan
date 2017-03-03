@@ -11,13 +11,13 @@ import com.sobey.common.utils.UrlUtil;
 /**
  * author 边凌
  * date 2017/3/2 11:24
- * desc ${TODO}
+ * desc ${标题栏辅助类}
  */
 
 public abstract class TitleHelper {
     private final static String TAG_NAME = "isOpen";
 
-    enum TitleType {home, onlyCenter, centerAndBackIcon, noTitle, error}
+    public enum TitleType {home, onlyCenter, centerAndBackIcon, noTitle, error}
 
     private TextView titleView;
 
