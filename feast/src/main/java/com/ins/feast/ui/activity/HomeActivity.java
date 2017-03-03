@@ -108,7 +108,6 @@ public class HomeActivity extends BaseMapActivity implements
         homeJsInterface = new HomeJSInterface(this, webView);
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
-
         webView.loadUrl(AppData.Url.app_home);
 
     }

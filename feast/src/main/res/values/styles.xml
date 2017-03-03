@@ -13,11 +13,19 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ActivityJumpAnim">
+        <item name="android:windowEnterAnimation">@anim/translate_enter</item>
+    </style>
+
     <style name="AppTheme.Back">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Back.AnimJump" parent="AppTheme.Back">
+        <item name="android:windowAnimationStyle">@style/ActivityJumpAnim</item>
     </style>
 
     <style name="AppTheme.Back.Transition" parent="AppTheme.Back" />

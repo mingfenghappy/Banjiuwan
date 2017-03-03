@@ -9,9 +9,9 @@ import android.webkit.WebView;
 
 import com.ins.feast.R;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
-import com.ins.feast.web.CommonWebJSInterface;
 import com.ins.feast.web.BaseWebChromeClient;
 import com.ins.feast.web.BaseWebViewClient;
+import com.ins.feast.web.CommonWebJSInterface;
 import com.sobey.common.utils.L;
 
 public class CommonWebActivity extends BaseBackActivity {
@@ -42,7 +42,11 @@ public class CommonWebActivity extends BaseBackActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 L.d(url);
-                CommonWebActivity.start(CommonWebActivity.this, url);
+                if (CommonWebActivity.this.url.contains("login")) {
+                    finish();
+                } else {
+                    CommonWebActivity.start(CommonWebActivity.this, url);
+                }
                 return true;
             }
         });
