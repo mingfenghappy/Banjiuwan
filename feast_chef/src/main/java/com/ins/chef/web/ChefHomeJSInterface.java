@@ -6,5 +6,5 @@ package com.ins.chef.web;
  * desc ${TODO}
  */
 
-public class ChefHomeJSInterface {
+public class ChefHomeJSInterface extends BaseJSInterface{
 }

@@ -35,14 +35,18 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         View.OnClickListener,
         OnGetGeoCoderResultListener, OnRecycleItemClickListener {
 
+    private TextView nowLocation;
+    private RecyclerView nearbyLocations;
+    private ChooseLocationAdapter adapter;
+    private String city = "成都市";
+    private LatLng latLng = new LatLng(30.560514, 104.075222);
+    private String district = "";
+    private GeoCoder gC;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, ChooseLocationActivity.class);
         context.startActivity(starter);
     }
-
-    private TextView nowLocation;
-    private RecyclerView nearbyLocations;
-    private ChooseLocationAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,11 +90,6 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         startActivity(intent);
     }
 
-    private String city = "成都市";
-
-    private LatLng latLng = new LatLng(30.560514, 104.075222);
-    private String district = "";
-
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         stopLocation();
@@ -104,8 +103,6 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         this.district = district;
         nowLocation.setText(getAddStr());
     }
-
-    private GeoCoder gC;
 
     private void searchNearbyLocation(LatLng latLng) {
         if (gC == null) {

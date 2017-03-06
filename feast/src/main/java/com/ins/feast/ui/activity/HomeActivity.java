@@ -39,6 +39,10 @@ public class HomeActivity extends BaseMapActivity implements
     private TextView title_location;
 
     private RadioGroup tabRg;
+    private HomeTitleHelper homeTitleHelper;
+    private HomeActivityWebChromeClient webChromeClient;
+    private HomeActivityWebViewClient webViewClient;
+    private HomeJSInterface homeJsInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,8 +70,6 @@ public class HomeActivity extends BaseMapActivity implements
         }
     }
 
-    private HomeTitleHelper homeTitleHelper;
-
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
         webView = (HomeWebView) findViewById(R.id.webView);
@@ -75,10 +77,6 @@ public class HomeActivity extends BaseMapActivity implements
         tabRg.setOnCheckedChangeListener(this);
         homeTitleHelper = new HomeTitleHelper(this);
     }
-
-    private HomeActivityWebChromeClient webChromeClient;
-    private HomeActivityWebViewClient webViewClient;
-    private HomeJSInterface homeJsInterface;
 
     /**
      * WebView配置
@@ -109,6 +107,7 @@ public class HomeActivity extends BaseMapActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
         }
+
         settings.setJavaScriptEnabled(true);
         homeJsInterface = new HomeJSInterface(this, webView);
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);

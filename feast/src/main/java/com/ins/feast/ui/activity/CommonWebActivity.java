@@ -26,6 +26,14 @@ public class CommonWebActivity extends BaseBackActivity {
     private WebView webView;
     private CommonWebTitleHelper titleHelper;
 
+    public static void start(Context context, String url) {
+        Intent starter = new Intent(context, CommonWebActivity.class);
+        starter.putExtra(KEY_URL, url);
+        context.startActivity(starter);
+        //手动设置进场动画
+        ((Activity) context).overridePendingTransition(R.anim.translate_enter, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +45,12 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void initWebViewSetting() {
+        webClient();
+        webSetting();
+        webView.loadUrl(urlOfThisPage);
+    }
+
+    private void webClient() {
         webView.setWebChromeClient(new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -58,6 +72,9 @@ public class CommonWebActivity extends BaseBackActivity {
                 return true;
             }
         });
+    }
+
+    private void webSetting() {
         webView.addJavascriptInterface(new CommonWebJSInterface(), JS_BRIDGE_NAME);
 
         WebSettings settings = webView.getSettings();
@@ -80,7 +97,6 @@ public class CommonWebActivity extends BaseBackActivity {
             settings.setAllowFileAccessFromFileURLs(true);
         }
         settings.setJavaScriptEnabled(true);
-        webView.loadUrl(urlOfThisPage);
     }
 
     private void findView() {
@@ -93,14 +109,6 @@ public class CommonWebActivity extends BaseBackActivity {
         L.d(urlOfThisPage);
         titleHelper = new CommonWebTitleHelper(this);
         titleHelper.handleTitleWithUrl(urlOfThisPage);
-    }
-
-    public static void start(Context context, String url) {
-        Intent starter = new Intent(context, CommonWebActivity.class);
-        starter.putExtra(KEY_URL, url);
-        context.startActivity(starter);
-        //手动设置进场动画
-        ((Activity) context).overridePendingTransition(R.anim.translate_enter, 0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
