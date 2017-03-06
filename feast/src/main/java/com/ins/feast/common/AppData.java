@@ -1,6 +1,9 @@
 package com.ins.feast.common;
 
 
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+
 import com.ins.feast.entity.User;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.PreferenceUtil;
@@ -168,6 +171,16 @@ public class AppData {
             public String getBaseUrl() {
                 return Url.app_setMeal;
             }
+
+            @Override
+            public String getTitle() {
+                return "套餐";
+            }
+
+            @Override
+            public int getBgColor() {
+                return Color.parseColor("#9B1D15");
+            }
         },
         bamYan {
             @Override
@@ -179,8 +192,20 @@ public class AppData {
             public String getBaseUrl() {
                 return Url.app_bamYan;
             }
+
+            @Override
+            public String getTitle() {
+                return "坝坝宴";
+            }
+
+            @Override
+            public int getBgColor() {
+                return Color.parseColor("#FF5B3D");
+            }
         };
         public abstract String getTag();
         public abstract String getBaseUrl();
+        public abstract String getTitle();
+        public abstract @ColorInt int getBgColor();
     }
 }

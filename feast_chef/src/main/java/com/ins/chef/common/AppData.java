@@ -16,6 +16,12 @@ public class AppData {
          * 厨师端入口页
          */
         public final static String FEAST_CHEF_HOMEPAGE = DOMAIN + "/Banjiuwan/app/page/cookLogin";
+        /**
+         * 厨师端"我的"
+         */
+        public final static String FEAST_CHEF_MINE=DOMAIN+"/Banjiuwan/app/page/cookMy";
+        public final static String FEAST_CHEF_MINE_ORDERFORM=DOMAIN+"/Banjiuwan/app/page/cookMyOrder";
+
     }
     public static class App {
         private static final String KEY_JPUSHID = "jpushid";

@@ -51,12 +51,4 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         return false;
     }
 
-    /**
-     * 在网页加载结束时处理标题栏样式
-     */
-    @Override
-    public void onPageFinished(WebView view, String url) {
-        super.onPageFinished(view, url);
-        String title = view.getTitle();
-    }
 }

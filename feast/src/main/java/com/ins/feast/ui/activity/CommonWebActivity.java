@@ -9,11 +9,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
+import com.ins.feast.entity.RefreshEvent;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.BaseWebChromeClient;
 import com.ins.feast.web.BaseWebViewClient;
 import com.ins.feast.web.CommonWebJSInterface;
 import com.sobey.common.utils.L;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class CommonWebActivity extends BaseBackActivity {
     private final static String KEY_URL = "urlOfThisPage";
@@ -45,6 +50,7 @@ public class CommonWebActivity extends BaseBackActivity {
                 L.d(url);
                 if (urlOfThisPage.contains("login")) {
                     finish();
+                    EventBus.getDefault().post(new RefreshEvent(true));
                 } else {
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }
@@ -82,6 +88,7 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void initSetting() {
+        EventBus.getDefault().register(this);
         urlOfThisPage = getIntent().getStringExtra(KEY_URL);
         L.d(urlOfThisPage);
         titleHelper = new CommonWebTitleHelper(this);
@@ -93,7 +100,20 @@ public class CommonWebActivity extends BaseBackActivity {
         starter.putExtra(KEY_URL, url);
         context.startActivity(starter);
         //手动设置进场动画
-        ((Activity)context).overridePendingTransition(R.anim.translate_enter, 0);
+        ((Activity) context).overridePendingTransition(R.anim.translate_enter, 0);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(RefreshEvent event) {
+        if (event.isShouldRefresh()) {
+            webView.reload();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

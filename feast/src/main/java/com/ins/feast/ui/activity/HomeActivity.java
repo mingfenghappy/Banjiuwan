@@ -1,6 +1,5 @@
 package com.ins.feast.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -15,6 +14,7 @@ import com.ins.feast.R;
 import com.ins.feast.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
+import com.ins.feast.entity.RefreshEvent;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.ui.helper.TitleHelper;
@@ -29,9 +29,6 @@ import com.sobey.common.utils.PermissionsUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 
 public class HomeActivity extends BaseMapActivity implements
@@ -195,6 +192,11 @@ public class HomeActivity extends BaseMapActivity implements
         title_location.setText(key);
     }
 
+    /**
+     * 接受网络状态改变事件
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveNetStateChanged(NetStateChangedEvent event) {
         NetworkInfo activeInfo = event.getActiveInfo();
@@ -205,6 +207,13 @@ public class HomeActivity extends BaseMapActivity implements
             } else {
                 L.d("NetChanged:not available");
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(RefreshEvent event) {
+        if (event.isShouldRefresh()) {
+            webView.reload();
         }
     }
 

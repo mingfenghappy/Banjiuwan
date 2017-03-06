@@ -13,5 +13,11 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="HomeTab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/text_home_tab</item>
+        <item name="android:gravity">center</item>
+        <item name="android:drawablePadding">0dp</item>
+    </style>
 </resources>

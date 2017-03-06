@@ -49,6 +49,7 @@ public class ChefApplication extends Application {
 
     private void initSetting() {
         L.setDEBUG(BuildConfig.DEBUG);
+        L.setTAG(getString(R.string.app_name));
     }
 
     @Override
@@ -84,7 +85,7 @@ public class ChefApplication extends Application {
     }
 
 
-    private void initBugHd(){
+    private void initBugHd() {
         FIR.init(this);
     }
 

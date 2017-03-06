@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.ins.chef.ui.activity.HomeActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -24,8 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="16sp"
                 android:textColor="@android:color/white"
+                android:textSize="16sp"
                 tools:text="办酒碗" />
         </android.support.v7.widget.Toolbar>
 
@@ -34,10 +35,37 @@
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </WebView>
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/bg_tab"
+        android:orientation="horizontal">
 
-</android.support.design.widget.CoordinatorLayout>
+        <RadioButton
+            android:id="@+id/rg_orderForm"
+            style="@style/HomeTab"
+            android:layout_width="193dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/selector_orderform"
+            android:text="@string/tab_mineOrderForm" />
+
+        <RadioButton
+            android:id="@+id/rg_mine"
+            style="@style/HomeTab"
+            android:checked="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/selector_mine"
+            android:text="@string/tab_mine" />
+    </RadioGroup>
+</LinearLayout>
