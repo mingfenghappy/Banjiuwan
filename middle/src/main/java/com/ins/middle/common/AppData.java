@@ -150,6 +150,7 @@ public class AppData {
         public static String app_mine                   = domain + "app/page/my";
         public static String app_setMeal                = domain + "app/page/setMealDetail";
         public static String app_bamYan                 = domain + "app/page/bamYanDetail";
+        public static String app_dinner                 = domain + "app/page/dinnerDetail";
         public static String queryByCategory            = domain + "app/food/queryByCategory";
 
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
@@ -211,6 +212,27 @@ public class AppData {
             @Override
             public int getBgColor() {
                 return Color.parseColor("#FF5B3D");
+            }
+        },
+        dinner {
+            @Override
+            public String getTag() {
+                return "dinner";
+            }
+
+            @Override
+            public String getBaseUrl() {
+                return Url.app_dinner;
+            }
+
+            @Override
+            public String getTitle() {
+                return "伴餐演奏";
+            }
+
+            @Override
+            public int getBgColor() {
+                return Color.parseColor("#1A54B1");
             }
         };
         public abstract String getTag();

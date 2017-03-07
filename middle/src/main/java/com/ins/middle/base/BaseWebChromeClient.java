@@ -1,12 +1,9 @@
-package com.ins.feast.web;
+package com.ins.middle.base;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
-
-import com.sobey.common.helper.WebPickerChromeClient;
-import com.sobey.common.helper.WebPickerHelper;
 
 
 /**

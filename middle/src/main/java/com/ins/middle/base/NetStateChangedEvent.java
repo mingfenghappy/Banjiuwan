@@ -1,4 +1,4 @@
-package com.ins.feast.entity;
+package com.ins.middle.base;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

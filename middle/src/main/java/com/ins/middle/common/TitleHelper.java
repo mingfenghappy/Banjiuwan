@@ -1,4 +1,4 @@
-package com.ins.feast.ui.helper;
+package com.ins.middle.common;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;

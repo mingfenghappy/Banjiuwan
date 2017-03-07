@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
-import com.sobey.common.helper.CropHelperSys;
-import com.sobey.common.helper.WebPickerChromeClient;
-import com.sobey.common.helper.WebPickerHelper;
+import com.ins.middle.base.WebPickerChromeClient;
+import com.ins.middle.base.WebPickerHelper;
 
 public class TestActivity extends AppCompatActivity{
 

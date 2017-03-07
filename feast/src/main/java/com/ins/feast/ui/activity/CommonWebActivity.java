@@ -9,11 +9,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
-import com.ins.feast.entity.RefreshEvent;
+import com.ins.feast.entity.WebEvent;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
-import com.ins.feast.web.BaseWebChromeClient;
-import com.ins.feast.web.BaseWebViewClient;
 import com.ins.feast.web.CommonWebJSInterface;
+import com.ins.middle.base.BaseWebChromeClient;
+import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.L;
 
@@ -65,7 +65,7 @@ public class CommonWebActivity extends BaseBackActivity {
                 L.d(url);
                 if (urlOfThisPage.contains("login")) {
                     finish();
-                    EventBus.getDefault().post(new RefreshEvent(true));
+                    EventBus.getDefault().post(WebEvent.shouldRefresh);
                 } else {
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }
@@ -113,8 +113,8 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefreshEvent(RefreshEvent event) {
-        if (event.isShouldRefresh()) {
+    public void onWebEvent(WebEvent event) {
+        if (event == WebEvent.shouldRefresh) {
             webView.reload();
         }
     }

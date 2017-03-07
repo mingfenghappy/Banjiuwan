@@ -24,6 +24,9 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     protected final static String JS_BRIDGE_NAME = "JSBridge";
     protected Toolbar toolbar;
+    //双击退出
+    private boolean needDoubleClickExit = false;
+    private long exitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +96,6 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
-
-    //双击退出
-    private boolean needDoubleClickExit = false;
-    private long exitTime;
-
     @Override
     public void onBackPressed() {
         //双击退出
@@ -111,6 +109,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public final void normalBackPressed() {
+        super.onBackPressed();
     }
 
     public void setNeedDoubleClickExit(boolean needDoubleClickExit) {

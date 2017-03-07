@@ -1,4 +1,4 @@
-package com.ins.feast.web;
+package com.ins.middle.base;
 
 import android.webkit.JavascriptInterface;
 
@@ -10,7 +10,7 @@ import com.ins.middle.common.AppData;
  * desc ${Js桥基类}
  */
 
-class BaseJSInterface {
+public class BaseJSInterface {
     //返回设备id，0代表android
     @JavascriptInterface
     public int getDeviceType() {

@@ -1,4 +1,4 @@
-package com.ins.feast.web;
+package com.ins.middle.base;
 
 import android.net.NetworkInfo;
 import android.support.annotation.CallSuper;
@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ins.middle.common.AppData;
-import com.ins.feast.entity.NetStateChangedEvent;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +27,10 @@ import static com.ins.middle.common.AppData.Config.ERROR_PAGE_URL;
 
 public class BaseWebViewClient extends WebViewClient {
     private WebView webView;
+    /**
+     * 保存最近一次非{@link AppData.Config#ERROR_PAGE_URL}的URL，用于在网络恢复后重新访问
+     */
+    private String lastUrl;
 
     public BaseWebViewClient(final WebView webView) {
         this.webView = webView;
@@ -50,7 +53,7 @@ public class BaseWebViewClient extends WebViewClient {
 
         try {
             EventBus.getDefault().register(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -61,21 +64,10 @@ public class BaseWebViewClient extends WebViewClient {
     public final void destroy() {
         try {
             EventBus.getDefault().unregister(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-//    /**
-//     * 加载URL错误时的回调
-//     */
-//    @CallSuper
-//    @Override
-//    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-//        super.onReceivedError(view, request, error);
-//        int errorCode = error.getErrorCode();
-//        netErrorProcess(errorCode, request.getUrl().toString());
-//    }
 
     /**
      * 加载URL错误时的回调
@@ -86,11 +78,6 @@ public class BaseWebViewClient extends WebViewClient {
         super.onReceivedError(view, errorCode, description, failingUrl);
         netErrorProcess(errorCode, failingUrl);
     }
-
-    /**
-     * 保存最近一次非{@link AppData.Config#ERROR_PAGE_URL}的URL，用于在网络恢复后重新访问
-        */
-    private String lastUrl;
 
     /**
      * 网络错误时的本地处理
