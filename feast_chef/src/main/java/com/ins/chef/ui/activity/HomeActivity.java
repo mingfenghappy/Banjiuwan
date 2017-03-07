@@ -15,8 +15,10 @@ import com.ins.chef.R;
 import com.ins.middle.common.AppData;
 import com.ins.chef.web.BaseWebChromeClient;
 import com.ins.chef.web.BaseWebViewClient;
+import com.shelwee.update.UpdateHelper;
 import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.PermissionsUtil;
 
 import static cn.jiguang.c.a.m;
 
@@ -31,9 +33,17 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setNeedDoubleClickExit(true);
+        initBase();
         initView();
         initWeb();
         initSetting();
+    }
+
+    private void initBase() {
+        //检查并申请权限
+        PermissionsUtil.checkAndRequestPermissions(this);
+        //检查更新
+        new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_chef).isHintNewVersion(false).build().check();
     }
 
     private void initSetting() {

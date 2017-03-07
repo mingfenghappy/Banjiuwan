@@ -120,7 +120,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (i == R.id.btn_go_pay) {
             if (PackageUtil.isClient()){
-                startActivity(PackageUtil.getSmIntent("WXPayEntryActivity"));
+                startActivity(PackageUtil.getSmIntent("TestPayActivity"));
             }else {
                 Toast.makeText(this,"厨师端没有集成支付",Toast.LENGTH_SHORT).show();
             }

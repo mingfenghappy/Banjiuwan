@@ -141,7 +141,8 @@ public class AppData {
         /**
          * 接口请求地址
          */
-        public static String version_passenger          = domain + "updateAPK/version_passenger.json";                                    //检查更新
+        public static String version_feast              = domain + "updateAPK/version_feast.json";                                    //客户端检查更新
+        public static String version_chef               = domain + "updateAPK/version_chef.json";                                     //厨师端检查更新
         public static String getInfo                    = domain + "mobile/user/getInfo";                                                //token登陆
         public static String app_home                   = domain + "app/page/index";
         public static String app_cart                   = domain + "app/page/car";

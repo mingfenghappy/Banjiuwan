@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context="io.dcloud.H52EEACAF.wxapi.WXPayEntryActivity">
+    tools:context=".ui.activity.TestPayActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="支付结果"
+                android:text="支付测试"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_big" />
 
@@ -48,13 +48,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
-            android:id="@+id/text_pay_result"
+            android:id="@+id/text_pay_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:text="支付结果"
+            android:text="支付1分钱"
             android:textColor="@color/com_text_blank"
             android:textSize="@dimen/text_big_nomal" />
+
+        <Button
+            android:id="@+id/btn_pay_zhifubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="支付宝" />
+
+        <Button
+            android:id="@+id/btn_pay_weixin"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信" />
 
     </LinearLayout>
 
