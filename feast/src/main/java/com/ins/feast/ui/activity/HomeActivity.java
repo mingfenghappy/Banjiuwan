@@ -73,7 +73,7 @@ public class HomeActivity extends BaseMapActivity implements
         //检查并申请权限
         PermissionsUtil.checkAndRequestPermissions(this);
         //检查更新
-        new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_passenger).isHintNewVersion(false).build().check();
+        new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build().check();
         startLocation();
 
         if (PermissionsUtil.requsetSetting(this, findViewById(R.id.showingroup))) {

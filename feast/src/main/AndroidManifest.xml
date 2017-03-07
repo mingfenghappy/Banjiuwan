@@ -93,10 +93,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back" />
         <activity
-            android:name=".ui.activity.TestActivity"
+            android:name=".ui.activity.TestPayActivity"
             android:label="@string/title_activity_test"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back" />
+            android:theme="@style/AppTheme.Back">
+            <intent-filter>
+                <action android:name="feast.TestPayActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.SearchLocationActivity"
             android:screenOrientation="portrait"
