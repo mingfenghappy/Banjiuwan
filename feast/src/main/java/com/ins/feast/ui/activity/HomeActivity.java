@@ -45,7 +45,6 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
-    private boolean shouldNormalBack = false;
 
     /**
      * 注：该Activity启动模式为singleTask
@@ -228,7 +227,6 @@ public class HomeActivity extends BaseMapActivity implements
                 webView.reload();
                 break;
             case jumpToCarTab:
-                shouldNormalBack = true;
                 switchTab(R.id.rb_cart);
                 break;
         }
