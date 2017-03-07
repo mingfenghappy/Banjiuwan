@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
@@ -36,6 +35,7 @@ import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;

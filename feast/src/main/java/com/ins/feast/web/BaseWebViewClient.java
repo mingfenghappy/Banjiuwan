@@ -1,7 +1,6 @@
 package com.ins.feast.web;
 
 import android.net.NetworkInfo;
-import android.os.SystemClock;
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -10,7 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.sobey.common.utils.L;
 
@@ -18,7 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.ins.feast.common.AppData.Config.ERROR_PAGE_URL;
+import static com.ins.middle.common.AppData.Config.ERROR_PAGE_URL;
 
 
 /**

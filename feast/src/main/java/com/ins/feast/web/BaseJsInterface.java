@@ -2,7 +2,7 @@ package com.ins.feast.web;
 
 import android.webkit.JavascriptInterface;
 
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 
 /**
  * author 边凌

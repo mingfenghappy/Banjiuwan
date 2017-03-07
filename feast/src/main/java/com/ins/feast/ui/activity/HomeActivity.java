@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.RefreshEvent;

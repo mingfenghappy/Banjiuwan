@@ -39,7 +39,7 @@ public class ItemTouchCardCallback extends ItemTouchHelper.SimpleCallback {
 
     //水平方向是否可以被回收掉的阈值
     public float getThreshold(RecyclerView.ViewHolder viewHolder) {
-        //2016 12 26 考虑 探探垂直上下方向滑动，不删除卡片，这里参照源码写死0.5f
+        //考虑 探探垂直上下方向滑动，不删除卡片，这里参照源码写死0.5f
         return mRv.getWidth() * /*getSwipeThreshold(viewHolder)*/ 0.5f;
     }
 
@@ -67,7 +67,6 @@ public class ItemTouchCardCallback extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         //Log.e("swipecard", "onChildDraw()  viewHolder = [" + viewHolder + "], dX = [" + dX + "], dY = [" + dY + "], actionState = [" + actionState + "], isCurrentlyActive = [" + isCurrentlyActive + "]");
-        //人人影视的效果
         //if (isCurrentlyActive) {
         //先根据滑动的dxdy 算出现在动画的比例系数fraction
         double swipValue = Math.sqrt(dX * dX + dY * dY);

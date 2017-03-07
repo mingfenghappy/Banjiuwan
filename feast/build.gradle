@@ -51,17 +51,15 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
     //加载自定义字体
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+//    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //bughd
     compile 'im.fir:fir-sdk:latest.integration@aar'
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     //spring
-    compile 'com.liaoinstan.springview:library:1.2.7'
-    compile project(':common')
+//    compile 'com.liaoinstan.springview:library:1.2.7'
     compile project(':library_alipay')
-    compile project(':library_swipback')
     compile project(':library_version')
     compile files('libs/libammsdk.jar')
     compile project(':baidumapsdk')
@@ -69,4 +67,5 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
+    compile project(':middle')
 }

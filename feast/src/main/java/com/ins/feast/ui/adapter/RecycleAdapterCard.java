@@ -13,8 +13,6 @@ import com.ins.feast.entity.Card;
 import com.ins.feast.utils.AppHelper;
 import com.ins.feast.utils.GlideUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
-import com.sobey.common.utils.SpannableStringUtils;
-import com.sobey.common.utils.StrUtils;
 
 import java.util.List;
 

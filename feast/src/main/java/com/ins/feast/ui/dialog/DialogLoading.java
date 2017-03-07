@@ -21,15 +21,20 @@ import com.ins.feast.R;
  * 仿猫眼电影加载进度框
  */
 public class DialogLoading extends Dialog {
-
+    private Context context;
     private ImageView header_img;
     private AnimationDrawable animationRefresh;
-    private int[] refreshAnimSrcs = new int[]{R.drawable.maoyan_in1, R.drawable.maoyan_in2};
     private ProgressBar footer_progress;
     private RotateAnimation mRotateUpAnim;
-    private int rotateSrc = R.drawable.maoyan_out;
 
-    private Context context;
+    //外面旋转的边框src资源
+    private int rotateSrc = R.drawable.maoyan_out;
+    //内部动画的src资源
+    private int[] refreshAnimSrcs = new int[]{R.drawable.maoyan_in1, R.drawable.maoyan_in2};
+    //边框旋转一圈用时
+    private int TIME_OUT = 800;
+    //内部帧动画每一帧用时
+    private int TIME_IN = 150;
 
     public DialogLoading(Context context) {
         super(context, R.style.LoadingDialog);
@@ -83,9 +88,6 @@ public class DialogLoading extends Dialog {
         animationRefresh.stop();
         footer_progress.clearAnimation();
     }
-
-    private int TIME_OUT = 800;
-    private int TIME_IN = 150;
 
     private void setAnim() {
         footer_progress = (ProgressBar) findViewById(R.id.rotation_footer_progress);

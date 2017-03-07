@@ -53,7 +53,7 @@
         </receiver>
 
         <activity
-            android:name=".ui.activity.DomainActivity"
+            android:name="com.ins.middle.ui.activity.DomainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
@@ -73,7 +73,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
             <intent-filter>
-                <action android:name="kuaidi.LoadUpActivity" />
+                <action android:name="feast.LoadUpActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -83,11 +83,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activity.WebActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back" />
         <activity
             android:name=".ui.activity.ChooseLocationActivity"
             android:screenOrientation="portrait"
@@ -133,7 +128,12 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="feast.WXPayEntryActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
     </application>
 
 </manifest>

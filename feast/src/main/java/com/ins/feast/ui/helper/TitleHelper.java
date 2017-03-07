@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 import com.sobey.common.utils.UrlUtil;
 
 /**

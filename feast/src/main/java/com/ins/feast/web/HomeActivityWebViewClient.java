@@ -3,7 +3,7 @@ package com.ins.feast.web;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 import com.ins.feast.ui.activity.CardActivity;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;

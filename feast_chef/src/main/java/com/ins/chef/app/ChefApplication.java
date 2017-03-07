@@ -19,7 +19,7 @@ import android.support.multidex.MultiDex;
 
 import com.ins.chef.BuildConfig;
 import com.ins.chef.R;
-import com.ins.chef.common.AppData;
+import com.ins.middle.common.AppData;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.StrUtils;

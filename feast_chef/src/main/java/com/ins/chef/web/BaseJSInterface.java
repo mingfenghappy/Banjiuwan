@@ -2,7 +2,7 @@ package com.ins.chef.web;
 
 import android.webkit.JavascriptInterface;
 
-import com.ins.chef.common.AppData;
+import com.ins.middle.common.AppData;
 
 /**
  * author 边凌

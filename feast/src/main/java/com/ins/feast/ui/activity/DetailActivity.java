@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.ins.feast.R;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.web.BaseWebViewClient;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.sobey.common.utils.PermissionsUtil;
 
 public class DetailActivity extends BaseAppCompatActivity {

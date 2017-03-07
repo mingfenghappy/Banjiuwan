@@ -3,7 +3,7 @@ package com.ins.feast.utils;
 import android.os.Handler;
 
 import com.dd.CircularProgressButton;
-import com.ins.feast.common.AppData;
+import com.ins.middle.common.AppData;
 import com.ins.feast.entity.Card;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;

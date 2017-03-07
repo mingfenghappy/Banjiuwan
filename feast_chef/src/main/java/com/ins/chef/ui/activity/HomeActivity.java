@@ -12,7 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ins.chef.R;
-import com.ins.chef.common.AppData;
+import com.ins.middle.common.AppData;
 import com.ins.chef.web.BaseWebChromeClient;
 import com.ins.chef.web.BaseWebViewClient;
 import com.sobey.common.base.BaseAppCompatActivity;

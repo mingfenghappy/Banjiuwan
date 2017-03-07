@@ -7,6 +7,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
 import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.ui.view.LoadProgressDialog;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
 
 /**

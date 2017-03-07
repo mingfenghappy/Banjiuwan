@@ -14,6 +14,7 @@ import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.BaseWebChromeClient;
 import com.ins.feast.web.BaseWebViewClient;
 import com.ins.feast.web.CommonWebJSInterface;
+import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;

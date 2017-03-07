@@ -7,10 +7,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ins.feast.R;
-import com.ins.feast.common.AppData;
-import com.ins.feast.common.CommonNet;
-import com.ins.feast.entity.User;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.User;
 import com.ins.feast.utils.AppHelper;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;

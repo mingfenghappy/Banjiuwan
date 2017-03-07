@@ -8,7 +8,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.0.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ///////////////////////jpush配置 start
@@ -51,14 +51,12 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
     //加载自定义字体
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+//    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //bughd
     compile 'im.fir:fir-sdk:latest.integration@aar'
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
-
-    compile project(':common')
-    compile project(':library_swipback')
     compile project(':library_version')
+    compile project(':middle')
 }
