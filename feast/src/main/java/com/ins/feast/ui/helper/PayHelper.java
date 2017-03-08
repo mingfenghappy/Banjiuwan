@@ -224,28 +224,18 @@ public class PayHelper {
         Intent intent = new Intent(activity, WXPayEntryActivity.class);
         intent.putExtra("type", 0);
         activity.startActivity(intent);
-        EventBus.getDefault().post(WebEvent.paySuccess);
-        L.d("postPaySuccess");
     }
 
     private void onPayFail() {
         Intent intent = new Intent(activity, WXPayEntryActivity.class);
         intent.putExtra("type", -1);
         activity.startActivity(intent);
-        EventBus.getDefault().post(WebEvent.payFailed);
-        L.d("postPayFailed");
     }
 
     private void onPayCancel() {
         Intent intent = new Intent(activity, WXPayEntryActivity.class);
         intent.putExtra("type", -2);
         activity.startActivity(intent);
-        EventBus.getDefault().post(WebEvent.payFailed);
-        L.d("postPayFailed");
     }
 
-    @IntDef({PAY_WEIXIN, PAY_ALIPAY})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface PayMethod {
-    }
 }

@@ -1,17 +1,19 @@
 package com.ins.chef.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ins.chef.R;
+import com.ins.chef.web.ChefHomeJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
+import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.base.BaseAppCompatActivity;
@@ -23,6 +25,8 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     private TextView toolbar_title;
     private RadioGroup rg;
     private RadioButton mine, mineOrderForm;
+    private BaseWebChromeClient homeWebChromeClient;
+    private UpdateHelper updateHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,8 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
         //检查并申请权限
         PermissionsUtil.checkAndRequestPermissions(this);
         //检查更新
-        new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_chef).isHintNewVersion(false).build().check();
+        updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_chef).isHintNewVersion(false).build();
+        updateHelper.check();
     }
 
     private void initSetting() {
@@ -48,30 +53,35 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     }
 
     private void initWeb() {
-        webView.setWebChromeClient(new BaseWebChromeClient(this) {
+        homeWebChromeClient = new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 toolbar_title.setText(title);
             }
-        });
-        webView.setWebViewClient(new BaseWebViewClient(webView) {
+        };
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                L.d("shouldOverrideUrlLoading(HomeActivity):\n" + url);
-                if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE)
-                        || TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE_ORDERFORM)) {
-                    view.loadUrl(url);
-                } else {
-                    CommonWebActivity.start(HomeActivity.this, url);
-                }
-                handleTabsByUrl(url);
-                return true;
-            }
-        });
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
+        WebSettingHelper
+                .newInstance(webView)
+                .commonSetting()
+                .setWebChromeClient(homeWebChromeClient)
+                .setWebViewClient(new BaseWebViewClient(webView) {
+
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        L.d("shouldOverrideUrlLoading(HomeActivity):\n" + url);
+                        if (url.contains("cookMy")
+                                || url.contains("cookMyOrder")) {
+                            view.loadUrl(url);
+                        } else {
+                            CommonWebActivity.start(HomeActivity.this, url);
+                        }
+                        handleTabsByUrl(url);
+
+                        return true;
+                    }
+                }).addJavaScriptInterface(new ChefHomeJSInterface(), AppData.Config.JS_BRIDGE_NAME);
+
         webView.loadUrl(AppData.Url.FEAST_CHEF_HOMEPAGE);
     }
 
@@ -93,6 +103,12 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        updateHelper.onDestory();
     }
 
     private void handleTabsByUrl(String url) {
@@ -125,5 +141,11 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
         if (!TextUtils.isEmpty(url)) {
             webView.loadUrl(url);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        homeWebChromeClient.onActivityResult(requestCode, resultCode, data);
     }
 }

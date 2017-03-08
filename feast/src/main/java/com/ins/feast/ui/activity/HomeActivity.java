@@ -3,11 +3,9 @@ package com.ins.feast.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,6 +21,7 @@ import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
 import com.ins.middle.base.NetStateChangedEvent;
+import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.TitleHelper;
 import com.shelwee.update.UpdateHelper;
@@ -46,6 +45,7 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
+    private UpdateHelper updateHelper;
 
     /**
      * 注：该Activity启动模式为singleTask
@@ -73,7 +73,8 @@ public class HomeActivity extends BaseMapActivity implements
         //检查并申请权限
         PermissionsUtil.checkAndRequestPermissions(this);
         //检查更新
-        new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build().check();
+        updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build();
+        updateHelper.check();
         startLocation();
 
         if (PermissionsUtil.requsetSetting(this, findViewById(R.id.showingroup))) {
@@ -96,32 +97,11 @@ public class HomeActivity extends BaseMapActivity implements
         webViewClient = new HomeActivityWebViewClient(this);
         webChromeClient = new HomeActivityWebChromeClient(this);
 
-        webView.setWebViewClient(webViewClient);
-        webView.setWebChromeClient(webChromeClient);
-
-        WebSettings settings = webView.getSettings();
-        ///
-        settings.setAllowFileAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
-        ///
-        settings.setAppCacheEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
-        settings.setAllowFileAccess(true);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            settings.setAllowFileAccessFromFileURLs(true);
-        }
-
-        settings.setJavaScriptEnabled(true);
         homeJsInterface = new HomeJSInterface(this, webView);
-        webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
+        WebSettingHelper.newInstance(webView).commonSetting()
+                .setWebViewClient(webViewClient)
+                .setWebChromeClient(webChromeClient)
+                .addJavaScriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.app_home);
         webView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -197,6 +177,7 @@ public class HomeActivity extends BaseMapActivity implements
             webView = null;
         }
         EventBus.getDefault().unregister(this);
+        updateHelper.onDestory();
         super.onDestroy();
     }
 

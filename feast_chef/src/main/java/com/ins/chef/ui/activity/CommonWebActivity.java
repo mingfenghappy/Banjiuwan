@@ -5,20 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.ins.chef.R;
+import com.ins.middle.base.WebSettingHelper;
 import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
 
 public class CommonWebActivity extends BaseAppCompatActivity {
 
+    private final static String KEY_URL = "url";
     private String url;
     private WebView webView;
     private TextView toolbar_title;
+
+    public static void start(Context context, String url) {
+        Intent starter = new Intent(context, CommonWebActivity.class);
+        starter.putExtra(KEY_URL, url);
+        L.d("startCommonWebActivity:" + url);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,7 @@ public class CommonWebActivity extends BaseAppCompatActivity {
                 return true;
             }
         });
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
+        WebSettingHelper.newInstance(webView).commonSetting();
         webView.loadUrl(url);
     }
 
@@ -58,15 +65,6 @@ public class CommonWebActivity extends BaseAppCompatActivity {
                 onBackPressed();
             }
         });
-    }
-
-    private final static String KEY_URL = "url";
-
-    public static void start(Context context, String url) {
-        Intent starter = new Intent(context, CommonWebActivity.class);
-        starter.putExtra(KEY_URL, url);
-        L.d("startCommonWebActivity:"+url);
-        context.startActivity(starter);
     }
 
     @Override

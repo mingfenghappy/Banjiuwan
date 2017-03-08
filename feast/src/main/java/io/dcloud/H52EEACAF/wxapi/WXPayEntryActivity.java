@@ -6,14 +6,18 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ins.feast.R;
+import com.ins.feast.entity.WebEvent;
 import com.ins.feast.ui.helper.PayHelper;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.sobey.common.utils.L;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 //type:0 支付定金 1：支付定金成功 2：支付尾款 3：支付尾款成功
 public class WXPayEntryActivity extends BaseAppCompatActivity implements IWXAPIEventHandler {
@@ -62,15 +66,21 @@ public class WXPayEntryActivity extends BaseAppCompatActivity implements IWXAPIE
     }
 
     private void setPayData() {
-        switch (type){
+        switch (type) {
             case 0:
                 text_pay_result.setText("支付成功");
+                EventBus.getDefault().post(WebEvent.paySuccess);
+                L.d("postPaySuccess");
                 break;
             case -1:
                 text_pay_result.setText("支付失败");
+                EventBus.getDefault().post(WebEvent.payFailed);
+                L.d("postPayFailed");
                 break;
             case -2:
                 text_pay_result.setText("用户取消了支付");
+                EventBus.getDefault().post(WebEvent.payFailed);
+                L.d("postPayFailed");
                 break;
         }
 

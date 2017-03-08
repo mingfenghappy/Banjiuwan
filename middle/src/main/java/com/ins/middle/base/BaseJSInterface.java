@@ -3,6 +3,7 @@ package com.ins.middle.base;
 import android.webkit.JavascriptInterface;
 
 import com.ins.middle.common.AppData;
+import com.sobey.common.utils.L;
 
 /**
  * author 边凌

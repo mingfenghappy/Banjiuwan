@@ -126,6 +126,7 @@ public class AppData {
         public static int DEVICE_TYPE = 0;
         public static String ERROR_PAGE_TITLE = "error.html";
         public static String ERROR_PAGE_URL = "file:///android_asset/error.html";
+        public static final String JS_BRIDGE_NAME="JSBridge";
     }
 
     /**
@@ -163,8 +164,9 @@ public class AppData {
 
         //厨师端入口页
         public static String FEAST_CHEF_HOMEPAGE         = domain + "/app/page/cookLogin";
-        //厨师端"我的"
+        /*我的*/
         public static String FEAST_CHEF_MINE             = domain + "/app/page/cookMy";
+        /*我的订单*/
         public static String FEAST_CHEF_MINE_ORDERFORM   = domain + "/app/page/cookMyOrder";
     }
 

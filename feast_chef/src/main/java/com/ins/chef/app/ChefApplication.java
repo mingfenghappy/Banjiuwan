@@ -69,6 +69,7 @@ public class ChefApplication extends Application {
         if (!StrUtils.isEmpty(registrationID)) {
             AppData.App.saveJpushId(registrationID);
         }
+        L.d(AppData.App.getJpushId());
     }
 
     private void initXUtils() {

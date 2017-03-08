@@ -3,9 +3,7 @@ package com.ins.feast.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
@@ -15,6 +13,7 @@ import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.CommonWebJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
+import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.L;
 
@@ -78,27 +77,7 @@ public class CommonWebActivity extends BaseBackActivity {
 
     private void webSetting() {
         webView.addJavascriptInterface(new CommonWebJSInterface(this), JS_BRIDGE_NAME);
-
-        WebSettings settings = webView.getSettings();
-        ///
-        settings.setAllowFileAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
-        ///
-        settings.setAppCacheEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setAppCachePath(webView.getContext().getCacheDir().getAbsolutePath());
-        settings.setAllowFileAccess(true);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            settings.setAllowFileAccessFromFileURLs(true);
-        }
-        settings.setJavaScriptEnabled(true);
+        WebSettingHelper.newInstance(webView).commonSetting();
     }
 
     private void findView() {

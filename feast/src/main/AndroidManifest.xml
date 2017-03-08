@@ -106,10 +106,6 @@
             android:name=".ui.activity.SearchLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back.Transition" />
-        <activity
-            android:name=".ui.activity.DetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back.NoAnimation" />
 
         <receiver android:name=".receiver.NetStateReceiver">
             <intent-filter>

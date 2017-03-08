@@ -10,7 +10,7 @@ import com.sobey.common.utils.L;
 /**
  * author 边凌
  * date 2017/3/8 9:17
- * desc ${TODO}
+ * desc ${客户端的基类JSInterface，封装了被js调用的支付方法}
  */
 
 public class BaseFeastJSInterface extends BaseJSInterface {
