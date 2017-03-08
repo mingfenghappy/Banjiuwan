@@ -1,9 +1,12 @@
 package com.ins.feast.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -11,17 +14,17 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
-import com.ins.middle.common.AppData;
-import com.ins.feast.entity.NetStateChangedEvent;
 import com.ins.feast.entity.Position;
-import com.ins.feast.entity.RefreshEvent;
+import com.ins.feast.entity.WebEvent;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
-import com.ins.feast.ui.helper.TitleHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
+import com.ins.middle.base.NetStateChangedEvent;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.TitleHelper;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -43,6 +46,14 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
+
+    /**
+     * 注：该Activity启动模式为singleTask
+     */
+    public static void start(Context context) {
+        Intent starter = new Intent(context, HomeActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +124,12 @@ public class HomeActivity extends BaseMapActivity implements
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.app_home);
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 
     @Override
@@ -123,6 +140,7 @@ public class HomeActivity extends BaseMapActivity implements
 
     @Override
     public void onBackPressed() {
+
         if (webView != null && webView.canGoBack()) {
             webView.goBack();
             String originalUrl = webView.getOriginalUrl();
@@ -210,9 +228,21 @@ public class HomeActivity extends BaseMapActivity implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefreshEvent(RefreshEvent event) {
-        if (event.isShouldRefresh()) {
-            webView.reload();
+    public void onWebEvent(WebEvent event) {
+        switch (event) {
+            case shouldRefresh:
+                webView.reload();
+                break;
+            case jumpToCarTab:
+                switchTab(R.id.rb_cart);
+                break;
+        }
+    }
+
+    private void switchTab(@IdRes int tabId) {
+        RadioButton radioButton = (RadioButton) findViewById(tabId);
+        if (radioButton != null) {
+            radioButton.setChecked(true);
         }
     }
 

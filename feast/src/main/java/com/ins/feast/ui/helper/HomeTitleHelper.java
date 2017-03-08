@@ -9,6 +9,7 @@ import com.ins.feast.ui.activity.ChooseLocationActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.SearchDishesActivity;
 import com.ins.feast.utils.RxViewUtils;
+import com.ins.middle.common.TitleHelper;
 
 /**
  * author 边凌
@@ -108,6 +109,7 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
     private void centerAndBackIconStyle() {
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_leftarrow_white);
+        iconLeft.setTag(true);
         iconLeft.setVisibility(View.VISIBLE);
         iconRight.setVisibility(View.GONE);
         title_location.setVisibility(View.GONE);
@@ -119,6 +121,7 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
     private void homeStyle() {
         appBarLayout.setVisibility(View.VISIBLE);
         iconLeft.setImageResource(R.mipmap.ic_mark);
+        iconLeft.setTag(false);
         setIconVisibility(View.VISIBLE);
     }
 
@@ -126,7 +129,10 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_leftIcon:
-                homeActivity.onBackPressed();
+                boolean canOnBackPressed = (boolean) iconLeft.getTag();
+                if (canOnBackPressed) {
+                    homeActivity.onBackPressed();
+                }
                 break;
             case R.id.title_location:
                 ChooseLocationActivity.start(homeActivity);

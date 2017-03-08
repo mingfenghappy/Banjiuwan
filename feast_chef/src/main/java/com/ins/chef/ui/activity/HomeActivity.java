@@ -3,24 +3,20 @@ package com.ins.chef.ui.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ins.chef.R;
+import com.ins.middle.base.BaseWebChromeClient;
+import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
-import com.ins.chef.web.BaseWebChromeClient;
-import com.ins.chef.web.BaseWebViewClient;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
-
-import static cn.jiguang.c.a.m;
 
 public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.OnCheckedChangeListener {
     private WebView webView;
@@ -52,14 +48,14 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     }
 
     private void initWeb() {
-        webView.setWebChromeClient(new BaseWebChromeClient() {
+        webView.setWebChromeClient(new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 toolbar_title.setText(title);
             }
         });
-        webView.setWebViewClient(new BaseWebViewClient() {
+        webView.setWebViewClient(new BaseWebViewClient(webView) {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -102,12 +98,12 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     private void handleTabsByUrl(String url) {
         if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE)) {
             rg.setVisibility(View.VISIBLE);
-            if (!mine.isChecked()){
+            if (!mine.isChecked()) {
                 mine.setChecked(true);
             }
         } else if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE_ORDERFORM)) {
             rg.setVisibility(View.VISIBLE);
-            if (!mineOrderForm.isChecked()){
+            if (!mineOrderForm.isChecked()) {
                 mineOrderForm.setChecked(true);
             }
         } else {

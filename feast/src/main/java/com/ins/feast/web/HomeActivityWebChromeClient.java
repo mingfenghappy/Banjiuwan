@@ -1,6 +1,7 @@
 package com.ins.feast.web;
 
 import com.ins.feast.ui.activity.HomeActivity;
+import com.ins.middle.base.BaseWebChromeClient;
 
 /**
  * author 边凌

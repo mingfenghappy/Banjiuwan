@@ -1,4 +1,4 @@
-package com.sobey.common.helper;
+package com.ins.middle.base;
 
 import android.net.Uri;
 import android.webkit.ValueCallback;

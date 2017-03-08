@@ -1,0 +1,12 @@
+package com.ins.feast.common;
+
+/**
+ * author 边凌
+ * date 2017/3/8 11:11
+ * desc ${存储被调用的js页面方法url}
+ */
+
+public class JSFunctionUrl {
+    public final static String PAY_SUCCESS = "javascript:payCallback('" + 1 + "')";
+    public final static String PAY_FAILED = "javascript:payCallback('" + 0 + "')";
+}

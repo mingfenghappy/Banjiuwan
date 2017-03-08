@@ -17,22 +17,21 @@ import com.sobey.common.utils.PermissionsUtil;
  */
 
 public class HomeJSInterface extends
-        BaseJSInterface {
+        BaseFeastJSInterface {
     private HomeWebView homeWebView;
-    private Activity context;
 
     public HomeJSInterface(Activity context, HomeWebView homeWebView) {
-        this.context = context;
+        super(context);
         this.homeWebView = homeWebView;
     }
 
     @JavascriptInterface
     public void call(String phoneNumber) {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            PermissionsUtil.requestPermissions(context, new String[]{Manifest.permission.CALL_PHONE});
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            PermissionsUtil.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE});
             return;
         }
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
-        context.startActivity(intent);
+        getActivity().startActivity(intent);
     }
 }

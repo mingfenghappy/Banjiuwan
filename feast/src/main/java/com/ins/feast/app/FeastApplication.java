@@ -34,7 +34,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class FeastApplication extends Application {
 
-
     @Override
     public void onCreate() {
         MultiDex.install(this);

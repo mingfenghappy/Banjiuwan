@@ -1,4 +1,4 @@
-package com.sobey.common.helper;
+package com.ins.middle.base;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.sobey.common.helper.CropHelperSys;
+import com.sobey.common.helper.CropHelperSysV2;
 import com.sobey.common.ui.dialog.DialogPopupPhoto;
 
 import java.io.File;

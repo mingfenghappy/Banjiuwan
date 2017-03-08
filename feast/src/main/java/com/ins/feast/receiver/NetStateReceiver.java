@@ -1,6 +1,5 @@
 package com.ins.feast.receiver;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +8,8 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Build;
 
-import com.ins.feast.entity.NetStateChangedEvent;
+import com.ins.middle.base.NetStateChangedEvent;
 import com.sobey.common.utils.L;
-import com.sobey.common.utils.PermissionsUtil;
-import com.sobey.common.utils.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
