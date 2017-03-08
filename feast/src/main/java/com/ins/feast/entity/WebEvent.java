@@ -8,5 +8,7 @@ package com.ins.feast.entity;
 
 public enum WebEvent {
     jumpToCarTab,
-    shouldRefresh
+    shouldRefresh,
+    paySuccess,
+    payFailed
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ins.feast.R;
+import com.ins.feast.ui.helper.PayHelper;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 public class TestPayActivity extends BaseAppCompatActivity implements View.OnClickListener {

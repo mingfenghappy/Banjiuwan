@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ins.feast.R;
-import com.ins.feast.ui.activity.PayHelper;
+import com.ins.feast.ui.helper.PayHelper;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;

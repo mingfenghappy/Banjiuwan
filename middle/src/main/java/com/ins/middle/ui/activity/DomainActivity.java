@@ -71,6 +71,8 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         results.clear();
         results.add(new Domain("192.168.118.206:8080", "(Web开发服务器)"));
         results.add(new Domain("192.168.118.194:8080", "(开发服务器：谢启谋)"));
+        results.add(new Domain("192.168.118.110:8080", "(测试服务器)"));
+        results.add(new Domain("139.129.111.76:8102", "(远程测试服务器)"));
     }
 
     private void initCtrl() {
@@ -119,10 +121,10 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             finish();
 
         } else if (i == R.id.btn_go_pay) {
-            if (PackageUtil.isClient()){
+            if (PackageUtil.isClient()) {
                 startActivity(PackageUtil.getSmIntent("TestPayActivity"));
-            }else {
-                Toast.makeText(this,"厨师端没有集成支付",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "厨师端没有集成支付", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -159,14 +161,9 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     ////////////////////////////////
 
     public class ListAdapterDomain extends BaseAdapter {
+        LayoutInflater inflater;
         private Context context;
         private List<Domain> results;
-
-        public List<Domain> getResults() {
-            return results;
-        }
-
-        LayoutInflater inflater;
 
         public ListAdapterDomain(Context context, List<Domain> results) {
             this.context = context;
@@ -174,6 +171,10 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             if (this.results == null) {
                 this.results = new ArrayList<>();
             }
+        }
+
+        public List<Domain> getResults() {
+            return results;
         }
 
         @Override

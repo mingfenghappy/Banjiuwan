@@ -9,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
+import com.ins.feast.common.JSFunctionUrl;
 import com.ins.feast.entity.WebEvent;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.CommonWebJSInterface;
@@ -76,7 +77,7 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void webSetting() {
-        webView.addJavascriptInterface(new CommonWebJSInterface(), JS_BRIDGE_NAME);
+        webView.addJavascriptInterface(new CommonWebJSInterface(this), JS_BRIDGE_NAME);
 
         WebSettings settings = webView.getSettings();
         ///
@@ -114,8 +115,16 @@ public class CommonWebActivity extends BaseBackActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWebEvent(WebEvent event) {
-        if (event == WebEvent.shouldRefresh) {
-            webView.reload();
+        switch (event) {
+            case shouldRefresh:
+                webView.reload();
+                break;
+            case payFailed:
+                webView.loadUrl(JSFunctionUrl.PAY_FAILED);
+                break;
+            case paySuccess:
+                webView.loadUrl(JSFunctionUrl.PAY_SUCCESS);
+                break;
         }
     }
 

@@ -13,12 +13,7 @@ import com.ins.chef.R;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
-<<<<<<< HEAD
-=======
-import com.ins.chef.web.BaseWebChromeClient;
-import com.ins.chef.web.BaseWebViewClient;
 import com.shelwee.update.UpdateHelper;
->>>>>>> 27f4b66228882481c9d445b7eacf647da066b0c9
 import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;

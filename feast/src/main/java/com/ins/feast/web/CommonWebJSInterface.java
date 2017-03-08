@@ -1,6 +1,6 @@
 package com.ins.feast.web;
 
-import com.ins.middle.base.BaseJSInterface;
+import android.app.Activity;
 
 /**
  * author 边凌
@@ -8,5 +8,8 @@ import com.ins.middle.base.BaseJSInterface;
  * desc ${TODO}
  */
 
-public class CommonWebJSInterface extends BaseJSInterface {
+public class CommonWebJSInterface extends BaseFeastJSInterface {
+    public CommonWebJSInterface(Activity activity) {
+        super(activity);
+    }
 }

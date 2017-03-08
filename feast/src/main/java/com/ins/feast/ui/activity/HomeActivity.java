@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -123,6 +124,12 @@ public class HomeActivity extends BaseMapActivity implements
         webView.addJavascriptInterface(homeJsInterface, JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.app_home);
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 
     @Override
