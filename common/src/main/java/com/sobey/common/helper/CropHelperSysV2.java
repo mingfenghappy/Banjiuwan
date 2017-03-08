@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 
 import com.sobey.common.utils.FileUtil;
 import com.sobey.common.utils.StrUtils;
+import com.sobey.common.utils.UriUtil;
 import com.sobey.common.utils.others.BitmapUtil;
 
 import java.io.File;
@@ -124,16 +125,17 @@ public class CropHelperSysV2 {
     public void startCamera() {
         path = FileUtil.getPhotoFullPath();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (android.os.Build.VERSION.SDK_INT < 24) {
-            //Android 7.0以下，直接获取启调
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
-        } else {
-            //适配到android 7.0
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put(MediaStore.Images.Media.DATA, new File(path).getAbsolutePath());
-            Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, UriUtil.getUriFromFile(context, path));
+//        if (android.os.Build.VERSION.SDK_INT < 24) {
+//            //Android 7.0以下，直接获取启调
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
+//        } else {
+//            //适配到android 7.0
+//            ContentValues contentValues = new ContentValues(1);
+//            contentValues.put(MediaStore.Images.Media.DATA, new File(path).getAbsolutePath());
+//            Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        }
         if (activityOrfragment instanceof Activity) {
             ((Activity) activityOrfragment).startActivityForResult(intent, PHOTO_CAPTURE);
         } else if (activityOrfragment instanceof Fragment) {
@@ -261,6 +263,7 @@ public class CropHelperSysV2 {
 
     public interface CropInterface {
         void cropResult(String path);
+
         void cancel();
     }
 }

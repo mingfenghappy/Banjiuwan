@@ -65,6 +65,7 @@ public class PayHelper {
 
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    //文档查询：https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.GpzTjL&treeId=204&articleId=105302&docType=1
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
                         onPaySuccess();
@@ -77,7 +78,7 @@ public class PayHelper {
                             onPayFail();
                         } else if (TextUtils.equals(resultStatus, "6001")) {
                             // 用户主动取消支付
-                            Toast.makeText(activity, "支付结果确认中", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, "用户取消了支付", Toast.LENGTH_SHORT).show();
                             onPayCancel();
                         } else {
                             //其他值就可以判断为支付失败

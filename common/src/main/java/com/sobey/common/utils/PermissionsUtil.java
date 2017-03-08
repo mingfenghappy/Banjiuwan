@@ -48,7 +48,7 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,//读写SD卡
             Manifest.permission.CAMERA, //摄像头
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,   //获取位置信息
-            Manifest.permission.CHANGE_NETWORK_STATE, Manifest.permission.WRITE_SETTINGS    //改变网络状态，修改系统设置
+            Manifest.permission.WRITE_SETTINGS    //改变网络状态，修改系统设置
     };
 
     public static void checkAndRequestPermissions(final Activity activity) {
@@ -75,8 +75,10 @@ public class PermissionsUtil {
     }
 
     public static boolean requsetSetting(final Activity activity, View showgroup) {
-        String[] permissions = new String[]{Manifest.permission.CHANGE_NETWORK_STATE, Manifest.permission.WRITE_SETTINGS};
-        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【修改系统设置】权限");
+//        String[] permissions = new String[]{Manifest.permission.WRITE_SETTINGS};//Manifest.permission.CHANGE_NETWORK_STATE
+//        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【修改系统设置】权限");
+        //直接拒绝该权限，检查该权限有bug
+        return false;
     }
 
     private static boolean checkAndRequestLocalPermissions(final Activity activity, View showgroup, String[] pemissions) {
@@ -166,7 +168,7 @@ public class PermissionsUtil {
                 @Override
                 public void onClick(View v) {
                     // 进入App设置页面
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);//ACTION_APPLICATION_DETAILS_SETTINGS
                     Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
                     intent.setData(uri);
                     activity.startActivityForResult(intent, PermissionsUtil.REQUEST_PERMISSION_SETTING);

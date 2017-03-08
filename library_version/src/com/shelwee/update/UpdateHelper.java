@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,6 +26,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -104,7 +106,8 @@ public class UpdateHelper {
                         if(updateInfo.getIsForce()==1) {
                             showInstallDialog();
                         }
-                        installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+//                        installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+                        installApk(getUriFromFile(mContext,cache.get(APK_PATH)));
                     } else {
                         if (ntfBuilder == null) {
                             ntfBuilder = new NotificationCompat.Builder(mContext);
@@ -114,7 +117,8 @@ public class UpdateHelper {
                                 .setContentText("下载完成，点击安装").setTicker("任务下载完成");
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(
-                                Uri.parse("file://" + cache.get(APK_PATH)),
+//                                Uri.parse("file://" + cache.get(APK_PATH)),
+                                getUriFromFile(mContext,cache.get(APK_PATH)),
                                 "application/vnd.android.package-archive");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -161,7 +165,8 @@ public class UpdateHelper {
                 myHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+//                        installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+                        installApk(getUriFromFile(mContext,cache.get(APK_PATH)));
                     }
                 }, 100);
             }
@@ -225,7 +230,8 @@ public class UpdateHelper {
         dialog.setOnPositiveListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+//                installApk(Uri.parse("file://" + cache.get(APK_PATH)));
+                installApk(getUriFromFile(mContext,cache.get(APK_PATH)));
             }
         });
         dialog.show();
@@ -646,6 +652,24 @@ public class UpdateHelper {
         } else {
             Log.e("NullPointerException", "The context must not be null.");
         }
+    }
 
+    /**
+     * 7.0之后废弃了file://协议，使用content://URI ，这里根据系统版本选择不同协议
+     * @param context
+     * @param path
+     * @return
+     */
+    public static Uri getUriFromFile(Context context, String path){
+        if (android.os.Build.VERSION.SDK_INT < 24) {
+            //Android 7.0以下，直接获取启调
+            return Uri.fromFile(new File(path));
+        } else {
+            //适配到android 7.0
+            ContentValues contentValues = new ContentValues(1);
+            contentValues.put(MediaStore.Images.Media.DATA, new File(path).getAbsolutePath());
+            Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            return uri;
+        }
     }
 }
