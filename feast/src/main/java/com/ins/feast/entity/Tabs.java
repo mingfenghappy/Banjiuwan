@@ -9,150 +9,58 @@ import com.ins.middle.common.AppData;
 /**
  * author 边凌
  * date 2017/3/9 14:26
- * desc ${主页Tab的相关信息常量类}
+ * desc ${主页Tab的辅助类}
  */
 
-public enum Tabs {
-    home {
-        @Override
-        public String getTitle() {
-            return "办酒碗";
-        }
-
-        @Override
-        public int getButtonId() {
-            return R.id.rb_home;
-        }
-
-        @Override
-        public String getUrlTag() {
-            return "index";
-        }
-
-        @Override
-        public TitleHelper.TitleType getTitleType() {
-            return TitleHelper.TitleType.home;
-        }
-
-        @Override
-        public String getUrl() {
-            return AppData.Url.app_home;
-        }
-    },
-    car {
-        @Override
-        public String getTitle() {
-            return "购物车";
-        }
-
-        @Override
-        public int getButtonId() {
-            return R.id.rb_cart;
-        }
-
-        @Override
-        public String getUrlTag() {
-            return "car";
-        }
-
-        @Override
-        public TitleHelper.TitleType getTitleType() {
-            return TitleHelper.TitleType.onlyCenter;
-        }
-
-        @Override
-        public String getUrl() {
-            return AppData.Url.app_cart;
-        }
-    },
-    find {
-        @Override
-        public String getTitle() {
-            return "发现";
-        }
-
-        @Override
-        public int getButtonId() {
-            return R.id.rb_find;
-        }
-
-        @Override
-        public String getUrlTag() {
-            return "find";
-        }
-
-        @Override
-        public TitleHelper.TitleType getTitleType() {
-            return TitleHelper.TitleType.onlyCenter;
-        }
-
-        @Override
-        public String getUrl() {
-            return AppData.Url.app_find;
-        }
-    },
-    custom {
-        @Override
-        public String getTitle() {
-            return "";
-        }
-
-        @Override
-        public int getButtonId() {
-            return R.id.rb_customerService;
-        }
-
-        @Override
-        public String getUrlTag() {
-            return "customer";
-        }
-
-        @Override
-        public TitleHelper.TitleType getTitleType() {
-            return TitleHelper.TitleType.noTitle;
-        }
-
-        @Override
-        public String getUrl() {
-            return AppData.Url.app_customer_service;
-        }
-    },
-    mine {
-        @Override
-        public String getTitle() {
-            return "我的";
-        }
-
-        @Override
-        public int getButtonId() {
-            return R.id.rb_mine;
-        }
-
-        @Override
-        public String getUrlTag() {
-            return "my";
-        }
-
-        @Override
-        public TitleHelper.TitleType getTitleType() {
-            return TitleHelper.TitleType.onlyCenter;
-        }
-
-        @Override
-        public String getUrl() {
-            return AppData.Url.app_mine;
-        }
-    };
-
-    public abstract String getTitle();
-
-    public abstract
+public class Tabs {
+    private String title;
+    private
     @IdRes
-    int getButtonId();
+    int buttonId;
+    private String urlTag;
+    private TitleHelper.TitleType titleType;
+    private String url;
 
-    public abstract String getUrlTag();
+    private static Tabs[]values;
 
-    public abstract TitleHelper.TitleType getTitleType();
+    static {
+        values=new Tabs[5];
+        values[0] = new Tabs("办酒碗", R.id.rb_home, "index", TitleHelper.TitleType.home, AppData.Url.app_home);
+        values[1] = new Tabs("购物车", R.id.rb_cart, "car", TitleHelper.TitleType.onlyCenter, AppData.Url.app_cart);
+        values[2] = new Tabs("发现", R.id.rb_find, "find", TitleHelper.TitleType.onlyCenter, AppData.Url.app_find);
+        values[3] = new Tabs("", R.id.rb_customerService, "customer", TitleHelper.TitleType.noTitle, AppData.Url.app_customer_service);
+        values[4] = new Tabs("我的", R.id.rb_mine, "my", TitleHelper.TitleType.onlyCenter, AppData.Url.app_mine);
+    }
 
-    public abstract String getUrl();
+    private Tabs(String title, @IdRes int buttonId, String urlTag, TitleHelper.TitleType titleType, String url) {
+        this.title = title;
+        this.buttonId = buttonId;
+        this.urlTag = urlTag;
+        this.titleType = titleType;
+        this.url = url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getButtonId() {
+        return buttonId;
+    }
+
+    public String getUrlTag() {
+        return urlTag;
+    }
+
+    public TitleHelper.TitleType getTitleType() {
+        return titleType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public static Tabs[] values() {
+        return values;
+    }
 }

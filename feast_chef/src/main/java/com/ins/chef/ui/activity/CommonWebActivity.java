@@ -2,6 +2,7 @@ package com.ins.chef.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -49,7 +50,13 @@ public class CommonWebActivity extends BaseFeastActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                CommonWebActivity.start(CommonWebActivity.this, url);
+                if(url.startsWith("tel:")){
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(url));
+                    startActivity(intent);
+                }else {
+                    CommonWebActivity.start(CommonWebActivity.this, url);
+                }
                 return true;
             }
         };

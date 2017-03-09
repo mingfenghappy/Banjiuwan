@@ -91,7 +91,7 @@ public class HomeActivity extends BaseMapActivity implements
 
         /*notLoad属性用于解决连续按返回键时在最后两个页面循环切换无法结束应用的问题*/
         /*这是由于在onBackPressed中WebView调用goBack方法时，RadioGroup改变选中按钮id，而在onCheckChanged中会加载一遍当前tab的url*/
-        /*因此WebView始终可以goBack*/
+        /*因此WebView始终可以goBack，加入notLoad属性判断后可以解决这个问题*/
         for (Tabs tabs : Tabs.values()) {
             findViewById(tabs.getButtonId()).setOnClickListener(new View.OnClickListener() {
                 @Override

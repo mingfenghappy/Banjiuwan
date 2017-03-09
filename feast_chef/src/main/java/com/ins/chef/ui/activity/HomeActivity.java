@@ -1,6 +1,7 @@
 package com.ins.chef.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -66,14 +67,18 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                L.d("shouldOverrideUrlLoading(HomeActivity):\n" + url);
-                if (url.contains("cookMy")
+
+                if (url.startsWith("tel:")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(url));
+                    startActivity(intent);
+                } else if (url.contains("cookMy")
                         || url.contains("cookMyOrder")) {
                     view.loadUrl(url);
+                    handleTabsByUrl(url);
                 } else {
                     CommonWebActivity.start(HomeActivity.this, url);
                 }
-                handleTabsByUrl(url);
 
                 return true;
             }

@@ -26,7 +26,6 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        L.d(url);
         boolean jumped = jumpedIfIsCardDetail(url);
         if (!jumped) {
             //没跳转的情况下跳转CommonWeb

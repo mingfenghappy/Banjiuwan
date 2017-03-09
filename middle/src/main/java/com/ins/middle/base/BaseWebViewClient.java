@@ -62,7 +62,7 @@ public class BaseWebViewClient extends WebViewClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loading=new DialogLoading(webView.getContext());
+        loading = new DialogLoading(webView.getContext());
     }
 
     /**
@@ -125,6 +125,7 @@ public class BaseWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+        L.d("onPageStarted:" + url);
         loading.show();
         webView.setVisibility(View.INVISIBLE);
     }

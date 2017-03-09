@@ -3,6 +3,7 @@ package com.ins.feast.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebView;
@@ -68,8 +69,11 @@ public class CommonWebActivity extends BaseBackActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                L.d(url);
-                if (TextUtils.equals(urlOfThisPage, url)) {
+                if (url.contains("tel:")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(url));
+                    startActivity(intent);
+                } else if (TextUtils.equals(urlOfThisPage, url)) {
                     webView.loadUrl(url);
                 } else if (urlOfThisPage.contains("login")) {
                     finish();
