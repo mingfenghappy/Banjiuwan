@@ -26,10 +26,13 @@ public class BaseFeastJSInterface extends BaseJSInterface {
         return activity;
     }
 
+    /**
+     * 支付
+     */
     @JavascriptInterface
-    public void goPayment(String orderId, String token,int payMethod) {
+    public void goPayment(String orderId, String token, int payMethod) {
         try {
-            L.d("tryPayMethod");
+            L.d("tryGoPayment");
             int orderIdInt = Integer.parseInt(orderId);
             switch (payMethod) {
                 case PayHelper.PAY_ALIPAY:
@@ -37,6 +40,27 @@ public class BaseFeastJSInterface extends BaseJSInterface {
                     break;
                 case PayHelper.PAY_WEIXIN:
                     helper.netPayWeixin(orderIdInt, token);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 充值
+     */
+    @JavascriptInterface
+    public void goRecharge(String rechargeId, String token, int payMethod) {
+        try {
+            L.d("tryGoRecharge");
+            int rechargeIdInt = Integer.parseInt(rechargeId);
+            switch (payMethod) {
+                case PayHelper.PAY_ALIPAY:
+                    helper.netRechargeZhifubao(rechargeIdInt, token);
+                    break;
+                case PayHelper.PAY_WEIXIN:
+                    helper.netRechargeWeixin(rechargeIdInt, token);
                     break;
             }
         } catch (Exception e) {

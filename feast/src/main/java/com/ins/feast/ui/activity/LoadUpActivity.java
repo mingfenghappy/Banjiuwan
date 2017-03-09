@@ -11,7 +11,7 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
 import com.ins.feast.utils.AppHelper;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
@@ -21,7 +21,7 @@ import org.xutils.http.RequestParams;
 import cn.jpush.android.api.JPushInterface;
 
 
-public class LoadUpActivity extends BaseAppCompatActivity {
+public class LoadUpActivity extends BaseFeastActivity {
 
     private Handler mHandler = new Handler();
 

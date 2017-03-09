@@ -49,6 +49,7 @@ public class WebSettingHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
         }
+
         return this;
     }
 

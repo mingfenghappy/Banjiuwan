@@ -4,22 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.ins.chef.R;
+import com.ins.middle.base.BaseWebChromeClient;
+import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
-import com.sobey.common.base.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
 
-public class CommonWebActivity extends BaseAppCompatActivity {
+public class CommonWebActivity extends BaseFeastActivity {
 
     private final static String KEY_URL = "url";
     private String url;
     private WebView webView;
     private TextView toolbar_title;
+    private BaseWebViewClient webViewClient;
+    private BaseWebChromeClient webChromeClient;
 
     public static void start(Context context, String url) {
         Intent starter = new Intent(context, CommonWebActivity.class);
@@ -38,26 +40,28 @@ public class CommonWebActivity extends BaseAppCompatActivity {
     }
 
     private void initWebView() {
-        webView.setWebChromeClient(new WebChromeClient() {
+        webChromeClient = new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
                 toolbar_title.setText(title);
             }
-        });
-        webView.setWebViewClient(new WebViewClient() {
+        };
+        webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 CommonWebActivity.start(CommonWebActivity.this, url);
                 return true;
             }
-        });
+        };
+        webView.setWebViewClient(webViewClient);
+        webView.setWebChromeClient(webChromeClient);
         WebSettingHelper.newInstance(webView).commonSetting();
         webView.loadUrl(url);
     }
 
     private void initView() {
         webView = (WebView) findViewById(R.id.webView);
+        setWebViewLifeCycleSupport(webView);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         findViewById(R.id.toolbar_left).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +69,18 @@ public class CommonWebActivity extends BaseAppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webViewClient.destroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        webChromeClient.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

@@ -1,59 +1,30 @@
 package com.ins.middle.ui.activity;
 
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ins.middle.R;
-import com.sobey.common.common.MyActivityCollector;
+import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.StrUtils;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 /**
  * Created by Administrator on 2016/7/1 0001.
  */
-public class BaseAppCompatActivity extends AppCompatActivity {
+public class BaseFeastActivity extends BaseAppCompatActivity {
 
     protected final static String JS_BRIDGE_NAME = "JSBridge";
     protected Toolbar toolbar;
-    //双击退出
-    private boolean needDoubleClickExit = false;
-    private long exitTime;
     private WebView webView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //禁止横屏
-        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        //设置状态栏深色文字
-        //StatusBarTextUtil.StatusBarLightMode(this);
-        //添加到activity集合
-        MyActivityCollector.addActivity(this);
-    }
 
     /**
      * 设置WebView生命周期支持
      */
     protected final void setWebViewLifeCycleSupport(WebView webView) {
         this.webView = webView;
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -76,23 +47,12 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyActivityCollector.removeActivity(this);
         if (webView != null) {
             webView.clearHistory();
             webView.removeAllViews();
             webView.destroy();
             webView = null;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void setToolbar(boolean needback) {
@@ -129,26 +89,4 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        //双击退出
-        if (needDoubleClickExit) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                super.finish();
-            }
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    public final void normalBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void setNeedDoubleClickExit(boolean needDoubleClickExit) {
-        this.needDoubleClickExit = needDoubleClickExit;
-    }
 }

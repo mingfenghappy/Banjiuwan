@@ -5,27 +5,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.reflect.TypeToken;
-import com.ins.feast.entity.WebEvent;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
-import com.sobey.common.utils.L;
 import com.sobey.common.utils.StrUtils;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
-import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

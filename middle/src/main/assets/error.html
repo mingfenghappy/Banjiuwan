@@ -1,6 +1,53 @@
-<!DOCTYPE html>
 <html>
+
+<head>
+    <title>错误</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        body{
+            background: #fff;
+            width: 95%;
+            height: 95%;
+            position: relative;
+            overflow: hidden;
+            overflow-x:hidden;
+            overflow-y:hidden;
+        }
+        .error-bar{
+            position: absolute;
+            width: 100%;
+            top:30%;
+            left:50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -os-transform: translate(-50%, -50%);
+            background: transparent !important;
+            text-align: center;
+        }
+        .error-bar img{
+            width: 80px;
+            height: 80px;
+        }
+        .error-bar p{
+            font-size: 14px;
+        }
+
+
+    </style>
+
+</head>
+
 <body>
-<img src="file:///android_asset/no_net.png">
+
+<div class="error-bar">
+    <img src="file:///android_asset/no_net.png">
+    <p>网络链接失败&nbsp;点击重新加载</p>
+</div>
 </body>
+
 </html>

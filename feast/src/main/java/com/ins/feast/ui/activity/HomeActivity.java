@@ -14,7 +14,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.Tabs;
-import com.ins.feast.entity.WebEvent;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
@@ -24,6 +23,7 @@ import com.ins.feast.web.HomeWebView;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.NetStateChangedEvent;
+import com.ins.middle.entity.WebEvent;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -40,7 +40,6 @@ public class HomeActivity extends BaseMapActivity implements
     //标题栏定位Tv
     private TextView title_location;
 
-    private RadioGroup tabRg;
     private HomeTitleHelper homeTitleHelper;
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
@@ -86,7 +85,7 @@ public class HomeActivity extends BaseMapActivity implements
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
         webView = (HomeWebView) findViewById(R.id.webView);
-        tabRg = (RadioGroup) findViewById(R.id.radioGroup);
+        RadioGroup tabRg = (RadioGroup) findViewById(R.id.radioGroup);
         tabRg.setOnCheckedChangeListener(this);
         homeTitleHelper = new HomeTitleHelper(this);
 
@@ -210,6 +209,9 @@ public class HomeActivity extends BaseMapActivity implements
                 break;
             case jumpToCarTab:
                 switchTab(R.id.rb_cart);
+                break;
+            case reLocation:
+                startLocation();
                 break;
         }
     }

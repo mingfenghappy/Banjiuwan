@@ -3,13 +3,12 @@ package com.ins.feast.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.ins.feast.R;
 import com.ins.feast.ui.helper.PayHelper;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 
-public class TestPayActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class TestPayActivity extends BaseFeastActivity implements View.OnClickListener {
 
     private PayHelper payHelper;
 

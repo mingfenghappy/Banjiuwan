@@ -15,12 +15,12 @@ import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
-import com.sobey.common.base.BaseAppCompatActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 
-public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener {
     private WebView webView;
     private TextView toolbar_title;
     private RadioGroup rg;
@@ -28,6 +28,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     private BaseWebChromeClient homeWebChromeClient;
     private UpdateHelper updateHelper;
     private boolean notLoad = false;
+    private BaseWebViewClient webViewClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,27 +62,29 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
                 toolbar_title.setText(title);
             }
         };
+        webViewClient = new BaseWebViewClient(webView) {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                L.d("shouldOverrideUrlLoading(HomeActivity):\n" + url);
+                if (url.contains("cookMy")
+                        || url.contains("cookMyOrder")) {
+                    view.loadUrl(url);
+                } else {
+                    CommonWebActivity.start(HomeActivity.this, url);
+                }
+                handleTabsByUrl(url);
+
+                return true;
+            }
+        };
 
         WebSettingHelper
                 .newInstance(webView)
                 .commonSetting()
                 .setWebChromeClient(homeWebChromeClient)
-                .setWebViewClient(new BaseWebViewClient(webView) {
-
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        L.d("shouldOverrideUrlLoading(HomeActivity):\n" + url);
-                        if (url.contains("cookMy")
-                                || url.contains("cookMyOrder")) {
-                            view.loadUrl(url);
-                        } else {
-                            CommonWebActivity.start(HomeActivity.this, url);
-                        }
-                        handleTabsByUrl(url);
-
-                        return true;
-                    }
-                }).addJavaScriptInterface(new ChefHomeJSInterface(), AppData.Config.JS_BRIDGE_NAME);
+                .setWebViewClient(webViewClient)
+                .addJavaScriptInterface(new ChefHomeJSInterface(), JS_BRIDGE_NAME);
 
         webView.loadUrl(AppData.Url.FEAST_CHEF_HOMEPAGE);
     }
@@ -93,6 +96,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
         mine = (RadioButton) findViewById(R.id.rg_mine);
         mineOrderForm = (RadioButton) findViewById(R.id.rg_orderForm);
 
+        setWebViewLifeCycleSupport(webView);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +123,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     protected void onDestroy() {
         super.onDestroy();
         updateHelper.onDestory();
+        webViewClient.destroy();
     }
 
     private void handleTabsByUrl(String url) {

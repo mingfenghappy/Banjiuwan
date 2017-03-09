@@ -6,8 +6,8 @@ import android.support.annotation.CallSuper;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
 import com.ins.baidumapsdk.Locationer;
-import com.ins.feast.ui.view.LoadProgressDialog;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.utils.L;
 
 /**
@@ -16,9 +16,9 @@ import com.sobey.common.utils.L;
  * desc ${使用到地图的Activity的基类}
  */
 
-public abstract class BaseMapActivity extends BaseAppCompatActivity implements Locationer.LocationCallback {
+public abstract class BaseMapActivity extends BaseFeastActivity implements Locationer.LocationCallback {
     private Locationer locationer;
-    private LoadProgressDialog progressDialog;
+    private DialogLoading loading;
 
     private boolean showLocationLoadProgress = false;
 
@@ -46,7 +46,7 @@ public abstract class BaseMapActivity extends BaseAppCompatActivity implements L
         L.d("startLocation");
         locationer.startlocation();
         if (showLocationLoadProgress) {
-            progressDialog.show();
+            loading.show();
         }
     }
 
@@ -57,8 +57,8 @@ public abstract class BaseMapActivity extends BaseAppCompatActivity implements L
     protected void stopLocation() {
         L.d("stopLocation");
         locationer.stopLocation();
-        if (showLocationLoadProgress && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        if (showLocationLoadProgress && loading.isShowing()) {
+            loading.dismiss();
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class BaseMapActivity extends BaseAppCompatActivity implements L
         locationer = new Locationer(this);
         locationer.setCallback(this);
         L.d("initLocationer");
-        progressDialog = new LoadProgressDialog(this);
+        loading = new DialogLoading(this);
     }
 
     @CallSuper
@@ -114,6 +114,7 @@ public abstract class BaseMapActivity extends BaseAppCompatActivity implements L
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        loading.dismiss();
     }
 
 }

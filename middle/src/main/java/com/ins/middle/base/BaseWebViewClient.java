@@ -1,5 +1,6 @@
 package com.ins.middle.base;
 
+import android.graphics.Bitmap;
 import android.net.NetworkInfo;
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
@@ -11,6 +12,8 @@ import android.webkit.WebViewClient;
 
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.NetStateChangedEvent;
+import com.ins.middle.entity.WebEvent;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +31,7 @@ import static com.ins.middle.common.AppData.Config.ERROR_PAGE_URL;
 
 public class BaseWebViewClient extends WebViewClient {
     private WebView webView;
+    private DialogLoading loading;
     /**
      * 保存最近一次非{@link AppData.Config#ERROR_PAGE_URL}的URL，用于在网络恢复后重新访问
      */
@@ -46,6 +50,7 @@ public class BaseWebViewClient extends WebViewClient {
                         TextUtils.equals(ERROR_PAGE_URL, webView.getUrl())) {
                     L.d("onTouch,reload:" + lastUrl);
                     webView.loadUrl(lastUrl);
+                    EventBus.getDefault().post(WebEvent.reLocation);
                     return true;
                 }
                 return false;
@@ -57,6 +62,7 @@ public class BaseWebViewClient extends WebViewClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        loading=new DialogLoading(webView.getContext());
     }
 
     /**
@@ -65,6 +71,7 @@ public class BaseWebViewClient extends WebViewClient {
     public final void destroy() {
         try {
             EventBus.getDefault().unregister(this);
+            loading.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,4 +122,17 @@ public class BaseWebViewClient extends WebViewClient {
         }
     }
 
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        super.onPageStarted(view, url, favicon);
+        loading.show();
+        webView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        loading.hide();
+        webView.setVisibility(View.VISIBLE);
+    }
 }

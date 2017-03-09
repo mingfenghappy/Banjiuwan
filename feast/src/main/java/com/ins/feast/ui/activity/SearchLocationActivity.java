@@ -22,7 +22,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.SearchLocationAdapter;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
@@ -36,7 +36,7 @@ import rx.functions.Action1;
 
 
 
-public class SearchLocationActivity extends BaseAppCompatActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
+public class SearchLocationActivity extends BaseFeastActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
     private final static String CITY_KEY = "key";
     private final static String TRANSITION_RED_BG ="redBg";
     private final static String TRANSITION_WHITE_BG ="whiteBg";

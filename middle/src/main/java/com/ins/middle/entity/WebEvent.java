@@ -1,4 +1,4 @@
-package com.ins.feast.entity;
+package com.ins.middle.entity;
 
 /**
  * author 边凌
@@ -14,5 +14,9 @@ public enum WebEvent {
     /*支付成功*/
     paySuccess,
     /*支付失败*/
-    payFailed
+    payFailed,
+    /*支付取消*/
+    payCanceled,
+    /*重新开始定位*/
+    reLocation
 }

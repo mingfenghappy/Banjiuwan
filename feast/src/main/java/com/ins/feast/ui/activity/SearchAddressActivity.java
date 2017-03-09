@@ -35,7 +35,7 @@ import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -48,7 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAddressActivity extends BaseAppCompatActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
+public class SearchAddressActivity extends BaseFeastActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
 
     private MapView mapView;
     private BaiduMap baiduMap;

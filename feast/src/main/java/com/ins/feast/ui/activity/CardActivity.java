@@ -18,7 +18,7 @@ import com.ins.feast.ui.dialog.DialogLoading;
 import com.ins.feast.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardActivity extends BaseAppCompatActivity implements OnRecycleItemClickListener {
+public class CardActivity extends BaseFeastActivity implements OnRecycleItemClickListener {
 
     private RecyclerView recyclerView;
     private List<Card> results = new ArrayList<>();

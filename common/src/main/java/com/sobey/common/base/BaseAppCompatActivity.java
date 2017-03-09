@@ -9,11 +9,6 @@ import android.widget.Toast;
 
 import com.sobey.common.common.MyActivityCollector;
 
-/**
- * author 边凌
- * date 2017/2/28 15:38
- * desc ${AppCompatActivity基类}
- */
 
 public class BaseAppCompatActivity extends AppCompatActivity{
     //双击退出

@@ -13,7 +13,7 @@ import com.liuguangqiang.swipeback.SwipeBackLayout;
 /**
  * Created by Administrator on 2016/7/1 0001.
  */
-public class BaseBackActivity extends BaseAppCompatActivity implements SwipeBackLayout.SwipeBackListener {
+public class BaseBackActivity extends BaseFeastActivity implements SwipeBackLayout.SwipeBackListener {
 
     private SwipeBackLayout swipeBackLayout;
     private ImageView ivShadow;

@@ -4,10 +4,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ins.feast.R;
-import com.ins.feast.entity.WebEvent;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.utils.RxViewUtils;
 import com.ins.middle.base.TitleHelper;
+import com.ins.middle.entity.WebEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

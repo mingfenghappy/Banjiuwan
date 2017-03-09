@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
 import com.ins.feast.common.JSFunctionUrl;
-import com.ins.feast.entity.WebEvent;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.CommonWebJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
+import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.L;
 
@@ -21,11 +22,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+
 public class CommonWebActivity extends BaseBackActivity {
     private final static String KEY_URL = "urlOfThisPage";
     private String urlOfThisPage;
     private WebView webView;
     private CommonWebTitleHelper titleHelper;
+    private BaseWebViewClient webViewClient;
+    private BaseWebChromeClient webChromeClient;
 
     public static void start(Context context, String url) {
         Intent starter = new Intent(context, CommonWebActivity.class);
@@ -53,18 +57,21 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void webClient() {
-        webView.setWebChromeClient(new BaseWebChromeClient(this) {
+
+        webChromeClient = new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 titleHelper.setTitleText(title);
             }
-        });
-        webView.setWebViewClient(new BaseWebViewClient(webView) {
+        };
+        webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 L.d(url);
-                if (urlOfThisPage.contains("login")) {
+                if (TextUtils.equals(urlOfThisPage, url)) {
+                    webView.loadUrl(url);
+                } else if (urlOfThisPage.contains("login")) {
                     finish();
                     EventBus.getDefault().post(WebEvent.shouldRefresh);
                 } else {
@@ -73,7 +80,9 @@ public class CommonWebActivity extends BaseBackActivity {
 
                 return true;
             }
-        });
+        };
+        webView.setWebChromeClient(webChromeClient);
+        webView.setWebViewClient(webViewClient);
     }
 
     private void webSetting() {
@@ -99,6 +108,7 @@ public class CommonWebActivity extends BaseBackActivity {
             case shouldRefresh:
                 webView.reload();
                 break;
+            case payCanceled:
             case payFailed:
                 webView.loadUrl(JSFunctionUrl.PAY_FAILED);
                 break;
@@ -109,8 +119,15 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        webChromeClient.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        webViewClient.destroy();
         EventBus.getDefault().unregister(this);
     }
 

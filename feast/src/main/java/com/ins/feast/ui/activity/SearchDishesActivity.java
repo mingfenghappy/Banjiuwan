@@ -9,9 +9,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ins.feast.R;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseFeastActivity;
 
-public class SearchDishesActivity extends BaseAppCompatActivity {
+public class SearchDishesActivity extends BaseFeastActivity {
     private WebView webView;
 
     @Override
