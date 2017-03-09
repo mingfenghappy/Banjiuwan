@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
+import com.ins.feast.entity.Tabs;
 import com.ins.feast.entity.WebEvent;
 import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
@@ -20,10 +21,9 @@ import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
-import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
-import com.ins.middle.base.TitleHelper;
+import com.ins.middle.entity.NetStateChangedEvent;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
@@ -46,6 +46,7 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeActivityWebViewClient webViewClient;
     private HomeJSInterface homeJsInterface;
     private UpdateHelper updateHelper;
+    private boolean notLoad = false;
 
     /**
      * 注：该Activity启动模式为singleTask
@@ -88,12 +89,26 @@ public class HomeActivity extends BaseMapActivity implements
         tabRg = (RadioGroup) findViewById(R.id.radioGroup);
         tabRg.setOnCheckedChangeListener(this);
         homeTitleHelper = new HomeTitleHelper(this);
+
+        /*notLoad属性用于解决连续按返回键时在最后两个页面循环切换无法结束应用的问题*/
+        /*这是由于在onBackPressed中WebView调用goBack方法时，RadioGroup改变选中按钮id，而在onCheckChanged中会加载一遍当前tab的url*/
+        /*因此WebView始终可以goBack*/
+        for (Tabs tabs : Tabs.values()) {
+            findViewById(tabs.getButtonId()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notLoad = false;
+                }
+            });
+        }
     }
 
     /**
      * WebView配置
      */
     private void initWebViewSetting() {
+        setWebViewLifeCycleSupport(webView);
+
         webViewClient = new HomeActivityWebViewClient(this);
         webChromeClient = new HomeActivityWebChromeClient(this);
 
@@ -124,24 +139,23 @@ public class HomeActivity extends BaseMapActivity implements
         if (webView != null && webView.canGoBack()) {
             webView.goBack();
             String originalUrl = webView.getOriginalUrl();
-            checkTabByUrl(originalUrl);
+            selectTabByUrl(originalUrl);
         } else {
             super.onBackPressed();
         }
     }
 
-    private void checkTabByUrl(String url) {
+    /**
+     * 根据返回到的页面的url改变tab栏选中的tab
+     */
+    private void selectTabByUrl(String url) {
+        notLoad = true;
         int buttonId = 0;
-        if (url.contains("index")) {
-            buttonId = R.id.rb_home;
-        } else if (url.contains("car")) {
-            buttonId = R.id.rb_cart;
-        } else if (url.contains("find")) {
-            buttonId = R.id.rb_find;
-        } else if (url.contains("customer")) {
-            buttonId = R.id.rb_customerService;
-        } else if (url.contains("my")) {
-            buttonId = R.id.rb_mine;
+
+        for (Tabs tabs : Tabs.values()) {
+            if (url.contains(tabs.getUrlTag())) {
+                buttonId = tabs.getButtonId();
+            }
         }
 
         RadioButton radioButton = (RadioButton) findViewById(buttonId);
@@ -152,29 +166,9 @@ public class HomeActivity extends BaseMapActivity implements
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (webView != null) {
-            webView.onPause();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (webView != null) {
-            webView.onResume();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
-        if (webView != null && webViewClient != null) {
-            webView.clearHistory();
-            webView.removeAllViews();
-            webView.destroy();
+        if (webViewClient != null) {
             webViewClient.destroy();
-            webView = null;
         }
         EventBus.getDefault().unregister(this);
         updateHelper.onDestory();
@@ -240,34 +234,16 @@ public class HomeActivity extends BaseMapActivity implements
 
     private void handleTitleByCheckedId(int checkedId) {
         String url = null;
-        switch (checkedId) {
-            case R.id.rb_home:
-                url = AppData.Url.app_home;
-                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.home);
-                homeTitleHelper.setTitleText("办酒碗");
-                break;
-            case R.id.rb_cart:
-                url = AppData.Url.app_cart;
-                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
-                homeTitleHelper.setTitleText("购物车");
-                break;
-            case R.id.rb_find:
-                url = AppData.Url.app_find;
-                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
-                homeTitleHelper.setTitleText("发现");
-                break;
-            case R.id.rb_customerService:
-                url = AppData.Url.app_customer_service;
-                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.noTitle);
-                homeTitleHelper.setTitleText("");
-                break;
-            case R.id.rb_mine:
-                url = AppData.Url.app_mine;
-                homeTitleHelper.handleTitleStyleByTag(TitleHelper.TitleType.onlyCenter);
-                homeTitleHelper.setTitleText("我的");
-                break;
+
+        for (Tabs tabs : Tabs.values()) {
+            if (checkedId == tabs.getButtonId()) {
+                url = tabs.getUrl();
+                homeTitleHelper.handleTitleStyleByTag(tabs.getTitleType());
+                homeTitleHelper.setTitleText(tabs.getTitle());
+            }
         }
-        if (webView != null) {
+
+        if (webView != null && !notLoad) {
             webView.loadUrl(url);
         }
     }

@@ -27,6 +27,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     private RadioButton mine, mineOrderForm;
     private BaseWebChromeClient homeWebChromeClient;
     private UpdateHelper updateHelper;
+    private boolean notLoad = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,15 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
         rg = (RadioGroup) findViewById(R.id.rg);
         mine = (RadioButton) findViewById(R.id.rg_mine);
         mineOrderForm = (RadioButton) findViewById(R.id.rg_orderForm);
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notLoad = true;
+            }
+        };
+        findViewById(R.id.rg_mine).setOnClickListener(listener);
+        findViewById(R.id.rg_orderForm).setOnClickListener(listener);
     }
 
     @Override
@@ -112,6 +122,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
     }
 
     private void handleTabsByUrl(String url) {
+        notLoad = true;
         if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE)) {
             rg.setVisibility(View.VISIBLE);
             if (!mine.isChecked()) {
@@ -138,7 +149,7 @@ public class HomeActivity extends BaseAppCompatActivity implements RadioGroup.On
                 url = AppData.Url.FEAST_CHEF_MINE_ORDERFORM;
                 break;
         }
-        if (!TextUtils.isEmpty(url)) {
+        if (!TextUtils.isEmpty(url) && !notLoad) {
             webView.loadUrl(url);
         }
     }

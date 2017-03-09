@@ -3,10 +3,12 @@ package com.ins.middle.ui.activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     //双击退出
     private boolean needDoubleClickExit = false;
     private long exitTime;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +44,45 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         MyActivityCollector.addActivity(this);
     }
 
+    /**
+     * 设置WebView生命周期支持
+     */
+    protected final void setWebViewLifeCycleSupport(WebView webView) {
+        this.webView = webView;
+    }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.onResume();
+        }
+    }
+
+    @CallSuper
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         MyActivityCollector.removeActivity(this);
+        if (webView != null) {
+            webView.clearHistory();
+            webView.removeAllViews();
+            webView.destroy();
+            webView = null;
+        }
     }
 
     @Override

@@ -46,6 +46,7 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void initWebViewSetting() {
+        setWebViewLifeCycleSupport(webView);
         webClient();
         webSetting();
         webView.loadUrl(urlOfThisPage);
