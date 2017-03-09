@@ -16,9 +16,6 @@ import com.sobey.common.utils.UrlUtil;
 
 public abstract class TitleHelper {
     private final static String TAG_NAME = "isOpen";
-
-    public enum TitleType {home, onlyCenter, centerAndBackIcon, noTitle, error}
-
     private TextView titleView;
 
     public abstract void handleTitleStyleByTag(TitleType type);
@@ -27,7 +24,7 @@ public abstract class TitleHelper {
 
     public final void setTitleText(String title) {
         if (titleView == null) {
-            titleView=bindTitleCenter();
+            titleView = bindTitleCenter();
         }
 
         if (!TextUtils.equals(title, AppData.Config.ERROR_PAGE_TITLE)) {
@@ -72,7 +69,11 @@ public abstract class TitleHelper {
                 return TitleType.home;
             case "3":
                 return TitleType.noTitle;
+            case "4":
+                return TitleType.noTitleButHaveIcon;
         }
         return TitleType.error;
     }
+
+    public enum TitleType {home, onlyCenter, centerAndBackIcon, noTitle, noTitleButHaveIcon, error}
 }

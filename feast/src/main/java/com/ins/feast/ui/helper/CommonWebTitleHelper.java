@@ -53,23 +53,35 @@ public class CommonWebTitleHelper extends TitleHelper implements View.OnClickLis
     public void handleTitleStyleByTag(TitleType type) {
         switch (type) {
             case centerAndBackIcon:
-                rootView.setVisibility(View.VISIBLE);
-                leftIcon_back_1.setVisibility(View.VISIBLE);
-                leftIcon_back_2.setVisibility(View.GONE);
-                rightIcon_car.setVisibility(View.GONE);
+                style_CenterAndBackIcon();
                 break;
             case onlyCenter:
-                rootView.setVisibility(View.VISIBLE);
-                leftIcon_back_1.setVisibility(View.GONE);
-                leftIcon_back_2.setVisibility(View.GONE);
-                rightIcon_car.setVisibility(View.GONE);
+                style_OnlyCenter();
                 break;
-            case noTitle:
-                rootView.setVisibility(View.GONE);
-                leftIcon_back_2.setVisibility(View.VISIBLE);
-                rightIcon_car.setVisibility(View.VISIBLE);
+            case noTitleButHaveIcon:
+                style_NoTitleButHaveIcon();
                 break;
         }
+    }
+
+    private void style_NoTitleButHaveIcon() {
+        rootView.setVisibility(View.GONE);
+        leftIcon_back_2.setVisibility(View.VISIBLE);
+        rightIcon_car.setVisibility(View.VISIBLE);
+    }
+
+    private void style_OnlyCenter() {
+        rootView.setVisibility(View.VISIBLE);
+        leftIcon_back_1.setVisibility(View.GONE);
+        leftIcon_back_2.setVisibility(View.GONE);
+        rightIcon_car.setVisibility(View.GONE);
+    }
+
+    private void style_CenterAndBackIcon() {
+        rootView.setVisibility(View.VISIBLE);
+        leftIcon_back_1.setVisibility(View.VISIBLE);
+        leftIcon_back_2.setVisibility(View.GONE);
+        rightIcon_car.setVisibility(View.GONE);
     }
 
     @Override
@@ -80,13 +92,11 @@ public class CommonWebTitleHelper extends TitleHelper implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.leftIcon_back:
-            case R.id.toolbar_leftIcon:
-                commonWebActivity.onBackPressed();
-                break;
             case R.id.rightIcon_car:
                 EventBus.getDefault().post(WebEvent.jumpToCarTab);
-                // TODO: 2017/3/7
+            case R.id.toolbar_leftIcon:
+            case R.id.leftIcon_back:
+                commonWebActivity.onBackPressed();
                 break;
         }
     }
