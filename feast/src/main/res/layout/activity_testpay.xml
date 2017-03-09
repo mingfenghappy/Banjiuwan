@@ -70,6 +70,20 @@
             android:layout_height="wrap_content"
             android:text="微信" />
 
+        <Button
+            android:id="@+id/btn_recharge_zhifubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="支付宝充值" />
+
+        <Button
+            android:id="@+id/btn_recharge_weixin"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信充值" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

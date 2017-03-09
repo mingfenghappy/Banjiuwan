@@ -157,6 +157,8 @@ public class AppData {
 
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
         public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名
+        public static String recharge                   = domain + "/app/AliPayRecharge/sign";             						//请求支付宝充值签名
+        public static String rechargeWeixin             = domain + "/app/WeChatPayRecharge/sign";             					//请求微信充值签名
 
         ///////////////////////////////
         //////////////  厨师端

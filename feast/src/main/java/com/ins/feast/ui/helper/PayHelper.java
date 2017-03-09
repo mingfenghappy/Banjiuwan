@@ -46,55 +46,6 @@ public class PayHelper {
     public static String appid = "wx39b6f80d336ca5e4";
     private Activity activity;
     private IWXAPI api;
-    /**
-     * 支付宝支付回调
-     */
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1: {
-                    PayResult payResult = new PayResult((String) msg.obj);
-                    /**
-                     * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-                     * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-                     * docType=1) 建议商户依赖异步通知
-                     */
-                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-
-                    String resultStatus = payResult.getResultStatus();
-                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                    //文档查询：https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.GpzTjL&treeId=204&articleId=105302&docType=1
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
-                        onPaySuccess();
-                    } else {
-
-                        // 判断resultStatus 为非"9000"则代表可能支付失败
-                        // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                        if (TextUtils.equals(resultStatus, "8000")) {
-                            Toast.makeText(activity, "支付结果确认中", Toast.LENGTH_SHORT).show();
-                            onPayFail();
-                        } else if (TextUtils.equals(resultStatus, "6001")) {
-                            // 用户主动取消支付
-                            Toast.makeText(activity, "用户取消了支付", Toast.LENGTH_SHORT).show();
-                            onPayCancel();
-                        } else {
-                            //其他值就可以判断为支付失败
-                            onPayFail();
-                            Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-
-        ;
-    };
 
     public PayHelper(Activity activity) {
         this.activity = activity;
@@ -103,6 +54,10 @@ public class PayHelper {
         api.registerApp(appid);
     }
 
+    ///////////////////////////////
+    //////// 对外方法
+    ///////////////////////////////
+
     /**
      * 支付宝支付
      */
@@ -110,6 +65,54 @@ public class PayHelper {
         RequestParams params = new RequestParams(AppData.Url.sign);
         params.addHeader("token", token);
         params.addBodyParameter("orderId", orderId + "");
+        startPayZhifubao(params);
+    }
+
+    /**
+     * 支付宝充值
+     */
+    public void netRechargeZhifubao(int rechargeId, String token) {
+        RequestParams params = new RequestParams(AppData.Url.recharge);
+        params.addHeader("token", token);
+        params.addBodyParameter("rechargeId", rechargeId + "");
+        startPayZhifubao(params);
+    }
+
+    /**
+     * 微信支付
+     */
+    public void netPayWeixin(int orderId, String token) {
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(activity, "您还没有安装微信，请先安装微信在使用微信支付", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RequestParams params = new RequestParams(AppData.Url.signWeixin);
+        params.addHeader("token", token);
+        params.addBodyParameter("orderId", orderId + "");
+        //params.addBodyParameter("ip", "101.201.222.161");
+        startPayWeixin(params);
+    }
+
+    /**
+     * 微信充值
+     */
+    public void netRechargeWeixin(int rechargeId, String token) {
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(activity, "您还没有安装微信，请先安装微信在使用微信支付", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RequestParams params = new RequestParams(AppData.Url.rechargeWeixin);
+        params.addHeader("token", token);
+        params.addBodyParameter("rechargeId", rechargeId + "");
+        //params.addBodyParameter("ip", "101.201.222.161");
+        startPayWeixin(params);
+    }
+
+    ///////////////////////////////
+    //////// 请求支付参数并发起支付
+    ///////////////////////////////
+
+    private void startPayZhifubao(RequestParams params){
         CommonNet.samplepost(params, new TypeToken<LinkedHashMap<String, String>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
@@ -152,18 +155,7 @@ public class PayHelper {
         });
     }
 
-    /**
-     * 微信支付
-     */
-    public void netPayWeixin(int orderId, String token) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(activity, "您还没有安装微信，请先安装微信在使用微信支付", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        RequestParams params = new RequestParams(AppData.Url.signWeixin);
-        params.addHeader("token", token);
-        params.addBodyParameter("orderId", orderId + "");
-        //params.addBodyParameter("ip", "101.201.222.161");
+    private void startPayWeixin(RequestParams params){
         CommonNet.samplepost(params, new TypeToken<LinkedHashMap<String, String>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
@@ -217,6 +209,64 @@ public class PayHelper {
             }
         });
     }
+
+    ///////////////////////////////
+    //////// 支付回调过程
+    ///////////////////////////////
+
+    /**
+     * 支付宝支付回调
+     */
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: {
+                    PayResult payResult = new PayResult((String) msg.obj);
+                    /**
+                     * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
+                     * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
+                     * docType=1) 建议商户依赖异步通知
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    //文档查询：https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.GpzTjL&treeId=204&articleId=105302&docType=1
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        Toast.makeText(activity, "支付成功", Toast.LENGTH_SHORT).show();
+                        onPaySuccess();
+                    } else {
+
+                        // 判断resultStatus 为非"9000"则代表可能支付失败
+                        // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                        if (TextUtils.equals(resultStatus, "8000")) {
+                            Toast.makeText(activity, "支付结果确认中", Toast.LENGTH_SHORT).show();
+                            onPayFail();
+                        } else if (TextUtils.equals(resultStatus, "6001")) {
+                            // 用户主动取消支付
+                            Toast.makeText(activity, "用户取消了支付", Toast.LENGTH_SHORT).show();
+                            onPayCancel();
+                        } else {
+                            //其他值就可以判断为支付失败
+                            onPayFail();
+                            Toast.makeText(activity, "支付失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        ;
+    };
+
+    ///////////////////////////////
+    //////// 支付状态处理
+    ///////////////////////////////
 
     private void onPayStart() {
     }
