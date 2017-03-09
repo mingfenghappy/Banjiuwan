@@ -43,9 +43,9 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
      */
     private boolean jumpedIfIsCardDetail(String url) {
 
-        for (AppData.CardDetail cardDetail : AppData.CardDetail.values()) {
-            if (url.contains(cardDetail.getTag())) {
-                CardActivity.start(homeActivity, cardDetail);
+        for (AppData.CardType cardType : AppData.CardType.values()) {
+            if (url.contains(cardType.getTag())) {
+                CardActivity.start(homeActivity, cardType);
                 return true;
             }
         }

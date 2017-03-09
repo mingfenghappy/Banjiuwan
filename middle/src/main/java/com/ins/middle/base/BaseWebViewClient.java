@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.NetStateChangedEvent;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;

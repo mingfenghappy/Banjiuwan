@@ -1,4 +1,4 @@
-package com.ins.middle.base;
+package com.ins.middle.entity;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

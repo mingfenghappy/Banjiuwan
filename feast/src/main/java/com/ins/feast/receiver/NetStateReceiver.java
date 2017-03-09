@@ -8,7 +8,7 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Build;
 
-import com.ins.middle.base.NetStateChangedEvent;
+import com.ins.middle.entity.NetStateChangedEvent;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;

@@ -9,7 +9,7 @@ import android.webkit.WebViewClient;
 /**
  * author 边凌
  * date 2017/3/8 16:16
- * desc ${TODO}
+ * desc WebView设置辅助类，统一管理WebView设置，此外{@link #getSettings()}拿到{@link WebSettings}可进行特殊处理
  */
 
 public class WebSettingHelper {
@@ -24,6 +24,7 @@ public class WebSettingHelper {
         return new WebSettingHelper(webView);
     }
 
+    @SuppressWarnings("unused")
     public WebSettings getSettings() {
         return settings;
     }
@@ -61,7 +62,7 @@ public class WebSettingHelper {
         return this;
     }
 
-    public WebSettingHelper addJavaScriptInterface(Object jsInterface, String jsBridgeName) {
+    public WebSettingHelper addJavaScriptInterface(BaseJSInterface jsInterface, String jsBridgeName) {
         webView.addJavascriptInterface(jsInterface, jsBridgeName);
         return this;
     }

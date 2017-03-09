@@ -1,4 +1,4 @@
-package com.ins.middle.common;
+package com.ins.middle.base;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;

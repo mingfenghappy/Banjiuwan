@@ -9,7 +9,7 @@ import com.ins.feast.ui.activity.ChooseLocationActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.SearchDishesActivity;
 import com.ins.feast.utils.RxViewUtils;
-import com.ins.middle.common.TitleHelper;
+import com.ins.middle.base.TitleHelper;
 
 /**
  * author 边凌

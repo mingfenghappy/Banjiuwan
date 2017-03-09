@@ -5,18 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.ins.feast.R;
-import com.ins.middle.common.AppData;
 import com.ins.feast.common.CardLayoutManager;
-import com.ins.middle.common.CommonNet;
 import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
 import com.ins.feast.ui.dialog.DialogLoading;
 import com.ins.feast.utils.AppHelper;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
@@ -43,12 +44,22 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        setToolbar(null, false);
+        setToolbar(null,true);
 
         initBase();
         initView();
         initCtrl();
         initData();
+        adjustBgAndTitle();
+    }
+
+    private void adjustBgAndTitle() {
+        findViewById(R.id.appBarLayout).setBackgroundColor(cardType.getBgColor());
+        findViewById(R.id.toolbar).setBackgroundColor(cardType.getBgColor());
+        findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
+
+        TextView title= (TextView) findViewById(R.id.text_toolbar_title);
+        title.setText(cardType.getTitle());
     }
 
     @Override
@@ -57,10 +68,10 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
         if (dialogLoading != null) dialogLoading.dismiss();
     }
 
-    private AppData.CardDetail cardDetail;
+    private AppData.CardType cardType;
 
     private void initBase() {
-        cardDetail = (AppData.CardDetail) getIntent().getSerializableExtra(KEY_CARD_DETAIL);
+        cardType = (AppData.CardType) getIntent().getSerializableExtra(KEY_CARD_DETAIL);
         dialogLoading = new DialogLoading(this);
     }
 
@@ -162,15 +173,15 @@ public class CardActivity extends BaseAppCompatActivity implements OnRecycleItem
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Card card = adapter.getResults().get(viewHolder.getLayoutPosition());
         int id = card.getId();
-        CommonWebActivity.start(this, cardDetail.getBaseUrl() + "?id=" + id);
+        CommonWebActivity.start(this, cardType.getBaseUrl() + "?id=" + id);
     }
 
 
-    private final static String KEY_CARD_DETAIL = "cardDetail";
+    private final static String KEY_CARD_DETAIL = "cardType";
 
-    public static void start(Context context, AppData.CardDetail cardDetail) {
+    public static void start(Context context, AppData.CardType cardType) {
         Intent starter = new Intent(context, CardActivity.class);
-        starter.putExtra(KEY_CARD_DETAIL, cardDetail);
+        starter.putExtra(KEY_CARD_DETAIL, cardType);
         context.startActivity(starter);
     }
 }

@@ -172,9 +172,10 @@ public class AppData {
 
 
     /**
-     * 启动卡片式页面的辅助枚举，携带url拦截关键字以及用于拼装跳转URL的baseUrl
+     * 启动卡片式页面的辅助枚举，携带url拦截关键字以及用于拼装跳转URL的baseUrl等信息
      */
-    public enum CardDetail{
+    public enum CardType {
+        /*套餐*/
         setMeal {
             @Override
             public String getTag() {
@@ -196,6 +197,7 @@ public class AppData {
                 return Color.parseColor("#9B1D15");
             }
         },
+        /*坝坝宴*/
         bamYan {
             @Override
             public String getTag() {
@@ -217,6 +219,7 @@ public class AppData {
                 return Color.parseColor("#FF5B3D");
             }
         },
+        /*伴餐演奏*/
         dinner {
             @Override
             public String getTag() {
@@ -237,10 +240,16 @@ public class AppData {
             public int getBgColor() {
                 return Color.parseColor("#1A54B1");
             }
-        };
+        },;
+
         public abstract String getTag();
+
         public abstract String getBaseUrl();
+
         public abstract String getTitle();
-        public abstract @ColorInt int getBgColor();
+
+        public abstract
+        @ColorInt
+        int getBgColor();
     }
 }
