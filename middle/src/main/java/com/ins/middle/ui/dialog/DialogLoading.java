@@ -7,12 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.ins.middle.R;
 
@@ -22,19 +18,14 @@ import com.ins.middle.R;
  */
 public class DialogLoading extends Dialog {
     private Context context;
-    private ImageView header_img;
+    private ImageView img_out;
     private AnimationDrawable animationRefresh;
-    private ProgressBar footer_progress;
-    private RotateAnimation mRotateUpAnim;
+    private ImageView img_in;
 
-    //外面旋转的边框src资源
-    private int rotateSrc = R.drawable.maoyan_out;
-    //内部动画的src资源
-    private int[] refreshAnimSrcs = new int[]{R.drawable.maoyan_in1, R.drawable.maoyan_in1};
-    //边框旋转一圈用时
-    private int TIME_OUT = 800;
-    //内部帧动画每一帧用时
-    private int TIME_IN = 150;
+    private int inSrc = R.drawable.loading_in;
+    private int[] outSrcs = new int[]{R.drawable.loading_out1, R.drawable.loading_out2,R.drawable.loading_out3,R.drawable.loading_out4};
+    //边框旋转一帧用时
+    private int TIME_OUT = 100;
 
     public DialogLoading(Context context) {
         super(context, R.style.LoadingDialog);
@@ -61,6 +52,21 @@ public class DialogLoading extends Dialog {
         setAnim();
     }
 
+    private void setAnim() {
+        img_in = (ImageView) findViewById(R.id.img_loading_in);
+        img_in.setImageResource(inSrc);
+
+        /////////////
+        img_out = (ImageView) findViewById(R.id.img_loading_out);
+        animationRefresh = new AnimationDrawable();
+        for (int src : this.outSrcs) {
+            animationRefresh.addFrame(ContextCompat.getDrawable(context, src), TIME_OUT);
+            animationRefresh.setOneShot(false);
+        }
+        img_out.setImageDrawable(animationRefresh);
+        animationRefresh.start();
+    }
+
     @Override
     public void show() {
         super.show();
@@ -81,34 +87,9 @@ public class DialogLoading extends Dialog {
 
     public void onStart() {
         animationRefresh.start();
-        footer_progress.startAnimation(mRotateUpAnim);
     }
 
     public void onStop() {
         animationRefresh.stop();
-        footer_progress.clearAnimation();
-    }
-
-    private void setAnim() {
-        footer_progress = (ProgressBar) findViewById(R.id.rotation_footer_progress);
-
-        mRotateUpAnim = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        mRotateUpAnim.setInterpolator(new LinearInterpolator());
-        mRotateUpAnim.setRepeatCount(Animation.INFINITE);
-        mRotateUpAnim.setDuration(TIME_OUT);
-        mRotateUpAnim.setFillAfter(true);
-
-        footer_progress.setIndeterminateDrawable(ContextCompat.getDrawable(context, rotateSrc));
-        footer_progress.startAnimation(mRotateUpAnim);
-
-        /////////////
-        header_img = (ImageView) findViewById(R.id.meituan_header_img);
-        animationRefresh = new AnimationDrawable();
-        for (int src : this.refreshAnimSrcs) {
-            animationRefresh.addFrame(ContextCompat.getDrawable(context, src), TIME_IN);
-            animationRefresh.setOneShot(false);
-        }
-        header_img.setImageDrawable(animationRefresh);
-        animationRefresh.start();
     }
 }
