@@ -198,6 +198,11 @@ public class AppData {
             public int getBgColor() {
                 return Color.parseColor("#9B1D15");
             }
+
+            @Override
+            public String getCategoryId() {
+                return "9";
+            }
         },
         /*坝坝宴*/
         bamYan {
@@ -219,6 +224,11 @@ public class AppData {
             @Override
             public int getBgColor() {
                 return Color.parseColor("#FF5B3D");
+            }
+
+            @Override
+            public String getCategoryId() {
+                return "10";
             }
         },
         /*伴餐演奏*/
@@ -242,6 +252,11 @@ public class AppData {
             public int getBgColor() {
                 return Color.parseColor("#1A54B1");
             }
+
+            @Override
+            public String getCategoryId() {
+                return "12";
+            }
         },;
 
         public abstract String getTag();
@@ -253,5 +268,8 @@ public class AppData {
         public abstract
         @ColorInt
         int getBgColor();
+
+        /*这个接口用于卡片式页面请求服务器数据的参数，常量*/
+        public abstract String getCategoryId();
     }
 }

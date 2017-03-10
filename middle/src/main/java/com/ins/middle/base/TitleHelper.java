@@ -69,6 +69,7 @@ public abstract class TitleHelper {
                 return TitleType.home;
             case "3":
                 return TitleType.noTitle;
+             /*这个4是自己设的一个属性，因为这种布局在本地就可以判断是否需要,具体在Feast module 的CardActivity可以看到*/
             case "4":
                 return TitleType.noTitleButHaveIcon;
         }

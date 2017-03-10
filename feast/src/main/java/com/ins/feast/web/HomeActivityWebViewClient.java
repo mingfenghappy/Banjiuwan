@@ -3,12 +3,11 @@ package com.ins.feast.web;
 import android.webkit.WebView;
 
 import com.ins.feast.R;
-import com.ins.middle.base.BaseWebViewClient;
-import com.ins.middle.common.AppData;
 import com.ins.feast.ui.activity.CardActivity;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
-import com.sobey.common.utils.L;
+import com.ins.middle.base.BaseWebViewClient;
+import com.ins.middle.common.AppData;
 
 /**
  * author 边凌

@@ -36,19 +36,25 @@ import java.util.List;
 
 public class CardActivity extends BaseFeastActivity implements OnRecycleItemClickListener {
 
+    private final static String KEY_CARD_DETAIL = "cardType";
     private RecyclerView recyclerView;
     private List<Card> results = new ArrayList<>();
     private RecycleAdapterCard adapter;
-
     private DotView dotView;
-
     private DialogLoading dialogLoading;
+    private AppData.CardType cardType;
+
+    public static void start(Context context, AppData.CardType cardType) {
+        Intent starter = new Intent(context, CardActivity.class);
+        starter.putExtra(KEY_CARD_DETAIL, cardType);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        setToolbar(null,false);
+        setToolbar(null, false);
         setEventBusSupport();
 
         initBase();
@@ -70,8 +76,6 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
         super.onDestroy();
         if (dialogLoading != null) dialogLoading.dismiss();
     }
-
-    private AppData.CardType cardType;
 
     private void initBase() {
         cardType = (AppData.CardType) getIntent().getSerializableExtra(KEY_CARD_DETAIL);
@@ -141,7 +145,7 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     private void netGetCards() {
         RequestParams params = new RequestParams(AppData.Url.queryByCategory);
         params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("foodCategoryId", "10");
+        params.addBodyParameter("foodCategoryId", cardType.getCategoryId());
 
         CommonNet.samplepost(params, new TypeToken<List<Card>>() {
         }.getType(), new CommonNet.SampleNetHander() {
@@ -182,21 +186,13 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Card card = adapter.getResults().get(viewHolder.getLayoutPosition());
         int id = card.getId();
-        CommonWebActivity.start(this, cardType.getBaseUrl() + "?id=" + id);
-    }
-
-
-    private final static String KEY_CARD_DETAIL = "cardType";
-
-    public static void start(Context context, AppData.CardType cardType) {
-        Intent starter = new Intent(context, CardActivity.class);
-        starter.putExtra(KEY_CARD_DETAIL, cardType);
-        context.startActivity(starter);
+        /*卡片式页面的详情页只会从下面这行代码跳转到，因此写死参数isOpen=4*/
+        CommonWebActivity.start(this, cardType.getBaseUrl() + "?foodId=" + id + "&isOpen=4");
     }
 
     @Subscribe
-    public void onWebEvent(WebEvent webEvent){
-        if(webEvent==WebEvent.finishActivity){
+    public void onWebEvent(WebEvent webEvent) {
+        if (webEvent == WebEvent.finishActivity) {
             finish();
         }
     }

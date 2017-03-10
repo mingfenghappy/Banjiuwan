@@ -1,8 +1,11 @@
 package com.ins.chef.ui.activity;
 
 import android.content.Intent;
+import android.database.ContentObservable;
+import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
@@ -55,6 +58,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         rg.setOnCheckedChangeListener(this);
     }
 
+    private boolean first=true;
     private void initWeb() {
         homeWebChromeClient = new BaseWebChromeClient(this) {
             @Override
@@ -76,8 +80,13 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                         || url.contains("cookMyOrder")) {
                     view.loadUrl(url);
                     handleTabsByUrl(url);
+                    if(first){
+                        first=false;
+                        notLoad=false;
+                    }
                 } else {
                     CommonWebActivity.start(HomeActivity.this, url);
+                    handleTabsByUrl(url);
                 }
 
                 return true;
@@ -105,7 +114,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notLoad = true;
+                notLoad = false;
             }
         };
         findViewById(R.id.rg_mine).setOnClickListener(listener);
@@ -133,15 +142,16 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
     private void handleTabsByUrl(String url) {
         notLoad = true;
-        if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE)) {
-            rg.setVisibility(View.VISIBLE);
-            if (!mine.isChecked()) {
-                mine.setChecked(true);
-            }
-        } else if (TextUtils.equals(url, AppData.Url.FEAST_CHEF_MINE_ORDERFORM)) {
+        L.d("handleTabsByUrl:"+url);
+        if (url.contains("cookMyOrder")) {
             rg.setVisibility(View.VISIBLE);
             if (!mineOrderForm.isChecked()) {
                 mineOrderForm.setChecked(true);
+            }
+        } else if (url.contains("cookMy")) {
+            rg.setVisibility(View.VISIBLE);
+            if (!mine.isChecked()) {
+                mine.setChecked(true);
             }
         } else {
             rg.setVisibility(View.GONE);
@@ -159,6 +169,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 url = AppData.Url.FEAST_CHEF_MINE_ORDERFORM;
                 break;
         }
+        L.d("onCheckedChanged:"+url+"\nnotLoad:"+notLoad);
         if (!TextUtils.isEmpty(url) && !notLoad) {
             webView.loadUrl(url);
         }

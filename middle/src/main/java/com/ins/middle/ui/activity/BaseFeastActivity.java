@@ -16,7 +16,10 @@ import org.greenrobot.eventbus.EventBus;
 
 
 /**
- * Created by Administrator on 2016/7/1 0001.
+ * Feast与FeastChef的基类Activity
+ * 主要提供方法：
+ * {@link #setEventBusSupport()}
+ * {@link #setWebViewLifeCycleSupport(WebView)}
  */
 public class BaseFeastActivity extends BaseAppCompatActivity {
 
@@ -41,7 +44,7 @@ public class BaseFeastActivity extends BaseAppCompatActivity {
      * 设置EventBus注册，自动处理EventBus的反注册
      */
     public void setEventBusSupport() {
-        if (eventBusSupport){
+        if (eventBusSupport) {
             return;
         }
         eventBusSupport = true;
