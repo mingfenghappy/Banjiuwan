@@ -21,6 +21,7 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
+import com.jaeger.library.StatusBarUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
@@ -58,8 +59,9 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     }
 
     private void adjustBgAndTitle() {
+        StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
         findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
-        TextView title= (TextView) findViewById(R.id.text_toolbar_title);
+        TextView title = (TextView) findViewById(R.id.text_toolbar_title);
         title.setText(cardType.getTitle());
     }
 
