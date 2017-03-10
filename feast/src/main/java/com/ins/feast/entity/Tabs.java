@@ -44,7 +44,7 @@ public class Tabs {
         return title;
     }
 
-    public int getButtonId() {
+    public @IdRes int getButtonId() {
         return buttonId;
     }
 
@@ -60,6 +60,9 @@ public class Tabs {
         return url;
     }
 
+    /**
+     * 获得默认的5个tab
+     */
     public static Tabs[] values() {
         return values;
     }

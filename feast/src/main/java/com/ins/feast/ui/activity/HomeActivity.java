@@ -13,7 +13,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.Tabs;
-import com.ins.feast.receiver.NetStateReceiver;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
@@ -55,6 +54,7 @@ public class HomeActivity extends BaseMapActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setEventBusSupport();
         setHandleLocationLifeCycleBySubclass(true);
 
         initBase();
@@ -71,10 +71,6 @@ public class HomeActivity extends BaseMapActivity implements
         updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build();
         updateHelper.check();
         startLocation();
-
-        if (PermissionsUtil.requsetSetting(this, findViewById(R.id.showingroup))) {
-            NetStateReceiver.registerAboveSDK21(this);
-        }
     }
 
     private void initView() {

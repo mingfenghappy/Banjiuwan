@@ -83,6 +83,7 @@ public class BaseWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
+        L.d("onReceivedError");
         netErrorProcess(errorCode, failingUrl);
     }
 
@@ -130,6 +131,7 @@ public class BaseWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+        L.d("onPageFinished");
         loading.hide();
         webView.setVisibility(View.VISIBLE);
     }
