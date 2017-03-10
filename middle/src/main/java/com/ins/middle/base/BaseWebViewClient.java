@@ -1,7 +1,6 @@
 package com.ins.middle.base;
 
 import android.graphics.Bitmap;
-import android.net.NetworkInfo;
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -97,6 +96,7 @@ public class BaseWebViewClient extends WebViewClient {
         if (!TextUtils.equals(failingUrl, ERROR_PAGE_URL)) {
             lastUrl = failingUrl;
         }
+        L.d("WebView received error,error code:" + errorCode);
         switch (errorCode) {
             case ERROR_CONNECT:
             case ERROR_HOST_LOOKUP:
@@ -110,15 +110,12 @@ public class BaseWebViewClient extends WebViewClient {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public final void onReceiveNetStateChanged(NetStateChangedEvent event) {
-        NetworkInfo activeInfo = event.getActiveInfo();
-        if (activeInfo != null && webView != null) {
-            if (activeInfo.isAvailable()) {
-                webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-                L.d("onReceiveNetStateChanged,loadUrl:" + lastUrl);
-                webView.loadUrl(lastUrl);
-            } else {
-                webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            }
+        if (event.isAvailable()) {
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+            L.d("onReceiveNetStateChanged,loadUrl:" + lastUrl);
+            webView.loadUrl(lastUrl);
+        } else {
+            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
     }
 

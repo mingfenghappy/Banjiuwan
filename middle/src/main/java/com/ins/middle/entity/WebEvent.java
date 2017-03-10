@@ -18,5 +18,7 @@ public enum WebEvent {
     /*支付取消*/
     payCanceled,
     /*重新开始定位*/
-    reLocation
+    reLocation,
+    /*结束非主页的页面*/
+    finishActivity
 }

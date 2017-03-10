@@ -2,7 +2,6 @@ package com.ins.feast.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.View;
@@ -22,13 +21,10 @@ import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
-import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.entity.WebEvent;
 import com.shelwee.update.UpdateHelper;
-import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -59,7 +55,6 @@ public class HomeActivity extends BaseMapActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        EventBus.getDefault().register(this);
         setHandleLocationLifeCycleBySubclass(true);
 
         initBase();
@@ -169,7 +164,6 @@ public class HomeActivity extends BaseMapActivity implements
         if (webViewClient != null) {
             webViewClient.destroy();
         }
-        EventBus.getDefault().unregister(this);
         updateHelper.onDestory();
         super.onDestroy();
     }
@@ -181,24 +175,6 @@ public class HomeActivity extends BaseMapActivity implements
     public void onReceivePostition(Position position) {
         String key = position.getKey();
         title_location.setText(key);
-    }
-
-    /**
-     * 接受网络状态改变事件
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReceiveNetStateChanged(NetStateChangedEvent event) {
-        NetworkInfo activeInfo = event.getActiveInfo();
-        if (activeInfo != null) {
-            if (activeInfo.isAvailable()) {
-                startLocation();
-                L.d("NetChanged:available");
-            } else {
-                L.d("NetChanged:not available");
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

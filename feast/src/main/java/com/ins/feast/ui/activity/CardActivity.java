@@ -15,17 +15,19 @@ import com.ins.feast.common.CardLayoutManager;
 import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
-import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.feast.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.jaeger.library.StatusBarUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.DotView;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
@@ -46,7 +48,8 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        setToolbar(null, false);
+        setToolbar(null,false);
+        setEventBusSupport();
 
         initBase();
         initView();
@@ -189,5 +192,12 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
         Intent starter = new Intent(context, CardActivity.class);
         starter.putExtra(KEY_CARD_DETAIL, cardType);
         context.startActivity(starter);
+    }
+
+    @Subscribe
+    public void onWebEvent(WebEvent webEvent){
+        if(webEvent==WebEvent.finishActivity){
+            finish();
+        }
     }
 }
