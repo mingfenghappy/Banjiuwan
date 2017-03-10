@@ -55,8 +55,12 @@ public class CommonWebActivity extends BaseFeastActivity {
                 if (TextUtils.equals(urlOfThisPage, url)) {
                     L.d("refresh:Load " + url);
                     webView.loadUrl(url);
+                } else if (urlOfThisPage.contains("cookLogin")
+                        || urlOfThisPage.contains("cookMy")
+                        || urlOfThisPage.contains("cookMyOrder")) {
+                    finish();
                 } else if (url.startsWith("tel:")) {
-                    PhoneUtils.callByUrl(CommonWebActivity.this,url);
+                    PhoneUtils.callByUrl(CommonWebActivity.this, url);
                 } else {
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }

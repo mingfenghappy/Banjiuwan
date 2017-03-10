@@ -87,6 +87,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 } else {
                     CommonWebActivity.start(HomeActivity.this, url);
                     handleTabsByUrl(url);
+                    rg.setVisibility(View.VISIBLE);
                 }
 
                 return true;
@@ -179,5 +180,13 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         homeWebChromeClient.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.reload();
+        }
     }
 }
