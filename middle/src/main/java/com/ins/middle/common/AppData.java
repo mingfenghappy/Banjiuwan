@@ -137,7 +137,7 @@ public class AppData {
         /**
          * 服务器域名
          */
-        public static String domain = "http://192.168.118.206:8080/Banjiuwan/";                                //外网测试服务器(二)
+        public static String domain = "http://139.129.111.76:8102/Banjiuwan/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
