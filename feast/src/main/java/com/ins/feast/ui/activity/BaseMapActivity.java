@@ -1,14 +1,20 @@
 package com.ins.feast.ui.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
 import com.ins.baidumapsdk.Locationer;
+import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.utils.L;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * author 边凌
@@ -23,6 +29,12 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     private boolean showLocationLoadProgress = false;
 
     private boolean handleLocationLifeCycleBySubclass = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        setEventBusSupport();
+    }
 
     /**
      * 开始定位时是否展示进度弹窗
@@ -115,6 +127,16 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     protected void onDestroy() {
         super.onDestroy();
         loading.dismiss();
+    }
+
+    /**
+     * 网络状态可用时重新定位
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveNetStateChanged(NetStateChangedEvent event) {
+        if (event.isAvailable()) {
+            startLocation();
+        }
     }
 
 }

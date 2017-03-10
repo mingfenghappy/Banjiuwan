@@ -24,9 +24,9 @@ public class NetStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         L.d("receiveNetStateChanged");
-        if (Build.VERSION.SDK_INT < 21) {
+//        if (Build.VERSION.SDK_INT < 21) {
             postNetState(context);
-        }
+//        }
     }
 
     /**
@@ -64,6 +64,11 @@ public class NetStateReceiver extends BroadcastReceiver {
 
     private static void postNetState(Context context) {
         NetStateChangedEvent netStateChangedEvent = NetStateChangedEvent.getNetStateChangedEvent(context);
+        if (netStateChangedEvent.isAvailable()){
+            L.d("NetState available");
+        }else {
+            L.d("NetState not available");
+        }
         EventBus.getDefault().post(netStateChangedEvent);
     }
 }

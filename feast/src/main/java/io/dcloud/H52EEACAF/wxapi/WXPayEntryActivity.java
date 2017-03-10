@@ -28,6 +28,8 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
 
     private int type;
 
+    private WebEvent webEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +71,15 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
         switch (type) {
             case 0:
                 text_pay_result.setText("支付成功");
-                EventBus.getDefault().post(WebEvent.paySuccess);
-                L.d("postPaySuccess");
+                webEvent=WebEvent.paySuccess;
                 break;
             case -1:
                 text_pay_result.setText("支付失败");
-                EventBus.getDefault().post(WebEvent.payFailed);
-                L.d("postPayFailed");
+                webEvent=WebEvent.payFailed;
                 break;
             case -2:
                 text_pay_result.setText("用户取消了支付");
-                EventBus.getDefault().post(WebEvent.payCanceled);
-                L.d("postPayCanceled");
+                webEvent=WebEvent.payFailed;
                 break;
         }
 
@@ -116,5 +115,15 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
                     break;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webEvent != null) {
+            L.d("post:"+webEvent);
+            EventBus.getDefault().post(webEvent);
+        }
+        super.onBackPressed();
+
     }
 }

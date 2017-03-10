@@ -15,18 +15,17 @@ import com.ins.feast.common.CardLayoutManager;
 import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
-import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.feast.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.FontUtils;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.DotView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.xutils.http.RequestParams;
 
@@ -49,6 +48,7 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
         setToolbar(null,false);
+        setEventBusSupport();
 
         initBase();
         initView();
@@ -67,7 +67,6 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     protected void onDestroy() {
         super.onDestroy();
         if (dialogLoading != null) dialogLoading.dismiss();
-        EventBus.getDefault().unregister(this);
     }
 
     private AppData.CardType cardType;
@@ -75,7 +74,6 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     private void initBase() {
         cardType = (AppData.CardType) getIntent().getSerializableExtra(KEY_CARD_DETAIL);
         dialogLoading = new DialogLoading(this);
-        EventBus.getDefault().register(this);
     }
 
     private void initView() {

@@ -45,6 +45,7 @@ public class CommonWebActivity extends BaseBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anim_jump_web);
         setNeedDoubleClickExit(false);
+        setEventBusSupport();
         initSetting();
         findView();
         initWebViewSetting();
@@ -74,11 +75,13 @@ public class CommonWebActivity extends BaseBackActivity {
                             Uri.parse(url));
                     startActivity(intent);
                 } else if (TextUtils.equals(urlOfThisPage, url)) {
+                    L.d("refresh:Load "+url);
                     webView.loadUrl(url);
                 } else if (urlOfThisPage.contains("login")) {
                     finish();
                     EventBus.getDefault().post(WebEvent.shouldRefresh);
                 } else {
+                    L.d("startCommonWebActivity:"+url);
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }
 
@@ -99,7 +102,6 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void initSetting() {
-        EventBus.getDefault().register(this);
         urlOfThisPage = getIntent().getStringExtra(KEY_URL);
         L.d(urlOfThisPage);
         titleHelper = new CommonWebTitleHelper(this);
@@ -135,7 +137,6 @@ public class CommonWebActivity extends BaseBackActivity {
     protected void onDestroy() {
         super.onDestroy();
         webViewClient.destroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
