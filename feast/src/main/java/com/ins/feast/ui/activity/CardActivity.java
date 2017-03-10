@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +15,7 @@ import com.ins.feast.common.CardLayoutManager;
 import com.ins.feast.common.ItemTouchCardCallback;
 import com.ins.feast.entity.Card;
 import com.ins.feast.ui.adapter.RecycleAdapterCard;
-import com.ins.feast.ui.dialog.DialogLoading;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.feast.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
@@ -47,7 +48,7 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-        setToolbar(null,true);
+        setToolbar(null,false);
 
         initBase();
         initView();
@@ -57,10 +58,7 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     }
 
     private void adjustBgAndTitle() {
-        findViewById(R.id.appBarLayout).setBackgroundColor(cardType.getBgColor());
-        findViewById(R.id.toolbar).setBackgroundColor(cardType.getBgColor());
         findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
-
         TextView title= (TextView) findViewById(R.id.text_toolbar_title);
         title.setText(cardType.getTitle());
     }
@@ -83,6 +81,12 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     private void initView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
         dotView = (DotView) findViewById(R.id.dotView);
+        findViewById(R.id.toolbar_leftIcon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         FontUtils.boldText(findViewById(R.id.text_toolbar_title));
         FontUtils.boldText(findViewById(R.id.text_card_title));
         FontUtils.boldText(findViewById(R.id.text_card_price));
