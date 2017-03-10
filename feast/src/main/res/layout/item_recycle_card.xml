@@ -18,11 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical">
@@ -31,9 +31,9 @@
                 android:id="@+id/text_card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="宴席前便餐260"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="宴席前便餐260"
                 android:textColor="#333333"
                 android:textSize="24sp" />
 
@@ -42,22 +42,23 @@
                 android:id="@+id/text_card_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
-                android:lineSpacingExtra="5dp"
+                android:lineSpacingExtra="4dp"
                 android:maxLines="3"
                 android:text="办酒碗最具性价比的坝坝宴套餐，最合理的价格享受最优质的菜品。"
                 android:textColor="#999999"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:textSize="12sp"
                     android:layout_height="wrap_content"
                     android:text="总销量" />
 
@@ -66,11 +67,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="79"
+                    android:textSize="12sp"
                     android:textColor="@color/jw_red" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="份" />
 
             </LinearLayout>
@@ -107,12 +110,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="推荐指数:" />
 
                 <TextView
@@ -127,6 +131,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
 
