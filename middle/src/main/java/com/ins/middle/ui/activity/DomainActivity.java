@@ -65,6 +65,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.btn_go).setOnClickListener(this);
         findViewById(R.id.btn_go_pay).setOnClickListener(this);
+        findViewById(R.id.btn_go_pic).setOnClickListener(this);
     }
 
     private void initData() {
@@ -126,6 +127,9 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 Toast.makeText(this, "厨师端没有集成支付", Toast.LENGTH_SHORT).show();
             }
+        } else if (i == R.id.btn_go_pic) {
+            intent.setClass(this, TestActivity.class);
+            startActivity(intent);
         }
     }
 
