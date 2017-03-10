@@ -30,7 +30,7 @@ public class DialogLoading extends Dialog {
     //外面旋转的边框src资源
     private int rotateSrc = R.drawable.maoyan_out;
     //内部动画的src资源
-    private int[] refreshAnimSrcs = new int[]{R.drawable.maoyan_in1, R.drawable.maoyan_in2};
+    private int[] refreshAnimSrcs = new int[]{R.drawable.maoyan_in1, R.drawable.maoyan_in1};
     //边框旋转一圈用时
     private int TIME_OUT = 800;
     //内部帧动画每一帧用时

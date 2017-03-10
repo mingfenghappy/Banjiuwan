@@ -1,5 +1,6 @@
 package com.ins.feast.common;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +70,10 @@ public class CardLayoutManager extends RecyclerView.LayoutManager {
             //除了第一个都缩小高度，并且叠加透明的
             if (level > 0) {
                 view.setScaleY(1 - CardConfig.SCALE_GAP * level);
-                float alpha = 1f - (float) level / (CardConfig.MAX_SHOW_COUNT - 1);
-                view.setAlpha(alpha);
-                //Log.e("liao", "level:" + level + " alpha:" + alpha);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    float alpha = 1f - (float) level / (CardConfig.MAX_SHOW_COUNT - 1);
+                    view.setAlpha(alpha);
+                }
             }
 
         }

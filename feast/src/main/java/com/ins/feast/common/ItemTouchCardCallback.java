@@ -1,6 +1,7 @@
 package com.ins.feast.common;
 
 import android.graphics.Canvas;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -92,8 +93,10 @@ public class ItemTouchCardCallback extends ItemTouchHelper.SimpleCallback {
             //除了第一个都缩小高度
             if (level > 0) {
                 child.setScaleY((float) (1 - CardConfig.SCALE_GAP * level + fraction * CardConfig.SCALE_GAP));
-                float alpha = 1f - (float) (level - fraction) / (CardConfig.MAX_SHOW_COUNT - 1);// + fraction * SCALE_GAP;
-                child.setAlpha(alpha);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    float alpha = 1f - (float) (level - fraction) / (CardConfig.MAX_SHOW_COUNT - 1);// + fraction * SCALE_GAP;
+                    child.setAlpha(alpha);
+                }
             }
         }
     }
