@@ -119,6 +119,9 @@ public class CommonWebActivity extends BaseBackActivity {
             case paySuccess:
                 webView.loadUrl(JSFunctionUrl.PAY_SUCCESS);
                 break;
+            case finishActivity:
+                finish();
+                break;
         }
     }
 

@@ -94,6 +94,7 @@ public class CommonWebTitleHelper extends TitleHelper implements View.OnClickLis
         switch (v.getId()) {
             case R.id.rightIcon_car:
                 EventBus.getDefault().post(WebEvent.jumpToCarTab);
+                EventBus.getDefault().post(WebEvent.finishActivity);
             case R.id.toolbar_leftIcon:
             case R.id.leftIcon_back:
                 commonWebActivity.onBackPressed();

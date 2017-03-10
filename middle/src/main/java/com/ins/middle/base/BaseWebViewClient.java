@@ -63,6 +63,8 @@ public class BaseWebViewClient extends WebViewClient {
             e.printStackTrace();
         }
         loading = new DialogLoading(webView.getContext());
+        L.setDEBUG(true);
+        L.setTAG("办酒碗");
     }
 
     /**
