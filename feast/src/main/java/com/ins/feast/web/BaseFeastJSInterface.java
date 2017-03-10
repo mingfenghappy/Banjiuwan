@@ -14,9 +14,12 @@ import com.sobey.common.utils.L;
  */
 
 public class BaseFeastJSInterface extends BaseJSInterface {
+    private final static long interval = 300;
     private Activity activity;
     private PayHelper helper;
-
+    private String lastOrderId;
+    private MethodInvokeTime lastGoPayment_Alipay, lastGoPayment_Weixin;
+    private MethodInvokeTime lastGoRecharge_Alipay, lastGoRecharge_Weixin;
     public BaseFeastJSInterface(Activity activity) {
         this.activity = activity;
         helper = new PayHelper(activity);
@@ -31,14 +34,20 @@ public class BaseFeastJSInterface extends BaseJSInterface {
      */
     @JavascriptInterface
     public void goPayment(String orderId, String token, int payMethod) {
+        if (lastGoPayment_Alipay == null) {
+            lastGoPayment_Alipay = new MethodInvokeTime();
+            lastGoPayment_Weixin = new MethodInvokeTime();
+        }
         try {
             L.d("tryGoPayment");
             int orderIdInt = Integer.parseInt(orderId);
             switch (payMethod) {
                 case PayHelper.PAY_ALIPAY:
+                    if (isFastClick(lastGoPayment_Alipay)) return;
                     helper.netPayZhifubao(orderIdInt, token);
                     break;
                 case PayHelper.PAY_WEIXIN:
+                    if (isFastClick(lastGoPayment_Weixin)) return;
                     helper.netPayWeixin(orderIdInt, token);
                     break;
             }
@@ -47,19 +56,35 @@ public class BaseFeastJSInterface extends BaseJSInterface {
         }
     }
 
+    private boolean isFastClick(MethodInvokeTime methodInvokeTime) {
+        if (methodInvokeTime.lastInvokeTime == 0) {
+            methodInvokeTime.lastInvokeTime = System.currentTimeMillis();
+        } else if (System.currentTimeMillis() - methodInvokeTime.lastInvokeTime < interval) {
+            methodInvokeTime.lastInvokeTime = System.currentTimeMillis();
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 充值
      */
     @JavascriptInterface
     public void goRecharge(String rechargeId, String token, int payMethod) {
+        if (lastGoRecharge_Alipay == null) {
+            lastGoRecharge_Alipay = new MethodInvokeTime();
+            lastGoRecharge_Weixin = new MethodInvokeTime();
+        }
         try {
             L.d("tryGoRecharge");
             int rechargeIdInt = Integer.parseInt(rechargeId);
             switch (payMethod) {
                 case PayHelper.PAY_ALIPAY:
+                    if (isFastClick(lastGoRecharge_Alipay)) return;
                     helper.netRechargeZhifubao(rechargeIdInt, token);
                     break;
                 case PayHelper.PAY_WEIXIN:
+                    if (isFastClick(lastGoRecharge_Weixin)) return;
                     helper.netRechargeWeixin(rechargeIdInt, token);
                     break;
             }
@@ -68,4 +93,8 @@ public class BaseFeastJSInterface extends BaseJSInterface {
         }
     }
 
+
+    private class MethodInvokeTime {
+        private long lastInvokeTime;
+    }
 }

@@ -23,4 +23,15 @@ public class PhoneUtils {
             Toast.makeText(context, "电话号码为空", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static void callByUrl(Context context, String url) {
+        if (!StrUtils.isEmpty(url)) {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            Uri data = Uri.parse(url);
+            intent.setData(data);
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, "电话号码为空", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -19,7 +19,7 @@ public class NetStateChangedEvent {
     }
 
     @NonNull
-    public static NetStateChangedEvent getNetStateChangedEvent(Context context) {
+    public static NetStateChangedEvent create(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeInfo = manager.getActiveNetworkInfo();
         return new NetStateChangedEvent(activeInfo);

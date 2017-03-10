@@ -52,7 +52,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
-        EventBus.getDefault().register(this);
+        setEventBusSupport();
         initView();
         initSetting();
     }
@@ -178,7 +178,6 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe

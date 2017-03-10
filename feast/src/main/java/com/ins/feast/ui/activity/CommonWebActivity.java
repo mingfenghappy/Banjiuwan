@@ -18,6 +18,7 @@ import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.PhoneUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,13 +68,12 @@ public class CommonWebActivity extends BaseBackActivity {
                 titleHelper.setTitleText(title);
             }
         };
+        /*moreAddress*/
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("tel:")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(url));
-                    startActivity(intent);
+                    PhoneUtils.callByUrl(CommonWebActivity.this,url);
                 } else if (TextUtils.equals(urlOfThisPage, url)) {
                     L.d("refresh:Load "+url);
                     webView.loadUrl(url);

@@ -2,8 +2,8 @@ package com.ins.chef.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -14,11 +14,12 @@ import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.PhoneUtils;
 
 public class CommonWebActivity extends BaseFeastActivity {
 
-    private final static String KEY_URL = "url";
-    private String url;
+    private final static String KEY_URL = "urlOfThisPage";
+    private String urlOfThisPage;
     private WebView webView;
     private TextView toolbar_title;
     private BaseWebViewClient webViewClient;
@@ -35,7 +36,7 @@ public class CommonWebActivity extends BaseFeastActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common_web);
-        url = getIntent().getStringExtra(KEY_URL);
+        urlOfThisPage = getIntent().getStringExtra(KEY_URL);
         initView();
         initWebView();
     }
@@ -50,11 +51,13 @@ public class CommonWebActivity extends BaseFeastActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.startsWith("tel:")){
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(url));
-                    startActivity(intent);
-                }else {
+
+                if (TextUtils.equals(urlOfThisPage, url)) {
+                    L.d("refresh:Load " + url);
+                    webView.loadUrl(url);
+                } else if (url.startsWith("tel:")) {
+                    PhoneUtils.callByUrl(CommonWebActivity.this,url);
+                } else {
                     CommonWebActivity.start(CommonWebActivity.this, url);
                 }
                 return true;
@@ -63,7 +66,7 @@ public class CommonWebActivity extends BaseFeastActivity {
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
         WebSettingHelper.newInstance(webView).commonSetting();
-        webView.loadUrl(url);
+        webView.loadUrl(urlOfThisPage);
     }
 
     private void initView() {

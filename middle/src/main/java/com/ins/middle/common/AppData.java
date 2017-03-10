@@ -269,7 +269,7 @@ public class AppData {
         @ColorInt
         int getBgColor();
 
-        /*这个接口用于卡片式页面请求服务器数据的参数，常量*/
+        /*这个接口用于卡片式页面请求服务器数据的常量参数*/
         public abstract String getCategoryId();
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -39,7 +40,6 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeTitleHelper homeTitleHelper;
     private HomeActivityWebChromeClient webChromeClient;
     private HomeActivityWebViewClient webViewClient;
-    private HomeJSInterface homeJsInterface;
     private UpdateHelper updateHelper;
     private boolean notLoad = false;
 
@@ -103,7 +103,7 @@ public class HomeActivity extends BaseMapActivity implements
         webViewClient = new HomeActivityWebViewClient(this);
         webChromeClient = new HomeActivityWebChromeClient(this);
 
-        homeJsInterface = new HomeJSInterface(this, webView);
+        HomeJSInterface homeJsInterface = new HomeJSInterface(this, webView);
         WebSettingHelper.newInstance(webView).commonSetting()
                 .setWebViewClient(webViewClient)
                 .setWebChromeClient(webChromeClient)
@@ -169,7 +169,7 @@ public class HomeActivity extends BaseMapActivity implements
      * 接受地理位置选择的结果
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReceivePostition(Position position) {
+    public void onReceivePosition(Position position) {
         String key = position.getKey();
         title_location.setText(key);
     }
