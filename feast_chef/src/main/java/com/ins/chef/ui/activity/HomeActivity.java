@@ -1,11 +1,7 @@
 package com.ins.chef.ui.activity;
 
 import android.content.Intent;
-import android.database.ContentObservable;
-import android.database.ContentObserver;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
@@ -23,6 +19,7 @@ import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
+import com.sobey.common.utils.PhoneUtils;
 
 public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener {
     private WebView webView;
@@ -33,6 +30,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     private UpdateHelper updateHelper;
     private boolean notLoad = false;
     private BaseWebViewClient webViewClient;
+    private boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         rg.setOnCheckedChangeListener(this);
     }
 
-    private boolean first=true;
     private void initWeb() {
         homeWebChromeClient = new BaseWebChromeClient(this) {
             @Override
@@ -71,25 +68,27 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                L.d(url);
 
                 if (url.startsWith("tel:")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(url));
-                    startActivity(intent);
-                } else if (url.contains("cookMy")
+                    PhoneUtils.callByUrl(HomeActivity.this, url);
+                    return true;
+                }
+
+                if (url.contains("cookMy")
                         || url.contains("cookMyOrder")) {
                     view.loadUrl(url);
                     handleTabsByUrl(url);
-                    if(first){
-                        first=false;
-                        notLoad=false;
+                    if (first) {
+                        first = false;
+                        notLoad = false;
                     }
-                } else {
-                    CommonWebActivity.start(HomeActivity.this, url);
-                    handleTabsByUrl(url);
-                    rg.setVisibility(View.VISIBLE);
+                    return true;
                 }
 
+                CommonWebActivity.start(HomeActivity.this, url);
+                handleTabsByUrl(url);
+                rg.setVisibility(View.VISIBLE);
                 return true;
             }
         };
@@ -143,7 +142,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
     private void handleTabsByUrl(String url) {
         notLoad = true;
-        L.d("handleTabsByUrl:"+url);
+        L.d("handleTabsByUrl:" + url);
         if (url.contains("cookMyOrder")) {
             rg.setVisibility(View.VISIBLE);
             if (!mineOrderForm.isChecked()) {
@@ -170,7 +169,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 url = AppData.Url.FEAST_CHEF_MINE_ORDERFORM;
                 break;
         }
-        L.d("onCheckedChanged:"+url+"\nnotLoad:"+notLoad);
+        L.d("onCheckedChanged:" + url + "\nnotLoad:" + notLoad);
         if (!TextUtils.isEmpty(url) && !notLoad) {
             webView.loadUrl(url);
         }

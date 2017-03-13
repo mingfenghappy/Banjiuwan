@@ -135,4 +135,5 @@ public class BaseWebViewClient extends WebViewClient {
         loading.hide();
         webView.setVisibility(View.VISIBLE);
     }
+
 }

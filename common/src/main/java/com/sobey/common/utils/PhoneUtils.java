@@ -1,16 +1,13 @@
 package com.sobey.common.utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class PhoneUtils {
     public static void call(Context context, String number) {
@@ -24,11 +21,15 @@ public class PhoneUtils {
         }
     }
 
-    public static void callByUrl(Context context, String url) {
+    public static void callByUrl(Activity context, String url) {
         if (!StrUtils.isEmpty(url)) {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
+            Intent intent = new Intent(Intent.ACTION_CALL);
             Uri data = Uri.parse(url);
             intent.setData(data);
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                PermissionsUtil.requestPermissions(context, new String[]{Manifest.permission.CALL_PHONE});
+                return;
+            }
             context.startActivity(intent);
         } else {
             Toast.makeText(context, "电话号码为空", Toast.LENGTH_SHORT).show();

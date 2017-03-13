@@ -3,7 +3,6 @@ package com.ins.feast.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebView;
@@ -72,19 +71,26 @@ public class CommonWebActivity extends BaseBackActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.contains("tel:")) {
-                    PhoneUtils.callByUrl(CommonWebActivity.this,url);
-                } else if (TextUtils.equals(urlOfThisPage, url)) {
-                    L.d("refresh:Load "+url);
-                    webView.loadUrl(url);
-                } else if (urlOfThisPage.contains("login")) {
-                    finish();
-                    EventBus.getDefault().post(WebEvent.shouldRefresh);
-                } else {
-                    L.d("startCommonWebActivity:"+url);
-                    CommonWebActivity.start(CommonWebActivity.this, url);
+
+                if (url.startsWith("tel:")) {
+                    PhoneUtils.callByUrl(CommonWebActivity.this, url);
+                    return true;
                 }
 
+                if (TextUtils.equals(urlOfThisPage, url)) {
+                    L.d("refresh:Load " + url);
+                    webView.loadUrl(url);
+                    return true;
+                }
+
+                if (urlOfThisPage.contains("login")) {
+                    finish();
+                    EventBus.getDefault().post(WebEvent.shouldRefresh);
+                    return true;
+                }
+
+                L.d("startCommonWebActivity:" + url);
+                CommonWebActivity.start(CommonWebActivity.this, url);
                 return true;
             }
         };

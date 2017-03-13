@@ -8,6 +8,7 @@ import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
+import com.sobey.common.utils.PhoneUtils;
 
 /**
  * author 边凌
@@ -25,6 +26,11 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (url.startsWith("tel:")) {
+            PhoneUtils.callByUrl(homeActivity, url);
+            return true;
+        }
+
         boolean jumped = jumpedIfIsCardDetail(url);
         if (!jumped) {
             //没跳转的情况下跳转CommonWeb
