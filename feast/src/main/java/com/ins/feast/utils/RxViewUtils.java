@@ -6,8 +6,13 @@ import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.MainThreadSubscription;
 import rx.functions.Action1;
+
+import static rx.android.MainThreadSubscription.verifyMainThread;
 
 /**
  * author 边凌
@@ -53,4 +58,50 @@ public class RxViewUtils {
             }
         });
     }
+
+    // TODO: 2017/3/13  
+    public static Subscription throttleFirst(int interval, final View.OnClickListener listenerfinal,View...views){
+        Observable.create(new ViewsClickOnSubscribe(views));
+        return null;
+    }
+
+    private static final class ViewsClickOnSubscribe implements Observable.OnSubscribe<View> {
+        final View[] views;
+
+        private ViewsClickOnSubscribe(View... view) {
+            this.views = view;
+        }
+
+        @Override
+        public void call(final Subscriber<? super View> subscriber) {
+            verifyMainThread();
+
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!subscriber.isUnsubscribed()) {
+                        subscriber.onNext(v);
+                    }
+                }
+            };
+
+            subscriber.add(new MainThreadSubscription() {
+                @Override
+                protected void onUnsubscribe() {
+                    setListener(null);
+                }
+            });
+
+            setListener(listener);
+        }
+
+        private void setListener(View.OnClickListener listener) {
+            if (views != null) {
+                for (View view : views) {
+                    view.setOnClickListener(listener);
+                }
+            }
+        }
+    }
+
 }

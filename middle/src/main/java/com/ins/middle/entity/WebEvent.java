@@ -20,5 +20,7 @@ public enum WebEvent {
     /*重新开始定位*/
     reLocation,
     /*结束非主页的页面*/
-    finishActivity
+    finishActivity,
+    /*厨师端登陆成功(用于解决一个bug)*/
+    loginSuccess_chef
 }

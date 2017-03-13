@@ -12,9 +12,12 @@ import com.ins.chef.R;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
+import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class CommonWebActivity extends BaseFeastActivity {
 
@@ -66,6 +69,7 @@ public class CommonWebActivity extends BaseFeastActivity {
                 if (urlOfThisPage.contains("cookLogin")
                         || urlOfThisPage.contains("cookMy")
                         || urlOfThisPage.contains("cookMyOrder")) {
+                    EventBus.getDefault().post(WebEvent.loginSuccess_chef);
                     finish();
                     return true;
                 }

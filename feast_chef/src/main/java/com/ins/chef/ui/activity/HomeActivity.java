@@ -15,11 +15,14 @@ import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener {
     private WebView webView;
@@ -36,6 +39,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setEventBusSupport();
         setNeedDoubleClickExit(true);
         initBase();
         initView();
@@ -186,6 +190,13 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         super.onResume();
         if (webView != null) {
             webView.reload();
+        }
+    }
+
+    @Subscribe
+    public void onWebEvent(WebEvent event) {
+        if (event == WebEvent.loginSuccess_chef) {
+            notLoad = false;
         }
     }
 }
