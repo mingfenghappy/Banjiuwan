@@ -144,7 +144,6 @@ public class AppData {
          */
         public static String version_feast              = domain + "updateAPK/version_feast.json";                                    //客户端检查更新
         public static String version_chef               = domain + "updateAPK/version_chef.json";                                     //厨师端检查更新
-        public static String getInfo                    = domain + "mobile/user/getInfo";                                                //token登陆
         public static String app_home                   = domain + "app/page/index";
         public static String app_cart                   = domain + "app/page/car";
         public static String app_find                   = domain + "app/page/find";
@@ -155,21 +154,33 @@ public class AppData {
         public static String app_dinner                 = domain + "app/page/dinnerDetail";
         public static String queryByCategory            = domain + "app/food/queryByCategory";
 
+        public static String moreAddress                = domain + "app/page/moreAddress";                                        //更多地址（新增收获地址页面）
+        public static String addAddress                 = domain + "app/page/addAddress";                                         //新增地址（新增收获地址页面）
+        public static String myOrder                    = domain + "app/page/myOrder";                                             //我的订单
+        public static String loginPageCook              = domain + "app/page/cookLogin";                                           //厨师登录页面
+
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
         public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名
-        public static String recharge                   = domain + "/app/AliPayRecharge/sign";             						//请求支付宝充值签名
-        public static String rechargeWeixin             = domain + "/app/WeChatPayRecharge/sign";             					//请求微信充值签名
+        public static String recharge                   = domain + "app/AliPayRecharge/sign";             						//请求支付宝充值签名
+        public static String rechargeWeixin             = domain + "app/WeChatPayRecharge/sign";             					    //请求微信充值签名
 
         ///////////////////////////////
         //////////////  厨师端
         ///////////////////////////////
 
         //厨师端入口页
-        public static String FEAST_CHEF_HOMEPAGE         = domain + "/app/page/cookLogin";
+        public static String FEAST_CHEF_HOMEPAGE         = domain + "app/page/cookLogin";
         /*我的*/
-        public static String FEAST_CHEF_MINE             = domain + "/app/page/cookMy";
+        public static String FEAST_CHEF_MINE             = domain + "app/page/cookMy";
         /*我的订单*/
-        public static String FEAST_CHEF_MINE_ORDERFORM   = domain + "/app/page/cookMyOrder";
+        public static String FEAST_CHEF_MINE_ORDERFORM   = domain + "app/page/cookMyOrder";
+        /*忘记密码*/
+        public static String FEAST_CHEF_FORGETPSW        = domain + "app/page/forgetPassword";
+
+
+        //源生接口url
+        public static String getInfo                    = domain + "app/user/getInfo";                                                  //token登陆
+        public static String login                      = domain + "app/user/login";                                                    //登陆
     }
 
 

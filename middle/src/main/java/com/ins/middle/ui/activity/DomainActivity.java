@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -128,7 +129,9 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "厨师端没有集成支付", Toast.LENGTH_SHORT).show();
             }
         } else if (i == R.id.btn_go_pic) {
-            intent.setClass(this, TestActivity.class);
+            intent.setClass(this, WebActivity.class);
+            intent.putExtra("url","http://www.baidu.com");
+            intent.putExtra("title","title");
             startActivity(intent);
         }
     }
@@ -149,6 +152,9 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void modifyTabs(){
     }
 
     private String replace(String domainIP, String str) {

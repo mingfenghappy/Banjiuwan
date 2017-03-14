@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
@@ -25,6 +26,7 @@ import com.ins.feast.ui.adapter.SearchLocationAdapter;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -110,6 +112,9 @@ public class SearchLocationActivity extends BaseFeastActivity implements OnGetPo
     public void onGetPoiResult(PoiResult poiResult) {
         List<PoiInfo> allPoi = poiResult.getAllPoi();
         setAdapterData(allPoi);
+        if (StrUtils.isEmpty(allPoi)){
+            Toast.makeText(this,"没有搜索该地址",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setAdapterData(@Nullable List<PoiInfo> allPoi) {

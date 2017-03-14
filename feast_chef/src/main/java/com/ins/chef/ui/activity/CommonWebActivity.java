@@ -9,13 +9,16 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.ins.chef.R;
+import com.ins.chef.web.ChefJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
+import com.sobey.common.utils.UrlUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,6 +69,14 @@ public class CommonWebActivity extends BaseFeastActivity {
                     return true;
                 }
 
+                //如果登录（启动源生页面，并关闭当前）
+                if (UrlUtil.matchUrl(url, AppData.Url.loginPageCook)) {
+                    Intent intent = new Intent(CommonWebActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+
                 if (urlOfThisPage.contains("cookLogin")
                         || urlOfThisPage.contains("cookMy")
                         || urlOfThisPage.contains("cookMyOrder")) {
@@ -78,9 +89,14 @@ public class CommonWebActivity extends BaseFeastActivity {
                 return true;
             }
         };
-        webView.setWebViewClient(webViewClient);
-        webView.setWebChromeClient(webChromeClient);
-        WebSettingHelper.newInstance(webView).commonSetting();
+//        webView.setWebViewClient(webViewClient);
+//        webView.setWebChromeClient(webChromeClient);
+        WebSettingHelper
+                .newInstance(webView)
+                .commonSetting()
+                .setWebChromeClient(webChromeClient)
+                .setWebViewClient(webViewClient)
+                .addJavaScriptInterface(new ChefJSInterface(), JS_BRIDGE_NAME);
         webView.loadUrl(urlOfThisPage);
     }
 

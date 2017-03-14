@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
@@ -48,7 +49,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAddressActivity extends BaseFeastActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
+public class SearchAddressActivity extends BaseMapActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
 
     private MapView mapView;
     private BaiduMap baiduMap;
@@ -80,14 +81,15 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
     private final int PAGE_COUNT = 15;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchaddress);
-        setToolbar(null, false);
+        setToolbar(null, true);
 
         initBase();
         initView();
         initCtrl();
+        setData();
         initData();
     }
 
@@ -130,7 +132,7 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
     }
 
     private void initData() {
-        geo(latLng);
+        if (latLng != null) geo(latLng);
     }
 
     private void initCtrl() {
@@ -141,9 +143,6 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
         mapView.showZoomControls(false);                                 //禁止缩放控件
         mapView.showScaleControl(false);                                 //禁止比例尺
         baiduMap.setMyLocationEnabled(true);                             //启用用户位置
-        //设置自己位置
-        baiduMap.setMyLocationData(new MyLocationData.Builder().latitude(latLng.latitude).longitude(latLng.longitude).build());
-        MapHelper.zoomByPoint(baiduMap, latLng);
         //设置移动监听
         //设置移动监听
         baiduMap.setOnMapStatusChangeListener(onMapStatusChangeListener);
@@ -180,9 +179,6 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
             }
         });
 
-        //左上角城市设置数据
-        btn_go_left.setText(city);
-
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -210,6 +206,18 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
                 search(s.toString());
             }
         });
+    }
+
+    private void setData() {
+        if (latLng != null) {
+            //设置自己位置
+            baiduMap.setMyLocationData(new MyLocationData.Builder().latitude(latLng.latitude).longitude(latLng.longitude).build());
+            MapHelper.zoomByPoint(baiduMap, latLng);
+        }
+        if (!StrUtils.isEmpty(city)) {
+            //左上角城市设置数据
+            btn_go_left.setText(city);
+        }
     }
 
     private void freshCtrl() {
@@ -286,7 +294,7 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
                 Snackbar.make(showingroup, "没有更多的数据了", Snackbar.LENGTH_SHORT).show();
             }
             return;
-        }else {
+        } else {
             LoadingViewUtil.showout(showingroup, showin);
             showin = null;
         }
@@ -300,15 +308,15 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
             }
             if (page == 0) adapter.getResults().clear();
             adapter.getResults().addAll(positions);
-            if (StrUtils.isEmpty(adapter.getResults())){
+            if (StrUtils.isEmpty(adapter.getResults())) {
                 setlackPage();
-            }else {
+            } else {
                 freshCtrl();
             }
         }
     }
 
-    private void setlackPage(){
+    private void setlackPage() {
         showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -372,6 +380,17 @@ public class SearchAddressActivity extends BaseFeastActivity implements OnRecycl
             }
         }
     };
+
+    @Override
+    public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
+        if (this.latLng == null) {
+            //左上角城市设置数据
+            this.latLng = latLng;
+            this.city = city;
+            setData();
+            geo(latLng);
+        }
+    }
 
 //    public void netGetArea(String city) {
 //        RequestParams params = new RequestParams(AppData.Url.getArea);

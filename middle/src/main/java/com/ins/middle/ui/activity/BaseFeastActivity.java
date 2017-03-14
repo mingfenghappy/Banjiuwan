@@ -1,6 +1,7 @@
 package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -48,7 +49,11 @@ public class BaseFeastActivity extends BaseAppCompatActivity {
             return;
         }
         eventBusSupport = true;
-        EventBus.getDefault().register(this);
+        try {
+            EventBus.getDefault().register(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -78,7 +83,11 @@ public class BaseFeastActivity extends BaseAppCompatActivity {
             webView = null;
         }
         if (eventBusSupport) {
-            EventBus.getDefault().unregister(this);
+            try {
+                EventBus.getDefault().unregister(this);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -101,7 +110,7 @@ public class BaseFeastActivity extends BaseAppCompatActivity {
         //设置toobar文字图标和返回事件
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setNavigationIcon(R.drawable.icon_back);
+            toolbar.setNavigationIcon(R.mipmap.ic_leftarrow_white);
             toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.sb_text_blank));
             toolbar.setTitle("");
             setSupportActionBar(toolbar);

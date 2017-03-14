@@ -126,6 +126,23 @@ public class StrUtils {
         }
     }
 
+    /**
+     * 去除字符串第一个特定字符
+     */
+    public static String subFirstChart(String str, String c) {
+        if (isEmpty(str)) {
+            return "";
+        }
+        if (isEmpty(c)) {
+            return str;
+        }
+        if (str.startsWith(c)){
+            return str.substring(c.length());
+        }else {
+            return str;
+        }
+    }
+
     public static boolean isChineseChar(String str) {
         if (isEmpty(str)){
             return false;

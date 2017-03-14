@@ -109,7 +109,8 @@ public class LoadUpActivity extends AppCompatActivity {
             public void netSetError(int code, String text) {
                 Toast.makeText(LoadUpActivity.this, text, Toast.LENGTH_SHORT).show();
                 AppData.App.removeUser();
-                AppData.App.removeToken();
+                //自动登录失败 不移除token
+                //AppData.App.removeToken();
                 long time = System.currentTimeMillis() - lasttime;
                 if (time < 2000) {
                     new Handler().postDelayed(new Runnable() {
@@ -129,7 +130,7 @@ public class LoadUpActivity extends AppCompatActivity {
         //又不需要轮播页了，我操
 //        if (startup) {
         //软登录，还是去home页
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
 //        } else {

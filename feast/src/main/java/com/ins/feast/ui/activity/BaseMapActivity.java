@@ -30,11 +30,11 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
 
     private boolean handleLocationLifeCycleBySubclass = false;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        setEventBusSupport();
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+//        super.onCreate(savedInstanceState, persistentState);
+//        setEventBusSupport();
+//    }
 
     /**
      * 开始定位时是否展示进度弹窗
@@ -99,6 +99,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setEventBusSupport();
         locationer = new Locationer(this);
         locationer.setCallback(this);
         L.d("initLocationer");

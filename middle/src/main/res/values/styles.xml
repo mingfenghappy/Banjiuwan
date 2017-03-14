@@ -83,7 +83,7 @@
 
     <style name="edit_none">
         <item name="android:background">@color/none</item>
-        <item name="android:textColorHint">@color/sb_text_dark</item>
+        <item name="android:textColorHint">@color/com_text_light</item>
         <item name="android:textColor">@color/sb_text_blank</item>
         <item name="android:textSize">@dimen/text_nomal</item>
     </style>

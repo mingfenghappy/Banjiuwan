@@ -1,6 +1,8 @@
 package com.ins.feast.web;
 
+import android.text.TextUtils;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.ins.feast.R;
 import com.ins.feast.ui.activity.CardActivity;
@@ -8,6 +10,7 @@ import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
 
 /**
@@ -25,12 +28,16 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+//        Toast.makeText(homeActivity, "load home", Toast.LENGTH_SHORT).show();
         if (url.startsWith("tel:")) {
             PhoneUtils.callByUrl(homeActivity, url);
             return true;
         }
-
+        if (TextUtils.equals(webView.getUrl(), url)) {
+            webView.loadUrl(url);
+            return true;
+        }
         boolean jumped = jumpedIfIsCardDetail(url);
         if (!jumped) {
             //没跳转的情况下跳转CommonWeb

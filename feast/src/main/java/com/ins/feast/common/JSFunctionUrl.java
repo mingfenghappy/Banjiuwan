@@ -9,4 +9,8 @@ package com.ins.feast.common;
 public class JSFunctionUrl {
     public final static String PAY_SUCCESS = "javascript:payCallback('" + 1 + "')";
     public final static String PAY_FAILED = "javascript:payCallback('" + 0 + "')";
+
+    public static String setAddress(String address, String lat, String lng) {
+        return "javascript:setAddress('" + address + "','" + lat + "','" + lng + "')";
+    }
 }

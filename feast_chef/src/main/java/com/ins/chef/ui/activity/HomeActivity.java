@@ -10,19 +10,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ins.chef.R;
-import com.ins.chef.web.ChefHomeJSInterface;
+import com.ins.chef.web.ChefJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
-import com.ins.middle.entity.WebEvent;
+import com.ins.middle.helper.CommonAppHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
-
-import org.greenrobot.eventbus.Subscribe;
+import com.sobey.common.utils.UrlUtil;
 
 public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener {
     private WebView webView;
@@ -39,7 +38,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setEventBusSupport();
         setNeedDoubleClickExit(true);
         initBase();
         initView();
@@ -56,7 +54,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     }
 
     private void initSetting() {
-        rg.setVisibility(View.GONE);
+        rg.setVisibility(View.VISIBLE);
         rg.setOnCheckedChangeListener(this);
     }
 
@@ -72,10 +70,25 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+//                Toast.makeText(HomeActivity.this,"load home",Toast.LENGTH_SHORT).show();
                 L.d(url);
 
                 if (url.startsWith("tel:")) {
                     PhoneUtils.callByUrl(HomeActivity.this, url);
+                    return true;
+                }
+
+                if (TextUtils.equals(webView.getUrl(), url)) {
+                    webView.loadUrl(url);
+                    return true;
+                }
+
+                //如果登录（启动源生页面，并关闭当前）
+                if (UrlUtil.matchUrl(url, AppData.Url.loginPageCook)) {
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                     return true;
                 }
 
@@ -102,9 +115,11 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 .commonSetting()
                 .setWebChromeClient(homeWebChromeClient)
                 .setWebViewClient(webViewClient)
-                .addJavaScriptInterface(new ChefHomeJSInterface(), JS_BRIDGE_NAME);
+                .addJavaScriptInterface(new ChefJSInterface(), JS_BRIDGE_NAME);
 
-        webView.loadUrl(AppData.Url.FEAST_CHEF_HOMEPAGE);
+        //禁止WebView长按编辑
+        CommonAppHelper.setWebViewNoLongClick(webView);
+        webView.loadUrl(AppData.Url.FEAST_CHEF_MINE);
     }
 
     private void initView() {
@@ -125,17 +140,17 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         findViewById(R.id.rg_orderForm).setOnClickListener(listener);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
-            String originalUrl = webView.getOriginalUrl();
-            handleTabsByUrl(originalUrl);
-        } else {
-            super.onBackPressed();
-        }
-
-    }
+    //厨师端不处理回退
+//    @Override
+//    public void onBackPressed() {
+//        if (webView != null && webView.canGoBack()) {
+//            webView.goBack();
+//            String originalUrl = webView.getOriginalUrl();
+//            handleTabsByUrl(originalUrl);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
@@ -146,7 +161,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
     private void handleTabsByUrl(String url) {
         notLoad = true;
-        L.d("handleTabsByUrl:" + url);
         if (url.contains("cookMyOrder")) {
             rg.setVisibility(View.VISIBLE);
             if (!mineOrderForm.isChecked()) {
@@ -158,7 +172,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 mine.setChecked(true);
             }
         } else {
-            rg.setVisibility(View.GONE);
+            rg.setVisibility(View.VISIBLE);
         }
     }
 
@@ -173,7 +187,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 url = AppData.Url.FEAST_CHEF_MINE_ORDERFORM;
                 break;
         }
-        L.d("onCheckedChanged:" + url + "\nnotLoad:" + notLoad);
         if (!TextUtils.isEmpty(url) && !notLoad) {
             webView.loadUrl(url);
         }
@@ -190,13 +203,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         super.onResume();
         if (webView != null) {
             webView.reload();
-        }
-    }
-
-    @Subscribe
-    public void onWebEvent(WebEvent event) {
-        if (event == WebEvent.loginSuccess_chef) {
-            notLoad = false;
         }
     }
 }

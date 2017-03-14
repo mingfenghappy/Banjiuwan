@@ -3,6 +3,7 @@ package com.ins.baidumapsdk;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
+import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -39,9 +40,12 @@ public class Locationer {
 
     /**
      * 返回LocOption以用作设置
+     *
      * @return {@link LocationClientOption}
      */
-    public @Nullable LocationClientOption getLocOption(){
+    public
+    @Nullable
+    LocationClientOption getLocOption() {
         return locationClient.getLocOption();
     }
 
@@ -52,7 +56,7 @@ public class Locationer {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(5000);
+        option.setScanSpan(0);  //定位间隔时间，必须>1000，为0标示只定位一次
 
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setNeedDeviceDirect(true);// 返回的定位结果包含手机机头的方向
@@ -81,7 +85,7 @@ public class Locationer {
             }
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             if (callback != null) {
-                callback.onLocation(latLng, location.getCity(), location.getDistrict(), isFirstLoc);
+                callback.onLocation(latLng, location.getCity(), location.getAddrStr(), isFirstLoc);
             }
             isFirstLoc = false;
         }
@@ -107,10 +111,19 @@ public class Locationer {
     }
 
     public interface LocationCallback {
-        void onLocation(LatLng latLng, String city, String district, boolean isFirst);
+        void onLocation(LatLng latLng, String city, String address, boolean isFirst);
     }
 
     public String getAddrStr() {
-        return bdLocation.getAddrStr();
+        if (bdLocation != null) {
+            Address address = bdLocation.getAddress();
+            if (address != null) {
+                return address.district + address.street;
+            } else {
+                return "定位失败";
+            }
+        } else {
+            return "定位失败";
+        }
     }
 }

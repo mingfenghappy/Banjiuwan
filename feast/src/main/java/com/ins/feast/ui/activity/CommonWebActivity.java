@@ -6,18 +6,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebView;
+import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
+import com.ins.baidumapsdk.Locationer;
 import com.ins.feast.R;
 import com.ins.feast.common.JSFunctionUrl;
+import com.ins.feast.entity.Position;
 import com.ins.feast.ui.helper.CommonWebTitleHelper;
 import com.ins.feast.web.CommonWebJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.WebEvent;
+import com.ins.middle.helper.CommonAppHelper;
 import com.ins.middle.ui.activity.BaseBackActivity;
+import com.ins.middle.utils.ParamUtil;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
+import com.sobey.common.utils.StrUtils;
+import com.sobey.common.utils.UrlUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,6 +34,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 public class CommonWebActivity extends BaseBackActivity {
+
+    private Locationer locationer;
+
     private final static String KEY_URL = "urlOfThisPage";
     private String urlOfThisPage;
     private WebView webView;
@@ -56,6 +68,9 @@ public class CommonWebActivity extends BaseBackActivity {
         webClient();
         webSetting();
         webView.loadUrl(urlOfThisPage);
+        overrideUrlLoadingFirst(webView, urlOfThisPage);    //特殊的调用：见方法注释
+        //禁止WebView长按编辑
+        CommonAppHelper.setWebViewNoLongClick(webView);
     }
 
     private void webClient() {
@@ -69,29 +84,17 @@ public class CommonWebActivity extends BaseBackActivity {
         };
         /*moreAddress*/
         webViewClient = new BaseWebViewClient(webView) {
+
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                if (url.startsWith("tel:")) {
-                    PhoneUtils.callByUrl(CommonWebActivity.this, url);
-                    return true;
-                }
-
-                if (TextUtils.equals(urlOfThisPage, url)) {
-                    L.d("refresh:Load " + url);
-                    webView.loadUrl(url);
-                    return true;
-                }
-
-                if (urlOfThisPage.contains("login")) {
-                    finish();
-                    EventBus.getDefault().post(WebEvent.shouldRefresh);
-                    return true;
-                }
-
-                L.d("startCommonWebActivity:" + url);
-                CommonWebActivity.start(CommonWebActivity.this, url);
+            public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
+                overrideUrlLoading(webView, url);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                overrideUrlLoadingFinish(view,url);
             }
         };
         webView.setWebChromeClient(webChromeClient);
@@ -112,6 +115,17 @@ public class CommonWebActivity extends BaseBackActivity {
         L.d(urlOfThisPage);
         titleHelper = new CommonWebTitleHelper(this);
         titleHelper.handleTitleWithUrl(urlOfThisPage);
+    }
+
+    /**
+     * 接受地理位置选择的结果，新增地址页面需要接受定位参数，因为定位功能由app提供，web不做处理
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceivePosition(Position position) {
+        String address = position.getAddress();
+        LatLng latLng = position.getLatLng();
+//        Toast.makeText(CommonWebActivity.this, address, Toast.LENGTH_SHORT).show();
+        webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -142,7 +156,8 @@ public class CommonWebActivity extends BaseBackActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webViewClient.destroy();
+        if (webChromeClient != null) webViewClient.destroy();
+        if (locationer != null) locationer.stopLocation();
     }
 
     @Override
@@ -150,5 +165,84 @@ public class CommonWebActivity extends BaseBackActivity {
         super.finish();
         //手动设置出场动画
         overridePendingTransition(0, R.anim.translate_exit);
+    }
+
+    /////////////////////
+
+    /**
+     * TODO：拦截Url 在加载完成后的点击等事件，但是无法拦截第一次加载，即调用webView.loadUrl()加载的链接无法被拦截
+     */
+    private void overrideUrlLoading(final WebView webView, String url) {
+        //打电话
+        if (url.startsWith("tel:")) {
+            PhoneUtils.callByUrl(CommonWebActivity.this, url);
+            return;
+        }
+
+        //加载链接和当前链接一样：刷新操作
+        if (TextUtils.equals(webView.getUrl(), url)) {
+            webView.loadUrl(url);
+            return;
+        }
+
+        //登录 TODO:（可以根据pageType决定其打开页面的方式，如下）
+        if (webView.getUrl().contains("login")) {
+            finish();
+            EventBus.getDefault().post(WebEvent.shouldRefresh);
+            return;
+        }
+
+        //如果是选择更多地址页面（启动源生页面）
+        if (UrlUtil.matchUrl(url, AppData.Url.moreAddress)) {
+            Intent intent = new Intent(CommonWebActivity.this, SearchAddressActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        //根据pageType决定其打开页面的方式
+        //pageType:0 打开新activity 显示页面
+        //pageType:1 在当前activity 显示页面
+        //pageType:2 关闭当前页面并刷新上一级页面
+        int pageType = ParamUtil.getParamInt(url, "pageType", 0);
+        if (pageType == 1) {
+            webView.loadUrl(url);
+        } else if (pageType == 2) {
+            finish();
+            EventBus.getDefault().post(WebEvent.shouldRefresh);
+        } else {
+            CommonWebActivity.start(CommonWebActivity.this, url);
+        }
+        return;
+    }
+
+    /**
+     * TODO：为了拦截webView.loadUrl()加载的链接，在调用loadUrl之前收动调用该方法（当前页面只有onCreate中有一处）
+     */
+    private void overrideUrlLoadingFirst(final WebView webView, String url) {
+        //如果是我的订单页面 取消右滑返回功能（滑动冲突）
+        if (UrlUtil.matchUrl(url, AppData.Url.myOrder)) {
+            getSwipeBackLayout().setEnablePullToBack(false);
+//            Toast.makeText(CommonWebActivity.this, "false", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 页面加载完成后
+     */
+    private void overrideUrlLoadingFinish(final WebView webView, String url) {
+        //如果是新增地址页面，注册定位管理器进行定位（动态注册，不需要定位功能的页面不注册）
+        if (UrlUtil.matchUrl(url, AppData.Url.addAddress)) {
+            locationer = new Locationer(CommonWebActivity.this);
+            locationer.setCallback(new Locationer.LocationCallback() {
+                @Override
+                public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
+                    address = StrUtils.subFirstChart(address, "中国");
+//                    Toast.makeText(CommonWebActivity.this, address, Toast.LENGTH_SHORT).show();
+                    webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
+                    locationer.stopLocation();  //定位成功后马上释放
+                }
+            });
+            locationer.startlocation();
+        }
     }
 }
