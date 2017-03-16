@@ -1,5 +1,7 @@
 package com.ins.feast.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,10 +9,35 @@ import java.io.Serializable;
  */
 
 public class Address implements Serializable{
+
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("contact")
     private String name;
+
+    @SerializedName("contactPhone")
     private String phone;
+
+    @SerializedName("address")
     private String address;
+
+    @SerializedName("detailAddress")
+    private String detailAddress;
+
+    @SerializedName("lngLat")
+    private String lngLat;
+
+    @SerializedName("isDefault")
+    private int isDefault;
+
+    public String getLngLat() {
+        return lngLat;
+    }
+
+    public void setLngLat(String lngLat) {
+        this.lngLat = lngLat;
+    }
 
     public int getId() {
         return id;
@@ -42,5 +69,21 @@ public class Address implements Serializable{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
     }
 }

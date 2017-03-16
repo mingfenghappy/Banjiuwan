@@ -37,7 +37,7 @@ public class PayHelper {
     public final static int PAY_WEIXIN = 0;
     /*支付宝支付*/
     public final static int PAY_ALIPAY = 1;
-    public static String appid = "wx39b6f80d336ca5e4";
+    public static String appid = "wxedb9473980fbecfe";
     private Activity activity;
     private IWXAPI api;
 

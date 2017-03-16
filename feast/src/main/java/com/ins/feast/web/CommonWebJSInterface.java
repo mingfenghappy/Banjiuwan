@@ -5,6 +5,8 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import com.ins.feast.ui.activity.ChooseLocationActivity;
+import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.middle.common.AppData;
 
 /**
@@ -24,13 +26,16 @@ public class CommonWebJSInterface extends BaseFeastJSInterface {
 
     @JavascriptInterface
     public void saveToken(String token) {
-//        Log.e("liao token",token);
-//        Toast.makeText(activity, token, Toast.LENGTH_SHORT).show();
         AppData.App.saveToken(token);
     }
 
     @JavascriptInterface
     public void removeToken() {
         AppData.App.removeToken();
+    }
+
+    @JavascriptInterface
+    public void openAddressPage() {
+        ChooseLocationActivity.start(activity);
     }
 }

@@ -47,11 +47,17 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/text_pay_title"
+        <Button
+            android:id="@+id/appay_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:text="pay" />
+
+        <TextView
+            android:id="@+id/text_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:text="支付1分钱"
             android:textColor="@color/com_text_blank"
             android:textSize="@dimen/text_big_nomal" />
@@ -74,7 +80,7 @@
             android:id="@+id/btn_recharge_zhifubao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="10dp"
             android:text="支付宝充值" />
 
         <Button

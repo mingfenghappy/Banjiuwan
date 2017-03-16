@@ -59,6 +59,8 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private TextView text_defult_phone;
     private TextView text_defult_address;
 
+    private Address defaultAddress;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, ChooseLocationActivity.class);
         context.startActivity(starter);
@@ -94,6 +96,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         text_defult_name = (TextView) findViewById(R.id.text_defult_name);
         text_defult_phone = (TextView) findViewById(R.id.text_defult_phone);
         text_defult_address = (TextView) findViewById(R.id.text_defult_address);
+        lay_defult_address.setOnClickListener(this);
 
         nowLocation = (TextView) findViewById(R.id.nowLocation);
         nearbyLocations = (RecyclerView) findViewById(R.id.nearbyLocationList);
@@ -157,12 +160,19 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             case R.id.relocation:
                 startLocation();
                 break;
+            case R.id.lay_defult_address:
+                if (defaultAddress != null) {
+                    Position position = new Position(defaultAddress);
+                    postAndFinishActivity(position);
+                }
+                break;
         }
     }
 
     private void chooseNowLocation() {
         Position position = new Position();
         position.setKey(nowLocation.getText().toString());
+        position.setAddress(nowLocation.getText().toString());
         position.setCity(city);
         position.setLatLng(latLng);
         position.setDistrict(district);
@@ -217,6 +227,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     }
 
     private void setDefaultAddress(Address address) {
+        defaultAddress = address;
         if (address == null) {
             lay_defult_address.setVisibility(View.GONE);
         } else {

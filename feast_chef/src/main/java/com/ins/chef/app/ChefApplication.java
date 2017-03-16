@@ -17,6 +17,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.ins.chef.BuildConfig;
 import com.ins.chef.R;
 import com.ins.middle.common.AppData;
@@ -44,6 +45,7 @@ public class ChefApplication extends Application {
         initJPush();
         initXUtils();
         initBugHd();
+        initBaiduMap();
         initSetting();
     }
 
@@ -85,6 +87,9 @@ public class ChefApplication extends Application {
         );
     }
 
+    private void initBaiduMap() {
+        SDKInitializer.initialize(this);
+    }
 
     private void initBugHd() {
         FIR.init(this);

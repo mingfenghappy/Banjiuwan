@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ins.chef.R;
 import com.ins.chef.web.ChefJSInterface;
@@ -57,6 +58,8 @@ public class CommonWebActivity extends BaseFeastActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (AppData.Config.showTestToast)
+                    Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
                 if (url.startsWith("tel:")) {
                     PhoneUtils.callByUrl(CommonWebActivity.this, url);

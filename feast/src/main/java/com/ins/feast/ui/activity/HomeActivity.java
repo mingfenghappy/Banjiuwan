@@ -9,16 +9,22 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
+import com.ins.feast.entity.Area;
+import com.ins.feast.entity.AreaData;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.Tabs;
 import com.ins.feast.ui.helper.HomeTitleHelper;
+import com.ins.feast.utils.AppHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
 import com.ins.feast.web.HomeWebView;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.helper.BackCheckedHelper;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
@@ -30,6 +36,9 @@ import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.xutils.http.RequestParams;
+
+import java.util.List;
 
 
 public class HomeActivity extends BaseMapActivity implements
@@ -44,6 +53,10 @@ public class HomeActivity extends BaseMapActivity implements
     private HomeActivityWebViewClient webViewClient;
     private UpdateHelper updateHelper;
 
+    //菜品配置
+    public AreaData areaData;
+    //用户当前位置
+    public LatLng nowLatlng;
     /**
      * 注：该Activity启动模式为singleTask
      */
@@ -61,7 +74,13 @@ public class HomeActivity extends BaseMapActivity implements
 
         initBase();
         initView();
+        initData();
         initWebViewSetting();
+    }
+
+    private void initData() {
+        //请求菜品配置（地理围栏）
+        netGetCategoryConfig();
     }
 
     private void initBase() {
@@ -116,6 +135,7 @@ public class HomeActivity extends BaseMapActivity implements
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
+        this.nowLatlng = latLng;
         stopLocation();
         title_location.setText(getAddStr());
     }
@@ -217,5 +237,26 @@ public class HomeActivity extends BaseMapActivity implements
         if (webView != null && !TextUtils.isEmpty(url)) {
             webView.loadUrl(url);
         }
+    }
+
+    //请求菜品配置（地理围栏）
+    public void netGetCategoryConfig() {
+        RequestParams params = new RequestParams(AppData.Url.getCategoryConfig);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, AreaData.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    areaData = (AreaData) pojo;
+                    AppHelper.setLatlogEntity(areaData);
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

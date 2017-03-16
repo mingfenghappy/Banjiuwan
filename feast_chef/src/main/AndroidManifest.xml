@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 百度地图 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="H2lEr9j0mCNG1gYm7CEuHUI6tESXr392" />
+
         <!-- bugHD -->
         <meta-data
             android:name="BUG_HD_SDK_GENERAL_KEY"
@@ -50,10 +55,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -61,10 +66,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleFullscreen">
 
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
             <intent-filter>
                 <action android:name="chef.LoadUpActivity" />
                 <category android:name="android.intent.category.DEFAULT" />

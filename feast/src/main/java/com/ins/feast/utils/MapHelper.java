@@ -14,10 +14,12 @@ import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.SpatialRelationUtil;
+import com.ins.feast.entity.Area;
 import com.sobey.common.utils.StrUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/11/9.
@@ -76,7 +78,7 @@ public class MapHelper {
     public static LatLng str2LatLng(String str) {
         String[] split = str.split(",");
         if (split.length == 2) {
-            return new LatLng(Double.parseDouble(split[0]), Double.parseDouble(split[1]));
+            return new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[0]));
         } else {
             return null;
         }
@@ -90,6 +92,20 @@ public class MapHelper {
         }
     }
 
+    public static List<LatLng> map2LatLngs(Map<String, String> map) {
+        List<LatLng> latLngs = new ArrayList<>();
+        if (StrUtils.isEmpty(map)) {
+            return latLngs;
+        }
+        for (String key : map.keySet()) {
+            double keyd = Double.parseDouble(key);
+            double valued = Double.parseDouble(map.get(key));
+            LatLng latLng = new LatLng(valued, keyd);
+            latLngs.add(latLng);
+        }
+        return latLngs;
+    }
+
     public static boolean isInAreas(List<List<LatLng>> ptsArray, LatLng latLng) {
         if (StrUtils.isEmpty(ptsArray)) {
             return false;
@@ -101,6 +117,17 @@ public class MapHelper {
             }
         }
         return false;
+    }
+
+    public static boolean isInAreas4Areas(List<Area> areas, LatLng latLng) {
+        if (StrUtils.isEmpty(areas)) {
+            return false;
+        }
+        List<List<LatLng>> ptsArray = new ArrayList<>();
+        for (Area area : areas) {
+            ptsArray.add(area.getLatLngs());
+        }
+        return isInAreas(ptsArray, latLng);
     }
 
     public static void zoomToPosition(MapView mapView, LatLng latLng) {

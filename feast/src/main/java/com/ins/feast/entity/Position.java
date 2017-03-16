@@ -2,6 +2,7 @@ package com.ins.feast.entity;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
+import com.ins.feast.utils.MapHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,16 @@ public class Position implements Serializable {
         city = poi.city;
         district = poi.address;
         latLng = poi.location;
-        address=poi.address;
+        address = poi.address;
+    }
+
+    public Position(Address address) {
+        this.address = address.getAddress();
+        this.latLng = MapHelper.str2LatLng(address.getLngLat());
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAddress() {

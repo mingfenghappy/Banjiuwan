@@ -159,9 +159,17 @@ public class AppData {
         public static String loginPageCook              = domain + "app/page/cookLogin";                                           //厨师登录页面
         public static String loginPage                  = domain + "app/page/login";                                                //客户端登录页面
 
+        public static String cookbook                   = domain + "app/page/cookbook";                                            //客户端点菜页面
+        public static String setMeal                    = domain + "app/page/setMeal";                                             //客户端套餐页面
+        public static String bamYan                     = domain + "app/page/bamYan";                                              //客户端坝坝宴页面
+        public static String wedding                    = domain + "app/page/wedding";                                             //客户端婚庆页面
+        public static String dinner                     = domain + "app/page/dinner";                                              //客户半餐演奏页面
+        public static String serviceDetail              = domain + "app/page/serviceDetail";                                      //客户专业服务页面
+
         public static String queryByCategory            = domain + "app/food/queryByCategory";
         public static String getAddress                 = domain + "app/address/getAddress";                                      //获取收货地址
         public static String updateCookLatLng           = domain + "app/cook/updateCookLatLng";                                  //厨师实时上传坐标（5秒一次）
+        public static String getCategoryConfig          = domain + "app/category/getCategoryConfig";                            //用户端获取菜品配置（地理围栏）
 
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
         public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名

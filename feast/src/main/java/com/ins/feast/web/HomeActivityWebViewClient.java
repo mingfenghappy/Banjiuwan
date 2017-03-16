@@ -8,6 +8,7 @@ import com.ins.feast.R;
 import com.ins.feast.ui.activity.CardActivity;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
+import com.ins.feast.utils.AppHelper;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.WebEvent;
@@ -33,7 +34,15 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-//        Toast.makeText(homeActivity, "load home", Toast.LENGTH_SHORT).show();
+        if (AppData.Config.showTestToast)
+            Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
+
+        if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng)) {
+            //不可进入的链接和地理位置
+            Toast.makeText(homeActivity, "你不在可下单范围内", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         if (url.startsWith("tel:")) {
             PhoneUtils.callByUrl(homeActivity, url);
             return true;

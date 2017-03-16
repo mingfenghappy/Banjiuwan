@@ -8,22 +8,33 @@ import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
+import com.ins.baidumapsdk.Locationer;
 import com.ins.chef.R;
 import com.ins.chef.web.ChefJSInterface;
 import com.ins.middle.base.BaseWebChromeClient;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.helper.CommonAppHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
+import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 
-public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener {
+import org.xutils.http.RequestParams;
+
+public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener, Locationer.LocationCallback {
+
+    private Locationer locationer;
+
     private WebView webView;
     private TextView toolbar_title;
     private RadioGroup rg;
@@ -51,6 +62,10 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         //检查更新
         updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_chef).isHintNewVersion(false).build();
         updateHelper.check();
+
+        locationer = new Locationer(this);
+        locationer.setCallback(this);
+        locationer.startlocation();
     }
 
     private void initSetting() {
@@ -70,9 +85,8 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-//                Toast.makeText(HomeActivity.this,"load home",Toast.LENGTH_SHORT).show();
-                L.d(url);
+                if (AppData.Config.showTestToast)
+                    Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
                 if (url.startsWith("tel:")) {
                     PhoneUtils.callByUrl(HomeActivity.this, url);
@@ -155,6 +169,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (locationer != null) locationer.stopLocation();
         updateHelper.onDestory();
         webViewClient.destroy();
     }
@@ -204,5 +219,39 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         if (webView != null) {
             webView.reload();
         }
+    }
+
+    //定位成功回调
+    @Override
+    public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
+        if (latLng != null) {
+            if (AppData.Config.showTestToast) Toast.makeText(this, latLng.latitude + ":" + latLng.longitude + "  " + city, Toast.LENGTH_SHORT).show();
+            netUpdateLat(latLng);
+        }
+    }
+
+    //发送请求把自己位置发送给服务器（每5秒执行一次）
+    public void netUpdateLat(LatLng latLng) {
+        //如果没有登录（被挤下线），则不请求
+        if (StrUtils.isEmpty(AppData.App.getToken())) {
+            return;
+        }
+        String lat = latLng.latitude + "," + latLng.longitude;
+        RequestParams params = new RequestParams(AppData.Url.updateCookLatLng);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("latLng", lat);
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                //未登录
+                if (code == 1005) {
+                    AppData.App.removeToken();
+                }
+            }
+        });
     }
 }

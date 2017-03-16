@@ -88,6 +88,8 @@ public class CommonWebActivity extends BaseBackActivity {
         webViewClient = new BaseWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
+                if (AppData.Config.showTestToast)
+                    Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
                 overrideUrlLoading(webView, url);
                 return true;
             }
@@ -189,24 +191,12 @@ public class CommonWebActivity extends BaseBackActivity {
             return;
         }
 
-        //登录 (关闭当前页，刷新上级页面？)
-//        if (webView.getUrl().contains("login")) {
-//            Toast.makeText(CommonWebActivity.this, "login fresh", Toast.LENGTH_SHORT).show();
-//            finish();
-//            EventBus.getDefault().post(WebEvent.shouldRefresh);
+        //这里不需要再拦截了（web端逻辑改了）
+//        //如果是选择更多地址页面（启动源生页面）
+//        if (UrlUtil.matchUrl(url, AppData.Url.moreAddress)) {
+//            ChooseLocationActivity.start(CommonWebActivity.this);
 //            return;
 //        }
-//        if (UrlUtil.matchUrl(url, AppData.Url.loginPage)) {
-//            Toast.makeText(CommonWebActivity.this, "loginPage", Toast.LENGTH_SHORT).show();
-//            EventBus.getDefault().post(WebEvent.shouldRefresh);
-//        }
-
-        //如果是选择更多地址页面（启动源生页面）
-        if (UrlUtil.matchUrl(url, AppData.Url.moreAddress)) {
-            Intent intent = new Intent(CommonWebActivity.this, SearchAddressActivity.class);
-            startActivity(intent);
-            return;
-        }
 
         //根据pageType决定其打开页面的方式
         //pageType:0 打开新activity 显示页面
@@ -249,9 +239,9 @@ public class CommonWebActivity extends BaseBackActivity {
             locationer.setCallback(new Locationer.LocationCallback() {
                 @Override
                 public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
-                    if (StrUtils.isEmpty(address)){
+                    if (StrUtils.isEmpty(address)) {
                         Toast.makeText(CommonWebActivity.this, "定位失败，请到信号较好的地方稍后再试", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         address = StrUtils.subFirstChart(address, "中国");
                         webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
                         locationer.stopLocation();  //定位成功后马上释放
