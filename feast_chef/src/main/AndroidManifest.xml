@@ -45,7 +45,6 @@
             </intent-filter>
         </receiver>
 
-
         <activity
             android:name="com.ins.middle.ui.activity.DomainActivity"
             android:screenOrientation="portrait"

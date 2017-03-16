@@ -17,13 +17,7 @@ import com.sobey.common.utils.ApplicationHelp;
  * desc ${TODO}
  */
 
-public class ChefJSInterface extends BaseJSInterface{
-
-//    private Activity activity;
-//
-//    public ChefJSInterface(Activity activity) {
-//        this.activity = activity;
-//    }
+public class ChefJSInterface extends BaseJSInterface {
 
     @JavascriptInterface
     public String getToken() {
@@ -31,15 +25,7 @@ public class ChefJSInterface extends BaseJSInterface{
     }
 
     @JavascriptInterface
-    public void removeToken(){
+    public void removeToken() {
         AppData.App.removeToken();
-//        AppData.App.removeUser();
-//
-//        if (!ActivityUtil.isForeground(activity, "com.ins.chef.ui.activity.LoginActivity")) {
-//            Intent intent = new Intent(activity, LoginActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            activity.startActivity(intent);
-//            activity.finish();
-//        }
     }
 }

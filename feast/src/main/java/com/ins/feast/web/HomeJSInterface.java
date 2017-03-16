@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.webkit.JavascriptInterface;
 
+import com.ins.middle.common.AppData;
 import com.sobey.common.utils.PermissionsUtil;
 
 /**

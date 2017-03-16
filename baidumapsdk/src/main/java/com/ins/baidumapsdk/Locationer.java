@@ -56,7 +56,7 @@ public class Locationer {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(0);  //定位间隔时间，必须>1000，为0标示只定位一次
+        option.setScanSpan(5000);  //定位间隔时间，必须>1000，为0标示只定位一次
 
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setNeedDeviceDirect(true);// 返回的定位结果包含手机机头的方向

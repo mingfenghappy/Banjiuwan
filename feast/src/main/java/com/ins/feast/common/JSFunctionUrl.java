@@ -13,4 +13,8 @@ public class JSFunctionUrl {
     public static String setAddress(String address, String lat, String lng) {
         return "javascript:setAddress('" + address + "','" + lat + "','" + lng + "')";
     }
+    //不再有这个方法了 ，token由登录时接收
+//    public static String getToken() {
+//        return "javascript:getToken()";
+//    }
 }

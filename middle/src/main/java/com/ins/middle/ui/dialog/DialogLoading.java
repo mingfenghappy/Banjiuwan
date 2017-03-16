@@ -23,7 +23,7 @@ public class DialogLoading extends Dialog {
     private ImageView img_in;
 
     private int inSrc = R.drawable.loading_in;
-    private int[] outSrcs = new int[]{R.drawable.loading_out1, R.drawable.loading_out2,R.drawable.loading_out3,R.drawable.loading_out4};
+    private int[] outSrcs = new int[]{R.drawable.loading_out1, R.drawable.loading_out2, R.drawable.loading_out3, R.drawable.loading_out4};
     //边框旋转一帧用时
     private int TIME_OUT = 100;
 
@@ -86,10 +86,14 @@ public class DialogLoading extends Dialog {
     }
 
     public void onStart() {
-        animationRefresh.start();
+        if (animationRefresh != null && !animationRefresh.isRunning()) {
+            animationRefresh.start();
+        }
     }
 
     public void onStop() {
-        animationRefresh.stop();
+        if (animationRefresh != null && animationRefresh.isRunning()) {
+            animationRefresh.stop();
+        }
     }
 }

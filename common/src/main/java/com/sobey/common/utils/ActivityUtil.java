@@ -1,5 +1,6 @@
 package com.sobey.common.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -43,5 +44,9 @@ public class ActivityUtil {
             }
         }
         return false;
+    }
+
+    public static boolean isForeground(Activity activity) {
+        return isForeground(activity, activity.getClass().getName());
     }
 }

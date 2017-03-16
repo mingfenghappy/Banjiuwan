@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
@@ -16,16 +17,26 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.google.gson.reflect.TypeToken;
 import com.ins.feast.R;
+import com.ins.feast.entity.Address;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.ChooseLocationAdapter;
+import com.ins.feast.utils.AppHelper;
 import com.ins.feast.utils.RxViewUtils;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.User;
+import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.xutils.http.RequestParams;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ins.feast.R.id.searchLocation;
@@ -43,6 +54,11 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private String district = "";
     private GeoCoder gC;
 
+    private View lay_defult_address;
+    private TextView text_defult_name;
+    private TextView text_defult_phone;
+    private TextView text_defult_address;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, ChooseLocationActivity.class);
         context.startActivity(starter);
@@ -53,8 +69,13 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
         setEventBusSupport();
+        initBase();
         initView();
         initSetting();
+        netGetAddress();    //请求默认地址
+    }
+
+    private void initBase() {
     }
 
     private void initSetting() {
@@ -69,6 +90,11 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     }
 
     private void initView() {
+        lay_defult_address = findViewById(R.id.lay_defult_address);
+        text_defult_name = (TextView) findViewById(R.id.text_defult_name);
+        text_defult_phone = (TextView) findViewById(R.id.text_defult_phone);
+        text_defult_address = (TextView) findViewById(R.id.text_defult_address);
+
         nowLocation = (TextView) findViewById(R.id.nowLocation);
         nearbyLocations = (RecyclerView) findViewById(R.id.nearbyLocationList);
         nearbyLocations.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -188,5 +214,47 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     public void onClick_back(View view) {
         onBackPressed();
+    }
+
+    private void setDefaultAddress(Address address) {
+        if (address == null) {
+            lay_defult_address.setVisibility(View.GONE);
+        } else {
+            lay_defult_address.setVisibility(View.VISIBLE);
+            text_defult_name.setText(address.getName());
+            text_defult_phone.setText(address.getPhone());
+            text_defult_address.setText(address.getAddress());
+        }
+    }
+
+    ///////////////////////
+    /////////网络请求接口
+    ///////////////////////
+
+    public void netGetAddress() {
+        //如果没有token 代表用户没登录，不发起请求
+        String token = AppData.App.getToken();
+        if (StrUtils.isEmpty(token)) return;
+        RequestParams params = new RequestParams(AppData.Url.getAddress);
+        params.addHeader("token", token);
+        params.addBodyParameter("pageNO", "1");
+        params.addBodyParameter("pageSize", "100");
+        CommonNet.samplepost(params, new TypeToken<List<Address>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    List<Address> addresses = (ArrayList<Address>) pojo;
+                    setDefaultAddress(AppHelper.getDefaultAddressInList(addresses));
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(ChooseLocationActivity.this, text, Toast.LENGTH_SHORT).show();
+                setDefaultAddress(null);
+            }
+        });
     }
 }

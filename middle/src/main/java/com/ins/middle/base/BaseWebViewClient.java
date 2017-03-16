@@ -13,6 +13,8 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.dialog.DialogLoading;
+import com.sobey.common.utils.ActivityUtil;
+import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
@@ -124,7 +126,11 @@ public class BaseWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
         L.d("onPageStarted:" + url);
-        loading.show();
+        try {
+            loading.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         webView.setVisibility(View.INVISIBLE);
     }
 
@@ -132,7 +138,11 @@ public class BaseWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         L.d("onPageFinished");
-        loading.hide();
+        try {
+            loading.hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         webView.setVisibility(View.VISIBLE);
     }
 

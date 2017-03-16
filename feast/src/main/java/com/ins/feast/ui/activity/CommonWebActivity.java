@@ -23,6 +23,7 @@ import com.ins.middle.entity.WebEvent;
 import com.ins.middle.helper.CommonAppHelper;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.utils.ParamUtil;
+import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
@@ -45,6 +46,9 @@ public class CommonWebActivity extends BaseBackActivity {
     private BaseWebChromeClient webChromeClient;
 
     public static void start(Context context, String url) {
+        //防止重复点击过快打开页面
+        if (ClickUtils.isFastDoubleClick()) return;
+
         Intent starter = new Intent(context, CommonWebActivity.class);
         starter.putExtra(KEY_URL, url);
         context.startActivity(starter);
@@ -74,7 +78,6 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     private void webClient() {
-
         webChromeClient = new BaseWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -82,9 +85,7 @@ public class CommonWebActivity extends BaseBackActivity {
                 titleHelper.setTitleText(title);
             }
         };
-        /*moreAddress*/
         webViewClient = new BaseWebViewClient(webView) {
-
             @Override
             public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
                 overrideUrlLoading(webView, url);
@@ -94,7 +95,7 @@ public class CommonWebActivity extends BaseBackActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                overrideUrlLoadingFinish(view,url);
+                overrideUrlLoadingFinish(view, url);
             }
         };
         webView.setWebChromeClient(webChromeClient);
@@ -156,7 +157,7 @@ public class CommonWebActivity extends BaseBackActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (webChromeClient != null) webViewClient.destroy();
+        if (webViewClient != null) webViewClient.destroy();
         if (locationer != null) locationer.stopLocation();
     }
 
@@ -167,7 +168,10 @@ public class CommonWebActivity extends BaseBackActivity {
         overridePendingTransition(0, R.anim.translate_exit);
     }
 
-    /////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////URL拦截处理//////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * TODO：拦截Url 在加载完成后的点击等事件，但是无法拦截第一次加载，即调用webView.loadUrl()加载的链接无法被拦截
@@ -185,12 +189,17 @@ public class CommonWebActivity extends BaseBackActivity {
             return;
         }
 
-        //登录 TODO:（可以根据pageType决定其打开页面的方式，如下）
-        if (webView.getUrl().contains("login")) {
-            finish();
-            EventBus.getDefault().post(WebEvent.shouldRefresh);
-            return;
-        }
+        //登录 (关闭当前页，刷新上级页面？)
+//        if (webView.getUrl().contains("login")) {
+//            Toast.makeText(CommonWebActivity.this, "login fresh", Toast.LENGTH_SHORT).show();
+//            finish();
+//            EventBus.getDefault().post(WebEvent.shouldRefresh);
+//            return;
+//        }
+//        if (UrlUtil.matchUrl(url, AppData.Url.loginPage)) {
+//            Toast.makeText(CommonWebActivity.this, "loginPage", Toast.LENGTH_SHORT).show();
+//            EventBus.getDefault().post(WebEvent.shouldRefresh);
+//        }
 
         //如果是选择更多地址页面（启动源生页面）
         if (UrlUtil.matchUrl(url, AppData.Url.moreAddress)) {
@@ -203,12 +212,16 @@ public class CommonWebActivity extends BaseBackActivity {
         //pageType:0 打开新activity 显示页面
         //pageType:1 在当前activity 显示页面
         //pageType:2 关闭当前页面并刷新上一级页面
+        //pageType:3 打开新activity 显示页面并刷新当前页面
         int pageType = ParamUtil.getParamInt(url, "pageType", 0);
         if (pageType == 1) {
             webView.loadUrl(url);
         } else if (pageType == 2) {
             finish();
             EventBus.getDefault().post(WebEvent.shouldRefresh);
+        } else if (pageType == 3) {
+            EventBus.getDefault().post(WebEvent.shouldRefresh);
+            CommonWebActivity.start(CommonWebActivity.this, url);
         } else {
             CommonWebActivity.start(CommonWebActivity.this, url);
         }
@@ -216,7 +229,7 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     /**
-     * TODO：为了拦截webView.loadUrl()加载的链接，在调用loadUrl之前收动调用该方法（当前页面只有onCreate中有一处）
+     * TODO：为了捕获webView.loadUrl()加载的链接，在调用loadUrl之前手动调用该方法（当前页面只有onCreate中有一处）
      */
     private void overrideUrlLoadingFirst(final WebView webView, String url) {
         //如果是我的订单页面 取消右滑返回功能（滑动冲突）
@@ -227,7 +240,7 @@ public class CommonWebActivity extends BaseBackActivity {
     }
 
     /**
-     * 页面加载完成后
+     * TODO：页面加载完成后，判断url作特殊处理（web页面在加载过程中调用其js方法不会成功，需要加载完成后调用）
      */
     private void overrideUrlLoadingFinish(final WebView webView, String url) {
         //如果是新增地址页面，注册定位管理器进行定位（动态注册，不需要定位功能的页面不注册）
@@ -236,10 +249,13 @@ public class CommonWebActivity extends BaseBackActivity {
             locationer.setCallback(new Locationer.LocationCallback() {
                 @Override
                 public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
-                    address = StrUtils.subFirstChart(address, "中国");
-//                    Toast.makeText(CommonWebActivity.this, address, Toast.LENGTH_SHORT).show();
-                    webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
-                    locationer.stopLocation();  //定位成功后马上释放
+                    if (StrUtils.isEmpty(address)){
+                        Toast.makeText(CommonWebActivity.this, "定位失败，请到信号较好的地方稍后再试", Toast.LENGTH_SHORT).show();
+                    }else {
+                        address = StrUtils.subFirstChart(address, "中国");
+                        webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
+                        locationer.stopLocation();  //定位成功后马上释放
+                    }
                 }
             });
             locationer.startlocation();

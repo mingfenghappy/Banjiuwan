@@ -152,12 +152,16 @@ public class AppData {
         public static String app_setMeal                = domain + "app/page/setMealDetail";
         public static String app_bamYan                 = domain + "app/page/bamYanDetail";
         public static String app_dinner                 = domain + "app/page/dinnerDetail";
-        public static String queryByCategory            = domain + "app/food/queryByCategory";
 
         public static String moreAddress                = domain + "app/page/moreAddress";                                        //更多地址（新增收获地址页面）
         public static String addAddress                 = domain + "app/page/addAddress";                                         //新增地址（新增收获地址页面）
         public static String myOrder                    = domain + "app/page/myOrder";                                             //我的订单
         public static String loginPageCook              = domain + "app/page/cookLogin";                                           //厨师登录页面
+        public static String loginPage                  = domain + "app/page/login";                                                //客户端登录页面
+
+        public static String queryByCategory            = domain + "app/food/queryByCategory";
+        public static String getAddress                 = domain + "app/address/getAddress";                                      //获取收货地址
+        public static String updateCookLatLng           = domain + "app/cook/updateCookLatLng";                                  //厨师实时上传坐标（5秒一次）
 
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
         public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名

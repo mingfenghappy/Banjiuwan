@@ -79,6 +79,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activity.CommonWebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back" />
+        <activity
+            android:name=".ui.activity.CardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activity.ChooseLocationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back.Transition" />
@@ -110,14 +118,6 @@
 
         <activity
             android:name=".ui.activity.SearchDishesActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activity.CommonWebActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back" />
-        <activity
-            android:name=".ui.activity.CardActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="io.dcloud.H52EEACAF.wxapi.WXPayEntryActivity"

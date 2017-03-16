@@ -3,6 +3,7 @@ package com.ins.feast.utils;
 import android.os.Handler;
 
 import com.dd.CircularProgressButton;
+import com.ins.feast.entity.Address;
 import com.ins.middle.common.AppData;
 import com.ins.feast.entity.Card;
 import com.shelwee.update.utils.VersionUtil;
@@ -111,5 +112,12 @@ public class AppHelper {
             Card card = cards.get(i);
             card.setIndex(i);
         }
+    }
+
+    public static Address getDefaultAddressInList(List<Address> addresses) {
+        if (StrUtils.isEmpty(addresses)){
+            return null;
+        }
+        return null;
     }
 }

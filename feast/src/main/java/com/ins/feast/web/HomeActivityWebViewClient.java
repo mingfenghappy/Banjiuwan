@@ -10,8 +10,12 @@ import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.WebEvent;
+import com.ins.middle.utils.ParamUtil;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * author 边凌
@@ -38,11 +42,25 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
             webView.loadUrl(url);
             return true;
         }
-        boolean jumped = jumpedIfIsCardDetail(url);
-        if (!jumped) {
-            //没跳转的情况下跳转CommonWeb
+        if (jumpedIfIsCardDetail(url)) {
+            return true;
+        }
+        //根据pageType决定其打开页面的方式
+        //pageType:0 打开新activity 显示页面
+        //pageType:1 在当前activity 显示页面
+        //pageType:2 关闭当前页面并刷新上一级页面（home页面不会有这种情况）
+        //pageType:3 打开新activity 显示页面并刷新当前页面
+        int pageType = ParamUtil.getParamInt(url, "pageType", 0);
+        if (pageType == 1) {
+            webView.loadUrl(url);
+        } else if (pageType == 3) {
+            EventBus.getDefault().post(WebEvent.shouldRefresh);
+            CommonWebActivity.start(homeActivity, url);
+        } else {
             CommonWebActivity.start(homeActivity, url);
         }
+
+
         return true;
     }
 

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.feast.R;
+import com.ins.feast.common.JSFunctionUrl;
 import com.ins.feast.ui.activity.ChooseLocationActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.SearchDishesActivity;
