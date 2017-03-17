@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+
 import com.tencent.smtt.sdk.WebView;
+
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,9 +43,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     private RadioButton mine, mineOrderForm;
     private BaseWebChromeClient homeWebChromeClient;
     private UpdateHelper updateHelper;
-    private boolean notLoad = false;
     private BaseWebViewClient webViewClient;
-    private boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +65,10 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
         locationer = new Locationer(this);
         locationer.setCallback(this);
-        if (PermissionsUtil.requsetLocation(this, null)) {
-            locationer.startlocation();
-        }
+        locationer.startlocation();
     }
 
     private void initSetting() {
-        rg.setVisibility(View.VISIBLE);
         rg.setOnCheckedChangeListener(this);
     }
 
@@ -108,20 +105,20 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                     return true;
                 }
 
-                if (url.contains("cookMy")
-                        || url.contains("cookMyOrder")) {
-                    view.loadUrl(url);
-                    handleTabsByUrl(url);
-                    if (first) {
-                        first = false;
-                        notLoad = false;
+                //如果首页其他地方加载了tab的链接，切换tab
+                if (UrlUtil.matchUrl(url, AppData.Url.FEAST_CHEF_MINE)) {
+                    if (!mine.isChecked()) {
+                        mine.setChecked(true);
+                    }
+                    return true;
+                }else if (UrlUtil.matchUrl(url, AppData.Url.FEAST_CHEF_MINE_ORDERFORM)){
+                    if (!mineOrderForm.isChecked()) {
+                        mineOrderForm.setChecked(true);
                     }
                     return true;
                 }
 
                 CommonWebActivity.start(HomeActivity.this, url);
-                handleTabsByUrl(url);
-                rg.setVisibility(View.VISIBLE);
                 return true;
             }
         };
@@ -146,27 +143,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         mineOrderForm = (RadioButton) findViewById(R.id.rg_orderForm);
 
         setWebViewLifeCycleSupport(webView);
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notLoad = false;
-            }
-        };
-        findViewById(R.id.rg_mine).setOnClickListener(listener);
-        findViewById(R.id.rg_orderForm).setOnClickListener(listener);
     }
-
-    //厨师端不处理回退
-//    @Override
-//    public void onBackPressed() {
-//        if (webView != null && webView.canGoBack()) {
-//            webView.goBack();
-//            String originalUrl = webView.getOriginalUrl();
-//            handleTabsByUrl(originalUrl);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
 
     @Override
     protected void onDestroy() {
@@ -174,23 +151,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         if (locationer != null) locationer.stopLocation();
         updateHelper.onDestory();
         webViewClient.destroy();
-    }
-
-    private void handleTabsByUrl(String url) {
-        notLoad = true;
-        if (url.contains("cookMyOrder")) {
-            rg.setVisibility(View.VISIBLE);
-            if (!mineOrderForm.isChecked()) {
-                mineOrderForm.setChecked(true);
-            }
-        } else if (url.contains("cookMy")) {
-            rg.setVisibility(View.VISIBLE);
-            if (!mine.isChecked()) {
-                mine.setChecked(true);
-            }
-        } else {
-            rg.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -204,7 +164,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                 url = AppData.Url.FEAST_CHEF_MINE_ORDERFORM;
                 break;
         }
-        if (!TextUtils.isEmpty(url) && !notLoad) {
+        if (!TextUtils.isEmpty(url)) {
             webView.loadUrl(url);
         }
     }
@@ -227,7 +187,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     @Override
     public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
         if (latLng != null) {
-            if (AppData.Config.showTestToast) Toast.makeText(this, latLng.latitude + ":" + latLng.longitude + "  " + city, Toast.LENGTH_SHORT).show();
             netUpdateLat(latLng);
         }
     }

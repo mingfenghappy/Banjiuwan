@@ -45,14 +45,21 @@ public class UrlUtil {
      * 判断两个url是否相同（排除domain头的影响）
      */
     public static boolean matchUrl(String url1, String url2) {
+//        String nourl1 = cutParam(cutDomain(url1));
+//        if (url2.contains(nourl1)) {
+//            return true;
+//        }
+//        String nourl2 = cutParam(cutDomain(url2));
+//        if (url1.contains(nourl2)) {
+//            return true;
+//        }
+//        return false;
         String nourl1 = cutParam(cutDomain(url1));
-        if (url2.contains(nourl1)) {
-            return true;
-        }
         String nourl2 = cutParam(cutDomain(url2));
-        if (url1.contains(nourl2)) {
+        if (nourl1.equals(nourl2)){
             return true;
+        }else {
+            return false;
         }
-        return false;
     }
 }

@@ -31,6 +31,7 @@ public class LoginActivity extends BaseFeastActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setToolbar();
+        setNeedDoubleClickExit(true);
 
         initBase();
         initView();

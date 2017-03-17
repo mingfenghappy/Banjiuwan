@@ -22,5 +22,7 @@ public enum WebEvent {
     /*结束非主页的页面*/
     finishActivity,
     /*厨师端登陆成功(用于解决一个bug)*/
-    loginSuccess_chef
+    loginSuccess_chef,
+    /*单独关闭下单页面*/
+    finishAddOrder
 }

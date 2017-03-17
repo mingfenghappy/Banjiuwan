@@ -159,6 +159,7 @@ public class AppData {
         public static String loginPageCook              = domain + "app/page/cookLogin";                                           //厨师登录页面
         public static String loginPage                  = domain + "app/page/login";                                                //客户端登录页面
         public static String search                     = domain + "app/page/search";                                              //客户端搜索页面
+        public static String addOrder                   = domain + "app/page/orderEdit";                                          //客户端填写订单页面
 
         public static String cookbook                   = domain + "app/page/cookbook";                                            //客户端点菜页面
         public static String setMeal                    = domain + "app/page/setMeal";                                             //客户端套餐页面

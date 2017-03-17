@@ -6,7 +6,9 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ins.feast.R;
+import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.helper.PayHelper;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
@@ -27,8 +29,6 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
     private TextView text_pay_result;
 
     private int type;
-
-    private WebEvent webEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +71,16 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
         switch (type) {
             case 0:
                 text_pay_result.setText("支付成功");
-                webEvent=WebEvent.paySuccess;
                 break;
             case -1:
                 text_pay_result.setText("支付失败");
-                webEvent=WebEvent.payFailed;
                 break;
             case -2:
                 text_pay_result.setText("用户取消了支付");
-                webEvent=WebEvent.payFailed;
                 break;
         }
-
+        EventBus.getDefault().post(WebEvent.finishAddOrder);    //支付后(无论成功与否)关闭填写订单页面
+        EventBus.getDefault().post(WebEvent.shouldRefresh);    //刷新其他页面
     }
 
     /**
@@ -118,12 +116,8 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
     }
 
     @Override
-    public void onBackPressed() {
-        if (webEvent != null) {
-            L.d("post:"+webEvent);
-            EventBus.getDefault().post(webEvent);
-        }
-        super.onBackPressed();
-
+    public void finish() {
+        CommonWebActivity.start(this, AppData.Url.myOrder);
+        super.finish();
     }
 }

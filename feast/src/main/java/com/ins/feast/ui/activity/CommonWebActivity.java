@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.tencent.smtt.sdk.WebView;
+
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
@@ -142,13 +144,21 @@ public class CommonWebActivity extends BaseBackActivity {
                 break;
             case payCanceled:
             case payFailed:
-                webView.loadUrl(JSFunctionUrl.PAY_FAILED);
+                //客户端处理了回调，不再需要web端处理
+                //webView.loadUrl(JSFunctionUrl.PAY_FAILED);
                 break;
             case paySuccess:
-                webView.loadUrl(JSFunctionUrl.PAY_SUCCESS);
+                //客户端处理了回调，不再需要web端处理
+                //webView.loadUrl(JSFunctionUrl.PAY_SUCCESS);
                 break;
             case finishActivity:
                 finish();
+                break;
+            case finishAddOrder:
+                //如果当前是下单页面，则关闭当前页
+                if (UrlUtil.matchUrl(urlOfThisPage, AppData.Url.addOrder)) {
+                    finish();
+                }
                 break;
         }
     }
@@ -206,18 +216,25 @@ public class CommonWebActivity extends BaseBackActivity {
         //pageType:1 在当前activity 显示页面
         //pageType:2 关闭当前页面并刷新上一级页面
         //pageType:3 打开新activity 显示页面并刷新当前页面
+        //pageType:4 在当前activity 显示页面并刷新上一页
         int pageType = ParamUtil.getParamInt(url, "pageType", 0);
         if (pageType == 1) {
             webView.loadUrl(url);
+            urlOfThisPage = url;
         } else if (pageType == 2) {
             finish();
             EventBus.getDefault().post(WebEvent.shouldRefresh);
         } else if (pageType == 3) {
             EventBus.getDefault().post(WebEvent.shouldRefresh);
             CommonWebActivity.start(CommonWebActivity.this, url);
+        } else if (pageType == 4) {
+            webView.loadUrl(url);
+            urlOfThisPage = url;
+            EventBus.getDefault().post(WebEvent.shouldRefresh);
         } else {
             CommonWebActivity.start(CommonWebActivity.this, url);
         }
+
         return;
     }
 
@@ -228,7 +245,11 @@ public class CommonWebActivity extends BaseBackActivity {
         //如果是我的订单页面 取消右滑返回功能（滑动冲突）
         if (UrlUtil.matchUrl(url, AppData.Url.myOrder)) {
             getSwipeBackLayout().setEnablePullToBack(false);
-//            Toast.makeText(CommonWebActivity.this, "false", Toast.LENGTH_SHORT).show();
+//            //如果是我的订单页面 ，并传递了刷新参数，则刷新其他页，同时关闭填写订单页面
+//            if (1 == ParamUtil.getParamInt(url, "refresh", 0)) {
+//                EventBus.getDefault().post(WebEvent.finishAddOrder);    //支付成功后关闭填写订单页面
+//                EventBus.getDefault().post(WebEvent.shouldRefresh);    //刷新其他页面
+//            }
         }
     }
 
