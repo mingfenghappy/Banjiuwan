@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
@@ -25,6 +25,7 @@ import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.utils.ParamUtil;
 import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
@@ -33,6 +34,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+//com.tencent.smtt.export.external.interfaces
+//com.tencent.smtt.export.external.interfaces
 
 public class CommonWebActivity extends BaseBackActivity {
 
@@ -248,7 +251,9 @@ public class CommonWebActivity extends BaseBackActivity {
                     }
                 }
             });
-            locationer.startlocation();
+            if (PermissionsUtil.requsetLocation(this, null)) {
+                locationer.startlocation();
+            }
         }
     }
 }

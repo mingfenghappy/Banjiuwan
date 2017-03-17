@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,//读写SD卡
             Manifest.permission.CAMERA, //摄像头
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,   //获取位置信息
-            Manifest.permission.WRITE_SETTINGS    //改变网络状态，修改系统设置
+            //Manifest.permission.WRITE_SETTINGS    //改变网络状态，修改系统设置
     };
 
     public static void checkAndRequestPermissions(final Activity activity) {
@@ -74,6 +75,11 @@ public class PermissionsUtil {
         return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【拍照和录像】权限");
     }
 
+    public static boolean requsetLocation(final Activity activity, View showgroup) {
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【获取位置信息】权限");
+    }
+
     public static boolean requsetSetting(final Activity activity, View showgroup) {
 //        String[] permissions = new String[]{Manifest.permission.WRITE_SETTINGS};//Manifest.permission.CHANGE_NETWORK_STATE
 //        return checkAndRequestLocalPermissions(activity, showgroup, permissions, "请允许【修改系统设置】权限");
@@ -82,7 +88,7 @@ public class PermissionsUtil {
     }
 
     private static boolean checkAndRequestLocalPermissions(final Activity activity, View showgroup, String[] pemissions) {
-        return checkAndRequestLocalPermissions(activity, showgroup, pemissions, "使用这个功能需要您授予权限");
+        return checkAndRequestLocalPermissions(activity, showgroup, pemissions, "");
     }
 
     private static boolean checkAndRequestLocalPermissions(final Activity activity, View showgroup, String[] pemissions, String msg) {
@@ -161,7 +167,7 @@ public class PermissionsUtil {
 
     public static void showSnack(final Activity activity, View showroot, String text) {
         if (showroot == null) {
-            Log.e("permissionUtil", "showroot=null");
+            if (!StrUtils.isEmpty(text)) Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
         } else {
             Snackbar snackbar = Snackbar.make(showroot, text, Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("前往设置", new View.OnClickListener() {

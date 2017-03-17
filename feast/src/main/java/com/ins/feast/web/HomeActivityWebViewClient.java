@@ -1,7 +1,7 @@
 package com.ins.feast.web;
 
 import android.text.TextUtils;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 import android.widget.Toast;
 
 import com.ins.feast.R;

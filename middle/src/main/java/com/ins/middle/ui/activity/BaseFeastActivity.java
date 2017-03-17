@@ -1,12 +1,11 @@
 package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 import android.widget.TextView;
 
 import com.ins.middle.R;

@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface;
 
 import com.ins.middle.common.AppData;
 import com.sobey.common.utils.PermissionsUtil;
+import com.tencent.smtt.sdk.WebView;
 
 /**
  * author 边凌
@@ -19,9 +20,9 @@ import com.sobey.common.utils.PermissionsUtil;
 
 public class HomeJSInterface extends
         BaseFeastJSInterface {
-    private HomeWebView homeWebView;
+    private WebView homeWebView;
 
-    public HomeJSInterface(Activity context, HomeWebView homeWebView) {
+    public HomeJSInterface(Activity context, WebView homeWebView) {
         super(context);
         this.homeWebView = homeWebView;
     }

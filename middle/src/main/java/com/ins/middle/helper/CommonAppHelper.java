@@ -1,7 +1,7 @@
 package com.ins.middle.helper;
 
 import android.view.View;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 
 import com.sobey.common.utils.StrUtils;
 

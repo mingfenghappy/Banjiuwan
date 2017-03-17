@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.ins.feast.R;
-import com.ins.feast.entity.Area;
 import com.ins.feast.entity.AreaData;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.Tabs;
@@ -22,29 +20,26 @@ import com.ins.feast.utils.AppHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
-import com.ins.feast.web.HomeWebView;
-import com.ins.middle.common.CommonNet;
-import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.helper.BackCheckedHelper;
 import com.ins.middle.base.WebSettingHelper;
 import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.WebEvent;
+import com.ins.middle.helper.BackCheckedHelper;
 import com.ins.middle.helper.CommonAppHelper;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
+import com.tencent.smtt.sdk.WebView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.http.RequestParams;
 
-import java.util.List;
-
 
 public class HomeActivity extends BaseMapActivity implements
         RadioGroup.OnCheckedChangeListener {
 
-    public HomeWebView webView;
+    public WebView webView;
     //标题栏定位Tv
     private TextView title_location;
 
@@ -97,7 +92,7 @@ public class HomeActivity extends BaseMapActivity implements
 
     private void initView() {
         title_location = (TextView) findViewById(R.id.title_location);
-        webView = (HomeWebView) findViewById(R.id.webView);
+        webView = (WebView) findViewById(R.id.webView);
         RadioGroup tabRg = (RadioGroup) findViewById(R.id.radioGroup);
         tabRg.setOnCheckedChangeListener(this);
         homeTitleHelper = new HomeTitleHelper(this);
@@ -125,12 +120,8 @@ public class HomeActivity extends BaseMapActivity implements
         CommonAppHelper.setWebViewNoLongClick(webView);
         webView.loadUrl(AppData.Url.app_home);
 //        webView.loadUrl("http://www.baidu.com");
-        webView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return true;
-            }
-        });
+        //禁止WebView长按编辑
+        CommonAppHelper.setWebViewNoLongClick(webView);
     }
 
     @Override

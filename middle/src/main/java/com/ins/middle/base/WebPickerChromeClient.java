@@ -1,9 +1,9 @@
 package com.ins.middle.base;
 
 import android.net.Uri;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
 
 /**
  * Created by Administrator on 2017/2/27.

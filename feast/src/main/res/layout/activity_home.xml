@@ -80,7 +80,7 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="3dp" />-->
 
-        <com.ins.feast.web.HomeWebView
+        <com.tencent.smtt.sdk.WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="0dp"

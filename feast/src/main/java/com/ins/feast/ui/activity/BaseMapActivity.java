@@ -1,9 +1,11 @@
 package com.ins.feast.ui.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
@@ -12,6 +14,7 @@ import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.utils.L;
+import com.sobey.common.utils.PermissionsUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,7 +59,9 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     @CallSuper
     protected void startLocation() {
         L.d("startLocation");
-        locationer.startlocation();
+        if (PermissionsUtil.requsetLocation(this, null)) {
+            locationer.startlocation();
+        }
         if (showLocationLoadProgress) {
             loading.show();
         }

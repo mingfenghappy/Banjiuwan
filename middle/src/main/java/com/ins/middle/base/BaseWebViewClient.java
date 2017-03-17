@@ -5,16 +5,14 @@ import android.support.annotation.CallSuper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.NetStateChangedEvent;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.dialog.DialogLoading;
-import com.sobey.common.utils.ActivityUtil;
-import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.L;
 
 import org.greenrobot.eventbus.EventBus;

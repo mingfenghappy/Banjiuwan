@@ -3,7 +3,7 @@ package com.ins.middle.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 
 import com.ins.middle.R;
 import com.ins.middle.base.WebPickerChromeClient;

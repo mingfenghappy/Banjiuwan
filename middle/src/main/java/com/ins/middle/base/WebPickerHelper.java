@@ -1,10 +1,12 @@
 package com.ins.middle.base;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.RequiresPermission;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.webkit.WebView;
 import com.sobey.common.helper.CropHelperSys;
 import com.sobey.common.helper.CropHelperSysV2;
 import com.sobey.common.ui.dialog.DialogPopupPhoto;
+import com.sobey.common.utils.PermissionsUtil;
 
 import java.io.File;
 
@@ -88,7 +91,7 @@ public class WebPickerHelper implements CropHelperSysV2.CropInterface {
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessageForAndroid5;
 
-    public WebPickerHelper(Activity activity) {
+    public WebPickerHelper(final Activity activity) {
         this.activity = activity;
         this.cropHelper = new CropHelperSysV2(activity, this);
         popup = new DialogPopupPhoto(activity);
@@ -96,7 +99,9 @@ public class WebPickerHelper implements CropHelperSysV2.CropInterface {
             @Override
             public void onClick(View v) {
                 popup.hide();
-                cropHelper.startCamera();
+                if (PermissionsUtil.requsetPhoto(activity, null)) {
+                    cropHelper.startCamera();
+                }
             }
         });
         popup.setOnPhotoListener(new View.OnClickListener() {
@@ -109,11 +114,11 @@ public class WebPickerHelper implements CropHelperSysV2.CropInterface {
         popup.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                if (mUploadMessage != null){
+                if (mUploadMessage != null) {
                     mUploadMessage.onReceiveValue(null);
                     mUploadMessage = null;
                 }
-                if (mUploadMessageForAndroid5 != null){
+                if (mUploadMessageForAndroid5 != null) {
                     mUploadMessageForAndroid5.onReceiveValue(new Uri[]{});
                     mUploadMessageForAndroid5 = null;
                 }
@@ -148,11 +153,11 @@ public class WebPickerHelper implements CropHelperSysV2.CropInterface {
 
     @Override
     public void cancel() {
-        if (mUploadMessage != null){
+        if (mUploadMessage != null) {
             mUploadMessage.onReceiveValue(null);
             mUploadMessage = null;
         }
-        if (mUploadMessageForAndroid5 != null){
+        if (mUploadMessageForAndroid5 != null) {
             mUploadMessageForAndroid5.onReceiveValue(new Uri[]{});
             mUploadMessageForAndroid5 = null;
         }

@@ -1,7 +1,9 @@
 package com.ins.baidumapsdk;
 
+import android.Manifest;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 
 import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
@@ -93,7 +95,6 @@ public class Locationer {
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }
-
 
     public void startlocation() {
         // 开启定位图层

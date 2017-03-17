@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebView;
+import com.tencent.smtt.sdk.WebView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -65,7 +65,9 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
 
         locationer = new Locationer(this);
         locationer.setCallback(this);
-        locationer.startlocation();
+        if (PermissionsUtil.requsetLocation(this, null)) {
+            locationer.startlocation();
+        }
     }
 
     private void initSetting() {
