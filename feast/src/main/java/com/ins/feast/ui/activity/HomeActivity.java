@@ -86,7 +86,7 @@ public class HomeActivity extends BaseMapActivity implements
         //检查更新
         updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build();
         updateHelper.check();
-        getLocOption().setScanSpan(0);//设置只定位一次
+        //getLocOption().setScanSpan(0);//设置只定位一次
         startLocation();
     }
 

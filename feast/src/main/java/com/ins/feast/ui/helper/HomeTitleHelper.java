@@ -7,10 +7,12 @@ import android.widget.TextView;
 import com.ins.feast.R;
 import com.ins.feast.common.JSFunctionUrl;
 import com.ins.feast.ui.activity.ChooseLocationActivity;
+import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.ui.activity.SearchDishesActivity;
 import com.ins.feast.utils.RxViewUtils;
 import com.ins.middle.base.TitleHelper;
+import com.ins.middle.common.AppData;
 
 /**
  * author 边凌
@@ -139,7 +141,8 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
                 ChooseLocationActivity.start(homeActivity);
                 break;
             case R.id.icon_right:
-                SearchDishesActivity.start(homeActivity);
+//                SearchDishesActivity.start(homeActivity);
+                CommonWebActivity.start(homeActivity, AppData.Url.search);
                 break;
         }
     }
