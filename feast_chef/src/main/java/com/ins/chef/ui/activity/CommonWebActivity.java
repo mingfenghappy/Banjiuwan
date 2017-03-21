@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+
+import com.ins.middle.utils.ParamUtil;
 import com.tencent.smtt.sdk.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,8 @@ import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.UrlUtil;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class CommonWebActivity extends BaseFeastActivity {
 
@@ -43,6 +47,7 @@ public class CommonWebActivity extends BaseFeastActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common_web);
+        setEventBusSupport();
         urlOfThisPage = getIntent().getStringExtra(KEY_URL);
         initView();
         initWebView();
@@ -72,23 +77,45 @@ public class CommonWebActivity extends BaseFeastActivity {
                     return true;
                 }
 
-                //如果登录（启动源生页面，并关闭当前）
-                if (UrlUtil.matchUrl(url, AppData.Url.loginPageCook)) {
-                    Intent intent = new Intent(CommonWebActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    return true;
-                }
+//                //如果登录（启动源生页面，并关闭当前）
+//                if (UrlUtil.matchUrl(url, AppData.Url.loginPageCook)) {
+//                    Intent intent = new Intent(CommonWebActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                    return true;
+//                }
 
-                if (urlOfThisPage.contains("cookLogin")
-                        || urlOfThisPage.contains("cookMy")
-                        || urlOfThisPage.contains("cookMyOrder")) {
-                    EventBus.getDefault().post(WebEvent.loginSuccess_chef);
-                    finish();
-                    return true;
-                }
+//                if (urlOfThisPage.contains("cookLogin")
+//                        || urlOfThisPage.contains("cookMy")
+//                        || urlOfThisPage.contains("cookMyOrder")) {
+//                    EventBus.getDefault().post(WebEvent.loginSuccess_chef);
+//                    finish();
+//                    return true;
+//                }
 
-                CommonWebActivity.start(CommonWebActivity.this, url);
+                //根据pageType决定其打开页面的方式
+                //pageType:0 打开新activity 显示页面
+                //pageType:1 在当前activity 显示页面
+                //pageType:2 关闭当前页面并刷新上一级页面
+                //pageType:3 打开新activity 显示页面并刷新当前页面
+                //pageType:4 在当前activity 显示页面并刷新上一页
+                int pageType = ParamUtil.getParamInt(url, "pageType", 0);
+                if (pageType == 1) {
+                    webView.loadUrl(url);
+                    urlOfThisPage = url;
+                } else if (pageType == 2) {
+                    finish();
+                    EventBus.getDefault().post(WebEvent.shouldRefresh);
+                } else if (pageType == 3) {
+                    EventBus.getDefault().post(WebEvent.shouldRefresh);
+                    CommonWebActivity.start(CommonWebActivity.this, url);
+                } else if (pageType == 4) {
+                    webView.loadUrl(url);
+                    urlOfThisPage = url;
+                    EventBus.getDefault().post(WebEvent.shouldRefresh);
+                } else {
+                    CommonWebActivity.start(CommonWebActivity.this, url);
+                }
                 return true;
             }
         };
@@ -113,6 +140,18 @@ public class CommonWebActivity extends BaseFeastActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWebEvent(WebEvent event) {
+        switch (event) {
+            case shouldRefresh:
+                webView.reload();
+                break;
+            case finishActivity:
+                finish();
+                break;
+        }
     }
 
     @Override

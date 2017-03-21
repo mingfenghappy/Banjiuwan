@@ -1,6 +1,8 @@
 package com.ins.feast.web;
 
 import android.text.TextUtils;
+
+import com.ins.feast.ui.activity.CardActivity2;
 import com.tencent.smtt.sdk.WebView;
 import android.widget.Toast;
 
@@ -83,7 +85,7 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
 
         for (AppData.CardType cardType : AppData.CardType.values()) {
             if (url.contains(cardType.getTag())) {
-                CardActivity.start(homeActivity, cardType);
+                CardActivity2.start(homeActivity, cardType);
                 return true;
             }
         }

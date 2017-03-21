@@ -83,6 +83,7 @@ public class PayHelper {
         RequestParams params = new RequestParams(AppData.Url.signWeixin);
         params.addHeader("token", token);
         params.addBodyParameter("orderId", orderId + "");
+        params.addBodyParameter("flag", "0");
         //params.addBodyParameter("ip", "101.201.222.161");
         startPayWeixin(params);
     }

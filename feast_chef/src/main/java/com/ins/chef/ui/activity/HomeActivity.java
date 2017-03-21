@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.ins.middle.entity.WebEvent;
 import com.tencent.smtt.sdk.WebView;
 
 import android.widget.RadioButton;
@@ -31,6 +32,8 @@ import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.http.RequestParams;
 
 public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnCheckedChangeListener, Locationer.LocationCallback {
@@ -49,6 +52,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setEventBusSupport();
         setNeedDoubleClickExit(true);
         initBase();
         initView();
@@ -143,6 +147,15 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
         mineOrderForm = (RadioButton) findViewById(R.id.rg_orderForm);
 
         setWebViewLifeCycleSupport(webView);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWebEvent(WebEvent event) {
+        switch (event) {
+            case shouldRefresh:
+                webView.reload();
+                break;
+        }
     }
 
     @Override

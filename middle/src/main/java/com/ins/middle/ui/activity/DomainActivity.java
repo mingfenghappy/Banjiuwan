@@ -129,10 +129,13 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "厨师端没有集成支付", Toast.LENGTH_SHORT).show();
             }
         } else if (i == R.id.btn_go_pic) {
-            intent.setClass(this, WebActivity.class);
-            intent.putExtra("url","http://www.baidu.com");
-            intent.putExtra("title","title");
-            startActivity(intent);
+            if (PackageUtil.isClient()){
+                startActivity(PackageUtil.getSmIntent("CardActivity"));
+            }
+//            intent.setClass(this, WebActivity.class);
+//            intent.putExtra("url","http://www.baidu.com");
+//            intent.putExtra("title","title");
+//            startActivity(intent);
         }
     }
 

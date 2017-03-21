@@ -24,13 +24,15 @@
     <TextView
         android:id="@+id/text_pop_identy_photo"
         android:textSize="@dimen/text_big"
-        android:textColor="@color/wj_orange"
+        android:textColor="@color/sb_text_blank"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/hot_lay_item_dark"
         android:gravity="center"
         android:padding="10dp"
-        android:text="选择现有的" />
+        android:text="照片图库" />
+
+    <!--@color/wj_orange-->
 
     <ImageView
         android:layout_width="match_parent"
