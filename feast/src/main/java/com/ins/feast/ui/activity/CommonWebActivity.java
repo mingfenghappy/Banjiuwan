@@ -130,7 +130,7 @@ public class CommonWebActivity extends BaseBackActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceivePosition(Position position) {
-        String address = position.getAddress();
+        String address = position.getKey();
         LatLng latLng = position.getLatLng();
 //        Toast.makeText(CommonWebActivity.this, address, Toast.LENGTH_SHORT).show();
         webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));

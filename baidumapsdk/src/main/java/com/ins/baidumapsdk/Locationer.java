@@ -116,10 +116,15 @@ public class Locationer {
     }
 
     public String getAddrStr() {
+        return getAddrStr(false);
+    }
+
+    public String getAddrStr(boolean needCity) {
         if (bdLocation != null) {
             Address address = bdLocation.getAddress();
             if (address != null) {
-                return address.district + address.street;
+                if (needCity) return address.city + address.district + address.street;
+                else return address.district + address.street;
             } else {
                 return "定位失败";
             }

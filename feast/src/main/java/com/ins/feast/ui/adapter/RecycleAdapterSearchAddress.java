@@ -1,7 +1,9 @@
 package com.ins.feast.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.SpannableStringUtils;
 
 import java.util.List;
 
@@ -43,7 +46,13 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
             }
         });
 
-        holder.text_address.setText(pstion.getKey());
+        if (position == 0) {
+            SpannableString spannableString = SpannableStringUtils.create(context, new String[]{"[当前位置] ", pstion.getKey()}, new int[]{R.color.jw_red,  R.color.sb_text_blank});
+            holder.text_address.setText(spannableString);
+        } else {
+            holder.text_address.setText(pstion.getKey());
+        }
+
         holder.text_detail.setText(pstion.getDistrict());
 
         holder.text_error.setVisibility(View.GONE);

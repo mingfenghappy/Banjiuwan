@@ -3,6 +3,7 @@ package com.ins.feast.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
@@ -65,8 +66,10 @@ public class CardActivity extends BaseFeastActivity implements OnRecycleItemClic
     }
 
     private void adjustBgAndTitle() {
-        StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
-        findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
+//        StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
+//        findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
+        StatusBarUtil.setColorNoTranslucent(this, ContextCompat.getColor(this,R.color.jw_red));
+        findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this,R.color.jw_red));
         TextView title = (TextView) findViewById(R.id.text_toolbar_title);
         title.setText(cardType.getTitle());
     }

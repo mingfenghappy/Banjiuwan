@@ -50,6 +50,7 @@ public class Position implements Serializable {
     }
 
     public Position(Address address) {
+        this.key = address.getAddress();
         this.address = address.getAddress();
         this.latLng = MapHelper.str2LatLng(address.getLngLat());
     }

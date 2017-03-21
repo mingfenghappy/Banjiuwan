@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -77,8 +78,10 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
 
     private void adjustBgAndTitle() {
         if (cardType != null) {
-            StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
-            findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
+//            StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
+//            findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
+            StatusBarUtil.setColorNoTranslucent(this, ContextCompat.getColor(this,R.color.jw_red));
+            findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this,R.color.jw_red));
             TextView title = (TextView) findViewById(R.id.text_toolbar_title);
             title.setText(cardType.getTitle());
         }

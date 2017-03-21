@@ -29,6 +29,7 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.StrUtils;
 
@@ -62,6 +63,8 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private Address defaultAddress;
 
     public static void start(Context context) {
+        //防止重复点击过快打开页面
+        if (ClickUtils.isFastDoubleClick()) return;
         Intent starter = new Intent(context, ChooseLocationActivity.class);
         context.startActivity(starter);
     }
@@ -130,7 +133,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         this.latLng = latLng;
         this.city = city;
         this.district = district;
-        nowLocation.setText(getAddStr());
+        nowLocation.setText(getAddStr(true));
     }
 
     private void searchNearbyLocation(LatLng latLng) {

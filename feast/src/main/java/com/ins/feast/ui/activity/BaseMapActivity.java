@@ -90,7 +90,14 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
      * 获得位置字符串
      */
     protected String getAddStr() {
-        return locationer.getAddrStr();
+        return getAddStr(false);
+    }
+    /**
+     * 获得位置字符串
+     * needCity 是否带上城市前缀
+     */
+    protected String getAddStr(boolean needCity) {
+        return locationer.getAddrStr(needCity);
     }
 
     /**

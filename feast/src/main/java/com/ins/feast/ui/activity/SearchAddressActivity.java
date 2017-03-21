@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
@@ -383,6 +384,9 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
+        if (isFirst) {
+            baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));//设置缩放级别
+        }
         if (this.latLng == null) {
             //左上角城市设置数据
             this.latLng = latLng;
