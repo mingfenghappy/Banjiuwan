@@ -140,10 +140,14 @@ public class MapHelper {
     }
 
     public static void zoomByPoint(BaiduMap baiduMap, LatLng center) {
+        zoomByPoint(baiduMap, center, 15);
+    }
+
+    public static void zoomByPoint(BaiduMap baiduMap, LatLng center, int zoom) {
         if (baiduMap == null || center == null) {
             return;
         }
-        MapStatus ms = new MapStatus.Builder(baiduMap.getMapStatus()).overlook(0).target(center).build();
+        MapStatus ms = new MapStatus.Builder(baiduMap.getMapStatus()).overlook(0).target(center).zoom(zoom).build();
         MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
         if (baiduMap != null) baiduMap.animateMapStatus(u);
     }

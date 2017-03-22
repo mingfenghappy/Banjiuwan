@@ -47,7 +47,7 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
         });
 
         if (position == 0) {
-            SpannableString spannableString = SpannableStringUtils.create(context, new String[]{"[当前位置] ", pstion.getKey()}, new int[]{R.color.jw_red,  R.color.sb_text_blank});
+            SpannableString spannableString = SpannableStringUtils.create(context, new String[]{"[当前] ", pstion.getKey()}, new int[]{R.color.jw_red,  R.color.sb_text_blank});
             holder.text_address.setText(spannableString);
         } else {
             holder.text_address.setText(pstion.getKey());

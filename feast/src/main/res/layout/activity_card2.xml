@@ -66,15 +66,16 @@
             android:scaleType="center"
             android:src="@mipmap/ic_leftarrow_white" />
 
-        <com.sobey.common.view.DotView
+        <TextView
             android:id="@+id/dotView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            app:mydoy_size="8dp" />
+            android:textColor="@color/white"
+            android:text=""/>
 
     </FrameLayout>
 

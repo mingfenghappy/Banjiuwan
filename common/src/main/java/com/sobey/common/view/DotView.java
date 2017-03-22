@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sobey.common.R;
 
@@ -189,5 +190,40 @@ public class DotView extends LinearLayout {
     public void setDots(int count){
         removeAllViews();
         addDots(count);
+    }
+
+    public static class TextDotViewUtil{
+        //给viewpager设置滚动监听 关联textView
+        public static void setDotTextViewPager(final TextView dotView, final ViewPager viewPager) {
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    dotView.setText(getDotText(viewPager, position));
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            dotView.setText(getDotText(viewPager, 0));
+        }
+
+        private static String getDotText(ViewPager viewPager, int position) {
+            int count = 0;
+            String dottext = "";
+            if (viewPager != null) count = viewPager.getAdapter().getCount();
+            if (count != 0) {
+                dottext = (position + 1) + "/" + count;
+            } else {
+                dottext = "";
+            }
+            return dottext;
+        }
     }
 }

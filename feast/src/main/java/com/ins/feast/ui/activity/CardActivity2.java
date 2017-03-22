@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ins.feast.R.id.pager;
+
 /**
  * 和CardActivity启动方式、参数等都一样，只不过客户需求另一种滑动样式，使用ViewPager实现，所以新建一个CardActivity2，原来的CardActivity依然保留，以防客户又要求改回来
  */
@@ -49,7 +51,7 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
     private ViewPager viewPager;
     private PagerAdapterCard pagerAdapter;
     private List<Card> results = new ArrayList<>();
-    private DotView dotView;
+    private TextView dotView;
 
     private DialogLoading dialogLoading;
 
@@ -80,8 +82,8 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
         if (cardType != null) {
 //            StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
 //            findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
-            StatusBarUtil.setColorNoTranslucent(this, ContextCompat.getColor(this,R.color.jw_red));
-            findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this,R.color.jw_red));
+            StatusBarUtil.setColorNoTranslucent(this, ContextCompat.getColor(this, R.color.jw_red));
+            findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this, R.color.jw_red));
             TextView title = (TextView) findViewById(R.id.text_toolbar_title);
             title.setText(cardType.getTitle());
         }
@@ -101,8 +103,8 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
     }
 
     private void initView() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        dotView = (DotView) findViewById(R.id.dotView);
+        viewPager = (ViewPager) findViewById(pager);
+        dotView = (TextView) findViewById(R.id.dotView);
         findViewById(R.id.toolbar_leftIcon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,11 +143,13 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
         pagerAdapter.setOnPagerItemClickListener(this);
         //设置缓存数为展示的数目
         viewPager.setOffscreenPageLimit(results.size());
-//        viewPager.setPageMargin(4);
+        viewPager.setPageMargin(0);
         viewPager.setPageTransformer(true, new MyZoomOutPageTransformer(0.9f, 0.9f, 1));
         viewPager.setAdapter(pagerAdapter);
 
-        dotView.setViewPager(viewPager);
+//        dotView.setViewPager(viewPager);
+
+        DotView.TextDotViewUtil.setDotTextViewPager(dotView, viewPager);
     }
 
     @Override

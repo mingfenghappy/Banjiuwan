@@ -215,8 +215,9 @@ public class CommonWebActivity extends BaseBackActivity {
         //pageType:0 打开新activity 显示页面
         //pageType:1 在当前activity 显示页面
         //pageType:2 关闭当前页面并刷新上一级页面
-        //pageType:3 打开新activity 显示页面并刷新当前页面
-        //pageType:4 在当前activity 显示页面并刷新上一页
+        //pageType:3 打开新activity 显示页面并刷新当前页面 (注销)
+        //pageType:4 在当前activity 显示页面并刷新上一页 (添加订单)
+        //pageType:5 在当前activity 关闭所有二级页面并跳转到首页购物车 (商品结算)
         int pageType = ParamUtil.getParamInt(url, "pageType", 0);
         if (pageType == 1) {
             webView.loadUrl(url);
@@ -231,7 +232,12 @@ public class CommonWebActivity extends BaseBackActivity {
             webView.loadUrl(url);
             urlOfThisPage = url;
             EventBus.getDefault().post(WebEvent.shouldRefresh);
-        } else {
+        }
+        else if (pageType == 5){
+            EventBus.getDefault().post(WebEvent.jumpToCarTab);
+            EventBus.getDefault().post(WebEvent.finishActivity);
+        }
+        else {
             CommonWebActivity.start(CommonWebActivity.this, url);
         }
 

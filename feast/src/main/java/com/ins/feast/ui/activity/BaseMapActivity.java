@@ -92,6 +92,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     protected String getAddStr() {
         return getAddStr(false);
     }
+
     /**
      * 获得位置字符串
      * needCity 是否带上城市前缀
@@ -139,7 +140,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        loading.dismiss();
+        if (loading != null) loading.dismiss();
     }
 
     /**

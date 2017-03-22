@@ -43,20 +43,22 @@ public class PagerAdapterCard extends PagerAdapter {
             }
         });
         ImageView img_card_img = (ImageView) itemView.findViewById(R.id.img_card_img);
-        TextView text_title = (TextView) itemView.findViewById(R.id.text_card_title);
-        TextView text_card_content = (TextView) itemView.findViewById(R.id.text_card_content);
-        TextView text_card_salecount = (TextView) itemView.findViewById(R.id.text_card_salecount);
-        TextView text_card_price = (TextView) itemView.findViewById(R.id.text_card_price);
-        TextView text_card_unit = (TextView) itemView.findViewById(R.id.text_card_unit);
-        TextView text_card_star = (TextView) itemView.findViewById(R.id.text_card_star);
+        //狗日的又不要内容了
+//        TextView text_title = (TextView) itemView.findViewById(R.id.text_card_title);
+//        TextView text_card_content = (TextView) itemView.findViewById(R.id.text_card_content);
+//        TextView text_card_salecount = (TextView) itemView.findViewById(R.id.text_card_salecount);
+//        TextView text_card_price = (TextView) itemView.findViewById(R.id.text_card_price);
+//        TextView text_card_unit = (TextView) itemView.findViewById(R.id.text_card_unit);
+//        TextView text_card_star = (TextView) itemView.findViewById(R.id.text_card_star);
 
-        text_title.setText(card.getName());
+//        GlideUtil.loadImg(context, img_card_img, R.drawable.default_bk_img, "http://h.hiphotos.baidu.com/image/pic/item/f31fbe096b63f624ec82b20a8544ebf81b4ca3d8.jpg");
         GlideUtil.loadImg(context, img_card_img, R.drawable.default_bk_img, AppHelper.getRealImgPath(card.getTopBanner()));
-        text_card_content.setText(card.getIntroduction());
-        text_card_salecount.setText(card.getSales() + "");
-        text_card_price.setText("￥" + card.getPrice());
-        text_card_unit.setText("/" + card.getUnits());
-        text_card_star.setText(AppHelper.getStarsStr(card.getRecommendationIndex()));
+//        text_title.setText(card.getName());
+//        text_card_content.setText(card.getIntroduction());
+//        text_card_salecount.setText(card.getSales() + "");
+//        text_card_price.setText("￥" + card.getPrice());
+//        text_card_unit.setText("/" + card.getUnits());
+//        text_card_star.setText(AppHelper.getStarsStr(card.getRecommendationIndex()));
 
         container.addView(itemView);
         return itemView;

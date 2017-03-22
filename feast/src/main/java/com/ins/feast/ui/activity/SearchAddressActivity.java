@@ -213,7 +213,7 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
         if (latLng != null) {
             //设置自己位置
             baiduMap.setMyLocationData(new MyLocationData.Builder().latitude(latLng.latitude).longitude(latLng.longitude).build());
-            MapHelper.zoomByPoint(baiduMap, latLng);
+            MapHelper.zoomByPoint(baiduMap, latLng ,18);
         }
         if (!StrUtils.isEmpty(city)) {
             //左上角城市设置数据
@@ -384,9 +384,9 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        if (isFirst) {
-            baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));//设置缩放级别
-        }
+//        if (isFirst) {
+//            baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));//设置缩放级别
+//        }
         if (this.latLng == null) {
             //左上角城市设置数据
             this.latLng = latLng;

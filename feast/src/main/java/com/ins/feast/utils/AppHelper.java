@@ -210,8 +210,25 @@ public class AppHelper {
 
     //判断当前菜品，用户所在位置是否可以进入详情
     public static boolean needEnter(CategoryConfig config, List<Area> areas, LatLng latLng) {
-        if (config.getIsInside() == 1) {
-            //需要检查围栏
+        //标志为1：标示需要检查围栏，在内部才能进入。标志为0：不检查，在任何地方都可以进入
+//        if (config.getIsInside() == 1) {
+//            //需要检查围栏
+//            if (MapHelper.isInAreas4Areas(areas, latLng)) {
+//                //在围栏中，可以进入
+//                return true;
+//            } else {
+//                //围栏外，不能进入
+//                return false;
+//            }
+//        } else {
+//            //不需要检查围栏，可以进入
+//            return true;
+//        }
+
+        //需求变动，围栏逻辑从上面注释部分变更为下面部分：
+        //标志为1：表示在围栏内部才能进入。标志为0：表示在围栏外部才能进入
+        if (config.getIsInside() == 1){
+            //只能在围栏内进入
             if (MapHelper.isInAreas4Areas(areas, latLng)) {
                 //在围栏中，可以进入
                 return true;
@@ -219,9 +236,15 @@ public class AppHelper {
                 //围栏外，不能进入
                 return false;
             }
-        } else {
-            //不需要检查围栏，可以进入
-            return true;
+        }else {
+            //只能在围栏外进入
+            if (MapHelper.isInAreas4Areas(areas, latLng)) {
+                //在围栏中，不能进入
+                return false;
+            } else {
+                //围栏外，可以进入
+                return true;
+            }
         }
     }
 }

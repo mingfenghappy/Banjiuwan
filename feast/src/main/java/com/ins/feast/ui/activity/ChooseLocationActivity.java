@@ -133,7 +133,8 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         this.latLng = latLng;
         this.city = city;
         this.district = district;
-        nowLocation.setText(getAddStr(true));
+//        nowLocation.setText(getAddStr(true));
+        nowLocation.setText(StrUtils.subFirstChart(getBdLocation().getLocationDescribe(), "在"));
     }
 
     private void searchNearbyLocation(LatLng latLng) {
@@ -248,7 +249,10 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     public void netGetAddress() {
         //如果没有token 代表用户没登录，不发起请求
         String token = AppData.App.getToken();
-        if (StrUtils.isEmpty(token)) return;
+        if (StrUtils.isEmpty(token)) {
+            setDefaultAddress(null);
+            return;
+        }
         RequestParams params = new RequestParams(AppData.Url.getAddress);
         params.addHeader("token", token);
         params.addBodyParameter("pageNO", "1");

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
+import android.util.Log;
 
 import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
@@ -64,7 +65,7 @@ public class Locationer {
         option.setNeedDeviceDirect(true);// 返回的定位结果包含手机机头的方向
 //        option.setOpenGps(true);//可选，默认false,设置是否使用gps
 //        option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
-//        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
 //        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
 //        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
 //        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
@@ -86,6 +87,7 @@ public class Locationer {
                 return;
             }
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            Log.e("locationer", location.toString() + location.getCity());
             if (callback != null) {
                 callback.onLocation(latLng, location.getCity(), location.getAddrStr(), isFirstLoc);
             }
@@ -122,7 +124,7 @@ public class Locationer {
     public String getAddrStr(boolean needCity) {
         if (bdLocation != null) {
             Address address = bdLocation.getAddress();
-            if (address != null) {
+            if (address != null && address.district != null && address.street != null) {
                 if (needCity) return address.city + address.district + address.street;
                 else return address.district + address.street;
             } else {

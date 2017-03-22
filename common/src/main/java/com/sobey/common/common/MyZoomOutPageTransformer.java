@@ -40,12 +40,11 @@ public class MyZoomOutPageTransformer implements ViewPager.PageTransformer {
             float vertMargin = pageHeight * (1 - scaleFactor) / 2;
             float horzMargin = pageWidth * (1 - scaleFactor) / 2;
             if (position < 0) {
-                view.setTranslationX(horzMargin - vertMargin / 2);
+//                view.setTranslationX(horzMargin - vertMargin / 2);
                 view.setScaleX(1 + (1 - MIN_SCALE) * position / SHOWCOUNT);
                 view.setScaleY(1 + (1 - MIN_SCALE) * position / SHOWCOUNT);
             } else {
-                view.setTranslationX(-horzMargin + vertMargin / 2);
-
+//                view.setTranslationX(-horzMargin + vertMargin / 2);
                 view.setScaleX(1 - (1 - MIN_SCALE) * position / SHOWCOUNT);
                 view.setScaleY(1 - (1 - MIN_SCALE) * position / SHOWCOUNT);
             }

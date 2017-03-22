@@ -198,7 +198,11 @@ public class HomeActivity extends BaseMapActivity implements
     private void switchTab(@IdRes int tabId) {
         RadioButton radioButton = (RadioButton) findViewById(tabId);
         if (radioButton != null) {
-            radioButton.setChecked(true);
+            if(!radioButton.isChecked()) {
+                radioButton.setChecked(true);
+            }else {
+                webView.reload();
+            }
         }
     }
 
