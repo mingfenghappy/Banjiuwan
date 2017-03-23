@@ -40,7 +40,7 @@
 
                 <EditText
                     android:id="@+id/editText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@android:color/transparent"
                     android:drawableLeft="@mipmap/ic_search_gray"
@@ -53,7 +53,7 @@
                     android:paddingStart="10dp"
                     android:textColor="#333333"
                     android:textColorHint="#999999"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
