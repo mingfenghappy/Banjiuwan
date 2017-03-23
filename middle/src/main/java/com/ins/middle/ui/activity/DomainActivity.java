@@ -75,6 +75,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         results.add(new Domain("192.168.118.194:8080", "(开发服务器：谢启谋)"));
         results.add(new Domain("192.168.118.110:8080", "(测试服务器)"));
         results.add(new Domain("139.129.111.76:8102", "(远程测试服务器)"));
+        results.add(new Domain("tiger.magic-beans.cn", "(远程测试服务器)"));
     }
 
     private void initCtrl() {

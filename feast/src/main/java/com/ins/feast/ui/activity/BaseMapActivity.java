@@ -15,6 +15,7 @@ import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
+import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -99,6 +100,15 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
      */
     protected String getAddStr(boolean needCity) {
         return locationer.getAddrStr(needCity);
+    }
+
+    protected String getLocationDescribe(){
+        String locationDescribe = getBdLocation().getLocationDescribe();
+        if(!StrUtils.isEmpty(locationDescribe)){
+            return StrUtils.subFirstChart(locationDescribe, "在");
+        }else {
+            return getAddStr();
+        }
     }
 
     /**

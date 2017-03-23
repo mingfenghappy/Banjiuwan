@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.ins.feast.ui.activity.CardActivity2;
 import com.tencent.smtt.sdk.WebView;
+
 import android.widget.Toast;
 
 import com.ins.feast.R;
@@ -39,9 +40,11 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         if (AppData.Config.showTestToast)
             Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
-        if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng)) {
+        //首先检查连接是否需要进行地理拦截，对需要进行拦截的链接进行捕获和弹窗提示
+        if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng, homeActivity.dialogNotice)) {
             //不可进入的链接和地理位置
-            Toast.makeText(homeActivity, "你不在可下单范围内", Toast.LENGTH_SHORT).show();
+            if (homeActivity.dialogNotice != null) homeActivity.dialogNotice.show();
+//            Toast.makeText(homeActivity, "你不在可下单范围内", Toast.LENGTH_SHORT).show();
             return true;
         }
 

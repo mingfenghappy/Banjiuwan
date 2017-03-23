@@ -1,5 +1,7 @@
 package com.ins.feast.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,17 @@ public class CategoryConfig implements Serializable {
     private String icon;
     private String selectedIcon;
     private int isInside;
+
+    @SerializedName("msg")
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public int getId() {
         return id;

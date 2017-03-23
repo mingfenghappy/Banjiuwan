@@ -11,6 +11,7 @@ import com.ins.feast.entity.Area;
 import com.ins.feast.entity.AreaData;
 import com.ins.feast.entity.CategoryConfig;
 import com.ins.feast.entity.Position;
+import com.ins.feast.ui.dialog.DialogNotice;
 import com.ins.middle.common.AppData;
 import com.ins.feast.entity.Card;
 import com.shelwee.update.utils.VersionUtil;
@@ -149,7 +150,7 @@ public class AppHelper {
         }
     }
 
-    public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng) {
+    public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice) {
         if (areaData == null) {
             //如果没有配置，（可能是没获取到）那么可以进入
             return true;
@@ -158,54 +159,77 @@ public class AppHelper {
             //如果配置区域没有划分，那么可以进入
             return true;
         }
-        if (UrlUtil.matchUrl(url, AppData.Url.cookbook)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 1) {
-                    //检查当前分类的配置是否可以进入详情
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            //没有配置，默认可以进入
-            return true;
-        } else if (UrlUtil.matchUrl(url, AppData.Url.setMeal)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 2) {
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            return true;
-        } else if (UrlUtil.matchUrl(url, AppData.Url.bamYan)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 3) {
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            return true;
-        } else if (UrlUtil.matchUrl(url, AppData.Url.wedding)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 4) {
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            return true;
-        } else if (UrlUtil.matchUrl(url, AppData.Url.dinner)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 5) {
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            return true;
-        } else if (UrlUtil.matchUrl(url, AppData.Url.serviceDetail)) {
-            for (CategoryConfig config : areaData.getConfigs()) {
-                if (config.getId() == 6) {
-                    return needEnter(config, areaData.getAreas(), latLng);
-                }
-            }
-            return true;
-        } else {
-            //其他无关链接，可以进入
+        if (StrUtils.isEmpty(areaData.getConfigs())) {
+            //如果没有配置，那么可以进入
             return true;
         }
+
+        //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
+        CategoryConfig config = getCategoryConfigByUrl(areaData.getConfigs(), url);
+        if (config != null) {
+            //如果是坝坝宴 id = 3 设置不同的Icon
+            if (dialogNotice != null) dialogNotice.setTypeMsg(config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING, config.getMsg());
+            return needEnter(config, areaData.getAreas(), latLng);
+        } else {
+            //config为null，不拦截
+            return true;
+        }
+    }
+
+    //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
+    private static CategoryConfig getCategoryConfigByUrl(List<CategoryConfig> configs, String url) {
+        //客户端点菜页面
+        if (UrlUtil.matchUrl(url, AppData.Url.cookbook)) {
+            String type = UrlUtil.getQueryString(url, "type");
+            for (CategoryConfig config : configs) {
+                //type参数为1代表酒水8，否则表示点餐1
+                if ("1".equals(type)) {
+                    if (config.getId() == 8) {
+                        return config;
+                    }
+                } else {
+                    if (config.getId() == 1) {
+                        return config;
+                    }
+                }
+            }
+            //客户端套餐页面
+        } else if (UrlUtil.matchUrl(url, AppData.Url.setMeal)) {
+            for (CategoryConfig config : configs) {
+                if (config.getId() == 2) {
+                    return config;
+                }
+            }
+            //客户端坝坝宴页面
+        } else if (UrlUtil.matchUrl(url, AppData.Url.bamYan)) {
+            for (CategoryConfig config : configs) {
+                if (config.getId() == 3) {
+                    return config;
+                }
+            }
+            //客户端婚庆页面
+        } else if (UrlUtil.matchUrl(url, AppData.Url.wedding)) {
+            for (CategoryConfig config : configs) {
+                if (config.getId() == 4) {
+                    return config;
+                }
+            }
+            //客户半餐演奏页面
+        } else if (UrlUtil.matchUrl(url, AppData.Url.dinner)) {
+            for (CategoryConfig config : configs) {
+                if (config.getId() == 5) {
+                    return config;
+                }
+            }
+            //客户专业服务页面
+        } else if (UrlUtil.matchUrl(url, AppData.Url.serviceDetail)) {
+            for (CategoryConfig config : configs) {
+                if (config.getId() == 6) {
+                    return config;
+                }
+            }
+        }
+        return null;
     }
 
     //判断当前菜品，用户所在位置是否可以进入详情
@@ -227,7 +251,7 @@ public class AppHelper {
 
         //需求变动，围栏逻辑从上面注释部分变更为下面部分：
         //标志为1：表示在围栏内部才能进入。标志为0：表示在围栏外部才能进入
-        if (config.getIsInside() == 1){
+        if (config.getIsInside() == 1) {
             //只能在围栏内进入
             if (MapHelper.isInAreas4Areas(areas, latLng)) {
                 //在围栏中，可以进入
@@ -236,7 +260,7 @@ public class AppHelper {
                 //围栏外，不能进入
                 return false;
             }
-        }else {
+        } else {
             //只能在围栏外进入
             if (MapHelper.isInAreas4Areas(areas, latLng)) {
                 //在围栏中，不能进入

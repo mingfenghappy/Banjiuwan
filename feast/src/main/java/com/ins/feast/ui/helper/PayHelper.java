@@ -41,6 +41,9 @@ public class PayHelper {
     private Activity activity;
     private IWXAPI api;
 
+    //保存启调类型，0：普通支付，1：充值
+    public static int type;
+
     public PayHelper(Activity activity) {
         this.activity = activity;
         //微信初始化
@@ -60,6 +63,7 @@ public class PayHelper {
         params.addHeader("token", token);
         params.addBodyParameter("orderId", orderId + "");
         startPayZhifubao(params);
+        type = 0;
     }
 
     /**
@@ -70,6 +74,7 @@ public class PayHelper {
         params.addHeader("token", token);
         params.addBodyParameter("rechargeId", rechargeId + "");
         startPayZhifubao(params);
+        type = 1;
     }
 
     /**
@@ -86,6 +91,7 @@ public class PayHelper {
         params.addBodyParameter("flag", "0");
         //params.addBodyParameter("ip", "101.201.222.161");
         startPayWeixin(params);
+        type = 0;
     }
 
     /**
@@ -99,8 +105,10 @@ public class PayHelper {
         RequestParams params = new RequestParams(AppData.Url.rechargeWeixin);
         params.addHeader("token", token);
         params.addBodyParameter("rechargeId", rechargeId + "");
+        params.addBodyParameter("flag", "0");
         //params.addBodyParameter("ip", "101.201.222.161");
         startPayWeixin(params);
+        type = 1;
     }
 
     ///////////////////////////////

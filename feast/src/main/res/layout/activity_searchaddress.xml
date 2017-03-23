@@ -31,13 +31,13 @@
                 android:textSize="@dimen/text_big" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/btn_go_left"
@@ -116,6 +116,15 @@
                     android:src="@drawable/icon_map_pick" />
 
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/btn_relocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_gravity="bottom"
+                android:layout_margin="15dp"
+                android:src="@mipmap/ic_relocation" />
 
         </FrameLayout>
 

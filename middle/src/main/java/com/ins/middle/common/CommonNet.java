@@ -49,6 +49,7 @@ public class CommonNet {
     }
 
     private static void pritRarams(RequestParams params) {
+        Log.e("nethander", params.getUri());
         if (params != null) {
             List<KeyValue> stringParams = params.getStringParams();
             if (stringParams != null) {

@@ -134,7 +134,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         this.city = city;
         this.district = district;
 //        nowLocation.setText(getAddStr(true));
-        nowLocation.setText(StrUtils.subFirstChart(getBdLocation().getLocationDescribe(), "在"));
+        nowLocation.setText(getLocationDescribe());
     }
 
     private void searchNearbyLocation(LatLng latLng) {

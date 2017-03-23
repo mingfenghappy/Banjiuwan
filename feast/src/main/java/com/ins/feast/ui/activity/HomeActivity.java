@@ -5,16 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.reflect.TypeToken;
 import com.ins.feast.R;
 import com.ins.feast.entity.AreaData;
 import com.ins.feast.entity.Position;
+import com.ins.feast.entity.SaleDialogEntity;
 import com.ins.feast.entity.Tabs;
+import com.ins.feast.ui.dialog.DialogNotice;
+import com.ins.feast.ui.dialog.DialogSale;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.utils.AppHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
@@ -35,6 +40,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.http.RequestParams;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HomeActivity extends BaseMapActivity implements
         RadioGroup.OnCheckedChangeListener {
@@ -52,6 +60,10 @@ public class HomeActivity extends BaseMapActivity implements
     public AreaData areaData;
     //用户当前位置
     public LatLng nowLatlng;
+
+    public DialogNotice dialogNotice;
+    private DialogSale dialogSale;
+
     /**
      * 注：该Activity启动模式为singleTask
      */
@@ -76,6 +88,7 @@ public class HomeActivity extends BaseMapActivity implements
     private void initData() {
         //请求菜品配置（地理围栏）
         netGetCategoryConfig();
+        netGetSale();
     }
 
     private void initBase() {
@@ -88,6 +101,18 @@ public class HomeActivity extends BaseMapActivity implements
         updateHelper.check();
         //getLocOption().setScanSpan(0);//设置只定位一次
         startLocation();
+
+        dialogNotice = new DialogNotice(this);
+        dialogSale = new DialogSale(this);
+        dialogSale.setOnDialogClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaleDialogEntity saleEntity = dialogSale.getSaleEntity();
+                if (saleEntity != null) {
+                    CommonWebActivity.start(HomeActivity.this, AppData.Url.news + "?newsId=" + saleEntity.getId());
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -128,7 +153,9 @@ public class HomeActivity extends BaseMapActivity implements
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         this.nowLatlng = latLng;
         stopLocation();
-        title_location.setText(getAddStr());
+//        title_location.setText(getAddStr());
+        //新需求：获取语义化的位置信息
+        title_location.setText(getLocationDescribe());
     }
 
     @Override
@@ -164,9 +191,9 @@ public class HomeActivity extends BaseMapActivity implements
 
     @Override
     protected void onDestroy() {
-        if (webViewClient != null) {
-            webViewClient.destroy();
-        }
+        if (webViewClient != null) webViewClient.destroy();
+        if (dialogNotice != null) dialogNotice.dismiss();
+        if (dialogSale != null) dialogSale.dismiss();
         updateHelper.onDestory();
         super.onDestroy();
     }
@@ -198,9 +225,9 @@ public class HomeActivity extends BaseMapActivity implements
     private void switchTab(@IdRes int tabId) {
         RadioButton radioButton = (RadioButton) findViewById(tabId);
         if (radioButton != null) {
-            if(!radioButton.isChecked()) {
+            if (!radioButton.isChecked()) {
                 radioButton.setChecked(true);
-            }else {
+            } else {
                 webView.reload();
             }
         }
@@ -245,6 +272,34 @@ public class HomeActivity extends BaseMapActivity implements
                 else {
                     areaData = (AreaData) pojo;
                     AppHelper.setLatlogEntity(areaData);
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //请求推荐弹窗数据
+    public void netGetSale() {
+        RequestParams params = new RequestParams(AppData.Url.sale);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("flag", "1");
+        CommonNet.samplepost(params, new TypeToken<List<SaleDialogEntity>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    List<SaleDialogEntity> saleEntitys = (ArrayList<SaleDialogEntity>) pojo;
+                    if (!StrUtils.isEmpty(saleEntitys)) {
+                        if (dialogSale != null) {
+                            dialogSale.setSaleEntity(saleEntitys.get(0));
+                            dialogSale.show();
+                        }
+                    }
                 }
             }
 

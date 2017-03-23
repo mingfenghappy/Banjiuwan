@@ -117,7 +117,10 @@ public class WXPayEntryActivity extends BaseFeastActivity implements IWXAPIEvent
 
     @Override
     public void finish() {
-        CommonWebActivity.start(this, AppData.Url.myOrder);
+        //普通支付在返回时打开订单页面
+        if (PayHelper.type == 0) {
+            CommonWebActivity.start(this, AppData.Url.myOrder);
+        }
         super.finish();
     }
 }

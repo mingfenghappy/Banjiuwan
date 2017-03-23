@@ -64,6 +64,7 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     private EditText edit_search;
     private TextView btn_cancel;
     private TextView btn_go_left;
+    private View btn_relocation;
 
     private ViewGroup showingroup;
     private View showin;
@@ -104,12 +105,13 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     }
 
     private void initBase() {
-        if (getIntent().hasExtra("city")) {
-            city = getIntent().getStringExtra("city");
-        }
-        if (getIntent().hasExtra("latLng")) {
-            latLng = getIntent().getParcelableExtra("latLng");
-        }
+        //该页面已经独立，定位数据由定位器提供，不再需要页面传递定位参数
+//        if (getIntent().hasExtra("city")) {
+//            city = getIntent().getStringExtra("city");
+//        }
+//        if (getIntent().hasExtra("latLng")) {
+//            latLng = getIntent().getParcelableExtra("latLng");
+//        }
         // 初始化POI搜索模块，注册建议搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
@@ -125,11 +127,13 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
         edit_search = (EditText) findViewById(R.id.edit_search);
         btn_cancel = (TextView) findViewById(R.id.btn_cancel);
         btn_go_left = (TextView) findViewById(R.id.btn_go_left);
+        btn_relocation = findViewById(R.id.btn_relocation);
         mapView = (MapView) findViewById(R.id.mapView);
         baiduMap = mapView.getMap();
 
         btn_cancel.setOnClickListener(this);
         btn_go_left.setOnClickListener(this);
+        btn_relocation.setOnClickListener(this);
     }
 
     private void initData() {
@@ -213,7 +217,7 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
         if (latLng != null) {
             //设置自己位置
             baiduMap.setMyLocationData(new MyLocationData.Builder().latitude(latLng.latitude).longitude(latLng.longitude).build());
-            MapHelper.zoomByPoint(baiduMap, latLng ,18);
+            MapHelper.zoomByPoint(baiduMap, latLng, 18);
         }
         if (!StrUtils.isEmpty(city)) {
             //左上角城市设置数据
@@ -254,6 +258,9 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 //                intent.putExtra("city", nowCity);
 //                intent.putExtra("latlng", MapHelper.LatLng2Str(latLng));
 //                startActivityForResult(intent, RESULT_CITY);
+                break;
+            case R.id.btn_relocation:
+                startLocation();
                 break;
         }
     }
@@ -384,16 +391,14 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-//        if (isFirst) {
-//            baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));//设置缩放级别
-//        }
-        if (this.latLng == null) {
-            //左上角城市设置数据
-            this.latLng = latLng;
-            this.city = city;
-            setData();
-            geo(latLng);
-        }
+        //左上角城市设置数据
+        this.latLng = latLng;
+        this.city = city;
+        MapHelper.zoomByPoint(baiduMap, latLng, 18);
+        setData();
+        geo(latLng);
+        //定位成功后马上停止
+        stopLocation();
     }
 
 //    public void netGetArea(String city) {
