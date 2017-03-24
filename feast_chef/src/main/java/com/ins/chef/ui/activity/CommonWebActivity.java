@@ -21,7 +21,6 @@ import com.ins.middle.entity.WebEvent;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
-import com.sobey.common.utils.UrlUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,7 +66,7 @@ public class CommonWebActivity extends BaseFeastActivity {
                     Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
                 if (url.startsWith("tel:")) {
-                    PhoneUtils.callByUrl(CommonWebActivity.this, url);
+                    PhoneUtils.call(CommonWebActivity.this, url);
                     return true;
                 }
 

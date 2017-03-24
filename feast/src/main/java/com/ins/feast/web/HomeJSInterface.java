@@ -18,8 +18,7 @@ import com.tencent.smtt.sdk.WebView;
  * desc ${与js交互的类}
  */
 
-public class HomeJSInterface extends
-        BaseFeastJSInterface {
+public class HomeJSInterface extends BaseFeastJSInterface {
     private WebView homeWebView;
 
     public HomeJSInterface(Activity context, WebView homeWebView) {

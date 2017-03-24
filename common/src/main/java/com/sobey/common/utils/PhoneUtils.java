@@ -10,10 +10,13 @@ import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 public class PhoneUtils {
-    public static void call(Context context, String number) {
-        if (!StrUtils.isEmpty(number)) {
+    public static void phone(Context context, String url) {
+        if (!StrUtils.isEmpty(url)) {
+            if (!url.startsWith("tel:")) {
+                url = "tel:" + url;
+            }
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            Uri data = Uri.parse("tel:" + number);
+            Uri data = Uri.parse(url);
             intent.setData(data);
             context.startActivity(intent);
         } else {
@@ -21,8 +24,11 @@ public class PhoneUtils {
         }
     }
 
-    public static void callByUrl(Activity context, String url) {
+    public static void call(Activity context, String url) {
         if (!StrUtils.isEmpty(url)) {
+            if (!url.startsWith("tel:")) {
+                url = "tel:" + url;
+            }
             Intent intent = new Intent(Intent.ACTION_CALL);
             Uri data = Uri.parse(url);
             intent.setData(data);

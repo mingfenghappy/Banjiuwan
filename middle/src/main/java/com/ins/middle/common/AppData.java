@@ -137,7 +137,7 @@ public class AppData {
         /**
          * 服务器域名
          */
-        public static String domain = "http://139.129.111.76:8102/Banjiuwan/";                                //外网测试服务器(二)
+        public static String domain = "http://tiger.magic-beans.cn/Banjiuwan/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
@@ -167,7 +167,7 @@ public class AppData {
         public static String wedding                    = domain + "app/page/wedding";                                             //客户端婚庆页面
         public static String dinner                     = domain + "app/page/dinner";                                              //客户半餐演奏页面
         public static String serviceDetail              = domain + "app/page/serviceDetail";                                      //客户专业服务页面
-        public static String news                       = domain + "app/page/news";                                                //客户首页弹窗点击跳转页面，参数newsId
+        public static String news                       = domain + "app/page/bannerNews";                                                //客户首页弹窗点击跳转页面，参数newsId
 
         public static String queryByCategory            = domain + "app/food/queryByCategory";
         public static String getAddress                 = domain + "app/address/getAddress";                                      //获取收货地址

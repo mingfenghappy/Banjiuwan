@@ -8,7 +8,6 @@ import com.tencent.smtt.sdk.WebView;
 import android.widget.Toast;
 
 import com.ins.feast.R;
-import com.ins.feast.ui.activity.CardActivity;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
 import com.ins.feast.utils.AppHelper;
@@ -16,7 +15,6 @@ import com.ins.middle.base.BaseWebViewClient;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.WebEvent;
 import com.ins.middle.utils.ParamUtil;
-import com.sobey.common.utils.L;
 import com.sobey.common.utils.PhoneUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,7 +47,7 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         }
 
         if (url.startsWith("tel:")) {
-            PhoneUtils.callByUrl(homeActivity, url);
+            PhoneUtils.call(homeActivity, url);
             return true;
         }
         if (TextUtils.equals(webView.getUrl(), url)) {

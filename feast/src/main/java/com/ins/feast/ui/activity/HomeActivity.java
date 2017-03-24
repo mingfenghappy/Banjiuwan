@@ -109,7 +109,8 @@ public class HomeActivity extends BaseMapActivity implements
             public void onClick(View v) {
                 SaleDialogEntity saleEntity = dialogSale.getSaleEntity();
                 if (saleEntity != null) {
-                    CommonWebActivity.start(HomeActivity.this, AppData.Url.news + "?newsId=" + saleEntity.getId());
+                    CommonWebActivity.start(HomeActivity.this, AppData.Url.news + "?isOpen=1");
+                    dialogSale.hide();
                 }
             }
         });

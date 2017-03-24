@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.tencent.smtt.sdk.WebView;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
@@ -156,6 +157,7 @@ public class CommonWebActivity extends BaseBackActivity {
                 break;
             case finishAddOrder:
                 //如果当前是下单页面，则关闭当前页
+                Log.e("liao", urlOfThisPage + "========" + AppData.Url.addOrder);
                 if (UrlUtil.matchUrl(urlOfThisPage, AppData.Url.addOrder)) {
                     finish();
                 }
@@ -194,7 +196,7 @@ public class CommonWebActivity extends BaseBackActivity {
     private void overrideUrlLoading(final WebView webView, String url) {
         //打电话
         if (url.startsWith("tel:")) {
-            PhoneUtils.callByUrl(CommonWebActivity.this, url);
+            PhoneUtils.call(CommonWebActivity.this, url);
             return;
         }
 
@@ -232,12 +234,10 @@ public class CommonWebActivity extends BaseBackActivity {
             webView.loadUrl(url);
             urlOfThisPage = url;
             EventBus.getDefault().post(WebEvent.shouldRefresh);
-        }
-        else if (pageType == 5){
+        } else if (pageType == 5) {
             EventBus.getDefault().post(WebEvent.jumpToCarTab);
             EventBus.getDefault().post(WebEvent.finishActivity);
-        }
-        else {
+        } else {
             CommonWebActivity.start(CommonWebActivity.this, url);
         }
 
@@ -248,15 +248,11 @@ public class CommonWebActivity extends BaseBackActivity {
      * TODO：为了捕获webView.loadUrl()加载的链接，在调用loadUrl之前手动调用该方法（当前页面只有onCreate中有一处）
      */
     private void overrideUrlLoadingFirst(final WebView webView, String url) {
+        //需求变动：不再需要右滑退出的功能了，所以二级页面全部取消滑动退出功能
         //如果是我的订单页面 取消右滑返回功能（滑动冲突）
-        if (UrlUtil.matchUrl(url, AppData.Url.myOrder)) {
+//        if (UrlUtil.matchUrl(url, AppData.Url.myOrder)) {
             getSwipeBackLayout().setEnablePullToBack(false);
-//            //如果是我的订单页面 ，并传递了刷新参数，则刷新其他页，同时关闭填写订单页面
-//            if (1 == ParamUtil.getParamInt(url, "refresh", 0)) {
-//                EventBus.getDefault().post(WebEvent.finishAddOrder);    //支付成功后关闭填写订单页面
-//                EventBus.getDefault().post(WebEvent.shouldRefresh);    //刷新其他页面
-//            }
-        }
+//        }
     }
 
     /**

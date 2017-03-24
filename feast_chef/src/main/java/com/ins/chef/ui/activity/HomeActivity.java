@@ -3,7 +3,6 @@ package com.ins.chef.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.ins.middle.entity.WebEvent;
 import com.tencent.smtt.sdk.WebView;
@@ -26,7 +25,6 @@ import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.helper.CommonAppHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.shelwee.update.UpdateHelper;
-import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
@@ -92,7 +90,7 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
                     Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
                 if (url.startsWith("tel:")) {
-                    PhoneUtils.callByUrl(HomeActivity.this, url);
+                    PhoneUtils.phone(HomeActivity.this, url);
                     return true;
                 }
 
@@ -186,14 +184,6 @@ public class HomeActivity extends BaseFeastActivity implements RadioGroup.OnChec
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         homeWebChromeClient.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (webView != null) {
-            webView.reload();
-        }
     }
 
     //定位成功回调
