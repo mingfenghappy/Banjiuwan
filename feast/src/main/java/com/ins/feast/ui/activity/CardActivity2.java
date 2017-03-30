@@ -83,7 +83,7 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
 //            StatusBarUtil.setColorNoTranslucent(this, cardType.getBgColor());
 //            findViewById(R.id.root).setBackgroundColor(cardType.getBgColor());
             StatusBarUtil.setColorNoTranslucent(this, ContextCompat.getColor(this, R.color.jw_red));
-            findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this, R.color.jw_red));
+            findViewById(R.id.root).setBackgroundColor(ContextCompat.getColor(this, R.color.white));
             TextView title = (TextView) findViewById(R.id.text_toolbar_title);
             title.setText(cardType.getTitle());
         }

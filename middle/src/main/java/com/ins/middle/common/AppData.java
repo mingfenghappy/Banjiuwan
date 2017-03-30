@@ -208,7 +208,7 @@ public class AppData {
         setMeal {
             @Override
             public String getTag() {
-                return "setMeal";
+                return Url.setMeal;
             }
 
             @Override
@@ -235,7 +235,7 @@ public class AppData {
         bamYan {
             @Override
             public String getTag() {
-                return "bamYan";
+                return Url.bamYan;
             }
 
             @Override
@@ -262,7 +262,7 @@ public class AppData {
         dinner {
             @Override
             public String getTag() {
-                return "dinner";
+                return Url.dinner;
             }
 
             @Override

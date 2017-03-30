@@ -66,7 +66,7 @@ public class CommonWebActivity extends BaseFeastActivity {
                     Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
                 if (url.startsWith("tel:")) {
-                    PhoneUtils.call(CommonWebActivity.this, url);
+                    PhoneUtils.phone(CommonWebActivity.this, url);
                     return true;
                 }
 

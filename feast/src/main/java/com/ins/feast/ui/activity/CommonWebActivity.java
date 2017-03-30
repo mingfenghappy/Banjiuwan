@@ -196,7 +196,7 @@ public class CommonWebActivity extends BaseBackActivity {
     private void overrideUrlLoading(final WebView webView, String url) {
         //打电话
         if (url.startsWith("tel:")) {
-            PhoneUtils.call(CommonWebActivity.this, url);
+            PhoneUtils.phone(CommonWebActivity.this, url);
             return;
         }
 

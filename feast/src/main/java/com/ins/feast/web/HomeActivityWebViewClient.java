@@ -3,6 +3,8 @@ package com.ins.feast.web;
 import android.text.TextUtils;
 
 import com.ins.feast.ui.activity.CardActivity2;
+import com.sobey.common.utils.StrUtils;
+import com.sobey.common.utils.UrlUtil;
 import com.tencent.smtt.sdk.WebView;
 
 import android.widget.Toast;
@@ -47,7 +49,7 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         }
 
         if (url.startsWith("tel:")) {
-            PhoneUtils.call(homeActivity, url);
+            PhoneUtils.phone(homeActivity, url);
             return true;
         }
         if (TextUtils.equals(webView.getUrl(), url)) {
@@ -83,14 +85,12 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
      * @return 是否已经跳转
      */
     private boolean jumpedIfIsCardDetail(String url) {
-
         for (AppData.CardType cardType : AppData.CardType.values()) {
-            if (url.contains(cardType.getTag())) {
+            if (UrlUtil.matchUrl(url, cardType.getTag())) {
                 CardActivity2.start(homeActivity, cardType);
                 return true;
             }
         }
         return false;
     }
-
 }

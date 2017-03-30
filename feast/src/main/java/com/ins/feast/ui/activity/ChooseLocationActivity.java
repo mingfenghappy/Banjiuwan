@@ -63,6 +63,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     private TextView text_defult_name;
     private TextView text_defult_phone;
     private TextView text_defult_address;
+    private TextView text_defult_detailaddress;
 
     private Address defaultAddress;
 
@@ -113,6 +114,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         text_defult_name = (TextView) findViewById(R.id.text_defult_name);
         text_defult_phone = (TextView) findViewById(R.id.text_defult_phone);
         text_defult_address = (TextView) findViewById(R.id.text_defult_address);
+        text_defult_detailaddress = (TextView) findViewById(R.id.text_defult_detailaddress);
         lay_defult_address.setOnClickListener(this);
 
         nowLocation = (TextView) findViewById(R.id.nowLocation);
@@ -255,6 +257,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             text_defult_name.setText(address.getName() + " " + (address.getGender() == 0 ? "先生" : "女士"));
             text_defult_phone.setText(address.getPhone());
             text_defult_address.setText(address.getAddress());
+            text_defult_detailaddress.setText(address.getDetailAddress());
         }
     }
 

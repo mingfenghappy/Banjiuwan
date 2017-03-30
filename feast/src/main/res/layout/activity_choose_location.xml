@@ -149,11 +149,21 @@
                 android:id="@+id/text_defult_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="11dp"
                 android:layout_marginTop="7dp"
                 android:singleLine="true"
                 android:text=""
+                android:textColor="@color/com_text_dark_light" />
+
+            <TextView
+                android:id="@+id/text_defult_detailaddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="7dp"
+                android:singleLine="true"
+                android:textSize="@dimen/text_small"
                 android:textColor="@color/com_text_dark_light" />
 
         </LinearLayout>

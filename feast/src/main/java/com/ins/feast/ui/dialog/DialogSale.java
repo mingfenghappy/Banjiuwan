@@ -73,8 +73,8 @@ public class DialogSale extends Dialog{
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
         /////////设置高宽
-        lp.width = (int) (screenWidth * 0.70); // 宽度
-        lp.height = (int) (screenHeight * 0.70); // 高度
+        lp.width = (int) (screenWidth * 0.80); // 宽度
+        lp.height = (int) (lp.width * 1.65); // 高度
         dialogWindow.setAttributes(lp);
     }
 
