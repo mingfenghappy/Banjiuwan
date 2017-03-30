@@ -261,21 +261,25 @@ public class CommonWebActivity extends BaseBackActivity {
     private void overrideUrlLoadingFinish(final WebView webView, String url) {
         //如果是新增地址页面，注册定位管理器进行定位（动态注册，不需要定位功能的页面不注册）
         if (UrlUtil.matchUrl(url, AppData.Url.addAddress)) {
-            locationer = new Locationer(CommonWebActivity.this);
-            locationer.setCallback(new Locationer.LocationCallback() {
-                @Override
-                public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
-                    if (StrUtils.isEmpty(address)) {
-                        Toast.makeText(CommonWebActivity.this, "定位失败，请到信号较好的地方稍后再试", Toast.LENGTH_SHORT).show();
-                    } else {
-                        address = StrUtils.subFirstChart(address, "中国");
-                        webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
-                        locationer.stopLocation();  //定位成功后马上释放
+            //检查needLocation参数为1的时候才定位，代表是新增页面，修改页面为0
+            String needLocation = UrlUtil.getQueryString(url, "needLocation");
+            if ("1".equals(needLocation)) {
+                locationer = new Locationer(CommonWebActivity.this);
+                locationer.setCallback(new Locationer.LocationCallback() {
+                    @Override
+                    public void onLocation(LatLng latLng, String city, String address, boolean isFirst) {
+                        if (StrUtils.isEmpty(address)) {
+                            Toast.makeText(CommonWebActivity.this, "定位失败，请到信号较好的地方稍后再试", Toast.LENGTH_SHORT).show();
+                        } else {
+                            address = StrUtils.subFirstChart(address, "中国");
+                            webView.loadUrl(JSFunctionUrl.setAddress(address, latLng.latitude + "", latLng.longitude + ""));
+                            locationer.stopLocation();  //定位成功后马上释放
+                        }
                     }
+                });
+                if (PermissionsUtil.requsetLocation(this, null)) {
+                    locationer.startlocation();
                 }
-            });
-            if (PermissionsUtil.requsetLocation(this, null)) {
-                locationer.startlocation();
             }
         }
     }

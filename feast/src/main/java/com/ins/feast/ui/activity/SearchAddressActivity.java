@@ -1,5 +1,6 @@
 package com.ins.feast.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,7 @@ import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +71,8 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     private ViewGroup showingroup;
     private View showin;
 
+    private int type;
+
     //搜索建议
     private PoiSearch mPoiSearch = null;
     //反向地理编码
@@ -81,6 +85,18 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     //分页参数
     private int page;
     private final int PAGE_COUNT = 15;
+
+    public static void start(Context context) {
+        start(context, 0);
+    }
+
+    public static void start(Context context, int type) {
+        //防止重复点击过快打开页面
+        if (ClickUtils.isFastDoubleClick()) return;
+        Intent intent = new Intent(context, SearchAddressActivity.class);
+        intent.putExtra("type", type);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +128,9 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 //        if (getIntent().hasExtra("latLng")) {
 //            latLng = getIntent().getParcelableExtra("latLng");
 //        }
+        if (getIntent().hasExtra("type")) {
+            type = getIntent().getIntExtra("type", 0);
+        }
         // 初始化POI搜索模块，注册建议搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
@@ -270,6 +289,7 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Position position = adapter.getResults().get(viewHolder.getAdapterPosition());
         position.setCity(city);
+        position.setType(type);
         EventBus.getDefault().post(position);
         finish();
 //        Position position = adapter.getResults().get(viewHolder.getLayoutPosition());

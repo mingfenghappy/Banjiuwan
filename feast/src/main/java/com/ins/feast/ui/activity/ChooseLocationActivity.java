@@ -41,8 +41,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ins.feast.R.id.searchLocation;
+import static com.ins.feast.R.id.thirdListView;
 
-
+/**
+ * type：0 收货地址打开，1：首页右上角打开 ，默认0
+ * 收获地址打开只更收获地址页面数据，首页打开只更改首页地址信息
+ */
 public class ChooseLocationActivity extends BaseMapActivity implements
         View.OnClickListener,
         OnGetGeoCoderResultListener, OnRecycleItemClickListener {
@@ -62,10 +66,17 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     private Address defaultAddress;
 
+    private int type;
+
     public static void start(Context context) {
+        start(context, 0);
+    }
+
+    public static void start(Context context, int type) {
         //防止重复点击过快打开页面
         if (ClickUtils.isFastDoubleClick()) return;
         Intent starter = new Intent(context, ChooseLocationActivity.class);
+        starter.putExtra("type", type);
         context.startActivity(starter);
     }
 
@@ -81,6 +92,9 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("type")) {
+            type = getIntent().getIntExtra("type", 0);
+        }
     }
 
     private void initSetting() {
@@ -112,11 +126,12 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     }
 
     private void startSearchLocationActivity() {
-        SearchLocationActivity.start(this, city);
+        SearchLocationActivity.start(this, city, type);
     }
 
     private void startSearchAddressActivity() {
         Intent intent = new Intent(ChooseLocationActivity.this, SearchAddressActivity.class);
+        intent.putExtra("type", type);
         intent.putExtra("city", city);
         intent.putExtra("latLng", latLng);
         startActivity(intent);
@@ -211,6 +226,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
 
     private void postAndFinishActivity(Position position) {
         position.setCity(city);
+        position.setType(type);
         EventBus.getDefault().post(position);
         finish();
     }
@@ -236,7 +252,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             lay_defult_address.setVisibility(View.GONE);
         } else {
             lay_defult_address.setVisibility(View.VISIBLE);
-            text_defult_name.setText(address.getName());
+            text_defult_name.setText(address.getName() + " " + (address.getGender() == 0 ? "先生" : "女士"));
             text_defult_phone.setText(address.getPhone());
             text_defult_address.setText(address.getAddress());
         }

@@ -37,24 +37,32 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
-
 public class SearchLocationActivity extends BaseFeastActivity implements OnGetPoiSearchResultListener, OnRecycleItemClickListener {
     private final static String CITY_KEY = "key";
-    private final static String TRANSITION_RED_BG ="redBg";
-    private final static String TRANSITION_WHITE_BG ="whiteBg";
+    private final static String TRANSITION_RED_BG = "redBg";
+    private final static String TRANSITION_WHITE_BG = "whiteBg";
     private static final String TRANSITION_TEXT = "text";
     private String city;
     private PoiSearch poiSearch;
     private SearchLocationAdapter adapter;
     private RecyclerView searchResult;
 
+    private int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_location);
 
+        initBase();
         initSetting();
         initView();
+    }
+
+    private void initBase() {
+        if (getIntent().hasExtra("type")) {
+            type = getIntent().getIntExtra("type", 0);
+        }
     }
 
     private void initSetting() {
@@ -88,11 +96,12 @@ public class SearchLocationActivity extends BaseFeastActivity implements OnGetPo
         poiSearch.searchInCity(poiCitySearchOption);
     }
 
-    public static void start(ChooseLocationActivity activity, String city) {
+    public static void start(ChooseLocationActivity activity, String city ,int type) {
         Intent starter = new Intent(activity, SearchLocationActivity.class);
+        starter.putExtra("type", type);
         starter.putExtra(CITY_KEY, city);
-        View redBg=activity.findViewById(R.id.searchLocation);
-        View whiteBg=activity.findViewById(R.id.transition_whiteBg);
+        View redBg = activity.findViewById(R.id.searchLocation);
+        View whiteBg = activity.findViewById(R.id.transition_whiteBg);
         View text = activity.findViewById(R.id.transition_text);
         ActivityOptionsCompat optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -112,8 +121,8 @@ public class SearchLocationActivity extends BaseFeastActivity implements OnGetPo
     public void onGetPoiResult(PoiResult poiResult) {
         List<PoiInfo> allPoi = poiResult.getAllPoi();
         setAdapterData(allPoi);
-        if (StrUtils.isEmpty(allPoi)){
-            Toast.makeText(this,"没有搜索该地址",Toast.LENGTH_SHORT).show();
+        if (StrUtils.isEmpty(allPoi)) {
+            Toast.makeText(this, "没有搜索该地址", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,6 +154,7 @@ public class SearchLocationActivity extends BaseFeastActivity implements OnGetPo
             return;
         }
         Position position = new Position(poiInfo);
+        position.setType(type);
         EventBus.getDefault().post(position);
         finish();
     }

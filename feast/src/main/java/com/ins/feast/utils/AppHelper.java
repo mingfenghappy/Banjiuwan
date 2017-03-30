@@ -168,7 +168,11 @@ public class AppHelper {
         CategoryConfig config = getCategoryConfigByUrl(areaData.getConfigs(), url);
         if (config != null) {
             //如果是坝坝宴 id = 3 设置不同的Icon
-            if (dialogNotice != null) dialogNotice.setTypeMsg(config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING, config.getMsg());
+            if (dialogNotice != null) {
+                int type = config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING;
+                String msg = !StrUtils.isEmpty(config.getMsg()) ? config.getMsg() : "对不起！您的点餐不在服务范围内";
+                dialogNotice.setTypeMsg(type, msg);
+            }
             return needEnter(config, areaData.getAreas(), latLng);
         } else {
             //config为null，不拦截

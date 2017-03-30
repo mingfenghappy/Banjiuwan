@@ -153,10 +153,11 @@ public class HomeActivity extends BaseMapActivity implements
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         this.nowLatlng = latLng;
-        stopLocation();
 //        title_location.setText(getAddStr());
         //新需求：获取语义化的位置信息
         title_location.setText(getLocationDescribe());
+        //只定位一次
+        stopLocation();
     }
 
     @Override
@@ -204,8 +205,13 @@ public class HomeActivity extends BaseMapActivity implements
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceivePosition(Position position) {
-        String key = position.getKey();
-        title_location.setText(key);
+        if (position.getType()==1) {
+            String key = position.getKey();
+            title_location.setText(key);
+            if (position.getLatLng() != null) {
+                nowLatlng = position.getLatLng();
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

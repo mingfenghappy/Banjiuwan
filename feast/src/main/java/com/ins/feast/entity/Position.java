@@ -28,6 +28,13 @@ public class Position implements Serializable {
     //地理位置详细描述
     private String address;
 
+    //本地字段
+    //区别由哪一个页面接受该消息
+    //type 0 :修改收获地址页面
+    //type 1 :首页
+    //默认0
+    private int type;
+
     public Position(LatLng latLng, String key, String city) {
         this.latLng = latLng;
         this.key = key;
@@ -53,6 +60,14 @@ public class Position implements Serializable {
         this.key = address.getAddress();
         this.address = address.getAddress();
         this.latLng = MapHelper.str2LatLng(address.getLngLat());
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public void setAddress(String address) {

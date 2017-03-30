@@ -31,6 +31,17 @@ public class Address implements Serializable{
     @SerializedName("isDefault")
     private int isDefault;
 
+    @SerializedName("gender")
+    private int gender;
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
     public String getLngLat() {
         return lngLat;
     }
