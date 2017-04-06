@@ -14,8 +14,10 @@ import com.ins.feast.entity.Position;
 import com.ins.feast.ui.dialog.DialogNotice;
 import com.ins.middle.common.AppData;
 import com.ins.feast.entity.Card;
+import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.PreferenceUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 
@@ -26,6 +28,21 @@ import java.util.Map;
  * Created by Administrator on 2016/8/9.
  */
 public class AppHelper {
+
+    private static final String KEY_AREA = "area";
+
+    public static void saveArea(AreaData area) {
+        PreferenceUtil.saveObject(ApplicationHelp.getApplicationContext(), KEY_AREA, area);
+    }
+
+    public static AreaData getArea() {
+        return (AreaData) PreferenceUtil.readObject(ApplicationHelp.getApplicationContext(), KEY_AREA);
+    }
+
+    public static void removeArea() {
+        PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_AREA);
+    }
+
 
     public static boolean getStartUp() {
         int versionCodeSave = AppData.App.getVersionCode();
@@ -152,8 +169,8 @@ public class AppHelper {
 
     public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice) {
         if (areaData == null) {
-            //如果没有配置，（可能是没获取到）那么可以进入
-            return true;
+            //如果没有配置，（可能是没获取到）那么不能进入
+            return false;
         }
         if (StrUtils.isEmpty(areaData.getAreas())) {
             //如果配置区域没有划分，那么可以进入
@@ -163,7 +180,6 @@ public class AppHelper {
             //如果没有配置，那么可以进入
             return true;
         }
-
         //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
         CategoryConfig config = getCategoryConfigByUrl(areaData.getConfigs(), url);
         if (config != null) {
@@ -173,7 +189,14 @@ public class AppHelper {
                 String msg = !StrUtils.isEmpty(config.getMsg()) ? config.getMsg() : "对不起！您的点餐不在服务范围内";
                 dialogNotice.setTypeMsg(type, msg);
             }
-            return needEnter(config, areaData.getAreas(), latLng);
+            if (latLng != null) {
+                return needEnter(config, areaData.getAreas(), latLng);
+            } else {
+                //定位失败提示
+                if (dialogNotice != null)
+                    dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "定位失败，请重新定位");
+                return false;
+            }
         } else {
             //config为null，不拦截
             return true;

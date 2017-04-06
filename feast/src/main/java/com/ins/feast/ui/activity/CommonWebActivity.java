@@ -88,7 +88,9 @@ public class CommonWebActivity extends BaseBackActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                titleHelper.setTitleText(title);
+                if (!title.contains("http")) {
+                    titleHelper.setTitleText(title);
+                }
             }
         };
         webViewClient = new BaseWebViewClient(webView) {

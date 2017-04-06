@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
+import com.ins.baidumapsdk.BaiduMapUtil;
 import com.ins.feast.R;
 import com.ins.feast.entity.AreaData;
 import com.ins.feast.entity.Position;
@@ -152,8 +153,12 @@ public class HomeActivity extends BaseMapActivity implements
 
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
-        this.nowLatlng = latLng;
-//        title_location.setText(getAddStr());
+        if (!BaiduMapUtil.isLatlngEmpty(latLng)) {
+            this.nowLatlng = latLng;
+        } else {
+            this.nowLatlng = null;
+            Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
+        }
         //新需求：获取语义化的位置信息
         title_location.setText(getLocationDescribe());
         //只定位一次
@@ -205,7 +210,7 @@ public class HomeActivity extends BaseMapActivity implements
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceivePosition(Position position) {
-        if (position.getType()==1) {
+        if (position.getType() == 1) {
             String key = position.getKey();
             title_location.setText(key);
             if (position.getLatLng() != null) {
@@ -264,6 +269,7 @@ public class HomeActivity extends BaseMapActivity implements
         }
 
         if (webView != null && !TextUtils.isEmpty(url)) {
+            webView.stopLoading();
             webView.loadUrl(url);
         }
     }
@@ -278,6 +284,8 @@ public class HomeActivity extends BaseMapActivity implements
                 if (pojo == null) netSetError(code, "接口异常");
                 else {
                     areaData = (AreaData) pojo;
+                    AppHelper.removeArea();
+                    AppHelper.saveArea(areaData);
                     AppHelper.setLatlogEntity(areaData);
                 }
             }
@@ -285,6 +293,7 @@ public class HomeActivity extends BaseMapActivity implements
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+                areaData = AppHelper.getArea();
             }
         });
     }

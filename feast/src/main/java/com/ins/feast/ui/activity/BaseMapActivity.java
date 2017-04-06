@@ -58,7 +58,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
      * 开始定位
      */
     @CallSuper
-    protected void startLocation() {
+    public void startLocation() {
         L.d("startLocation");
         if (PermissionsUtil.requsetLocation(this, null)) {
             locationer.startlocation();
@@ -72,7 +72,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
      * 结束定位
      */
     @CallSuper
-    protected void stopLocation() {
+    public void stopLocation() {
         L.d("stopLocation");
         locationer.stopLocation();
         if (showLocationLoadProgress && loading.isShowing()) {

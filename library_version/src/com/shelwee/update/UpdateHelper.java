@@ -548,8 +548,7 @@ public class UpdateHelper {
                         if (progress != lastProgress) {
                             handler.obtainMessage(UPDATE_NOTIFICATION_PROGRESS, progress, -1, params[0]).sendToTarget();
                             if (UpdateHelper.this.updateListener != null) {
-                                UpdateHelper.this.updateListener
-                                        .onDownloading(progress);
+                                UpdateHelper.this.updateListener.onDownloading(progress);
                             }
                         }
 

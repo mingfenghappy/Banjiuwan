@@ -138,7 +138,12 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
                 }
                 break;
             case R.id.title_location:
-                ChooseLocationActivity.start(homeActivity, 1);
+                if (homeActivity.nowLatlng != null) {
+                    ChooseLocationActivity.start(homeActivity, 1);
+                } else {
+                    //定位失败，重新定位
+                    homeActivity.startLocation();
+                }
                 break;
             case R.id.icon_right:
 //                SearchDishesActivity.start(homeActivity);

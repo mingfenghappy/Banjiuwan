@@ -4,8 +4,10 @@ import android.os.Handler;
 
 import com.dd.CircularProgressButton;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.PreferenceUtil;
 import com.sobey.common.utils.StrUtils;
 
 import java.util.List;
