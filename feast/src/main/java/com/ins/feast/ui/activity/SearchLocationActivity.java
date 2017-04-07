@@ -23,6 +23,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.SearchLocationAdapter;
+import com.ins.feast.utils.NetCouldOrderHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
@@ -148,15 +149,30 @@ public class SearchLocationActivity extends BaseFeastActivity implements OnGetPo
     }
 
     @Override
-    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+    public void onItemClick(final RecyclerView.ViewHolder viewHolder) {
         PoiInfo poiInfo = adapter.getPoiInfoList().get(viewHolder.getAdapterPosition());
         if (poiInfo == null) {
             return;
         }
-        Position position = new Position(poiInfo);
+        final Position position = new Position(poiInfo);
         position.setType(type);
-        EventBus.getDefault().post(position);
-        finish();
+        if (type==2) {
+            //新需求导致的畸形逻辑，返回前请求服务器是否可以点餐
+            NetCouldOrderHelper.netCouldOrder(this, position.getLatLng(), new NetCouldOrderHelper.CouldOrderCallback() {
+                @Override
+                public void succese(int couldOrder) {
+                    if (couldOrder == 1) {
+                        EventBus.getDefault().post(position);
+                        finish();
+                    } else {
+                        Toast.makeText(SearchLocationActivity.this, "当前位置无法点餐", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else {
+            EventBus.getDefault().post(position);
+            finish();
+        }
     }
 
     public void onClick_cancel(View view) {

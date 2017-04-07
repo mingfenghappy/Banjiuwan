@@ -110,8 +110,10 @@ public class CropHelperSysV2 {
     private String compress(String FromPath, String toPath) {
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapUtil.revitionImageSize(FromPath);
-            toPath = BitmapUtil.saveBitmap(bitmap, toPath);
+            int degree = BitmapUtil.getBitmapDegree(FromPath);          //获取旋转角度
+            bitmap = BitmapUtil.revitionImageSize(FromPath);            //压缩并获取压缩后的位图
+            bitmap = BitmapUtil.rotateBitmap(degree, bitmap);           //根据旋转角度进行旋转
+            toPath = BitmapUtil.saveBitmap(bitmap, toPath);             //保存图片到指定路径
         } catch (IOException e) {
             e.printStackTrace();
         }

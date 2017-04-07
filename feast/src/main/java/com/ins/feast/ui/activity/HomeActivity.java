@@ -23,6 +23,8 @@ import com.ins.feast.ui.dialog.DialogNotice;
 import com.ins.feast.ui.dialog.DialogSale;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.utils.AppHelper;
+import com.ins.feast.utils.MapHelper;
+import com.ins.feast.utils.NetCouldOrderHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
 import com.ins.feast.web.HomeJSInterface;
@@ -84,6 +86,12 @@ public class HomeActivity extends BaseMapActivity implements
         initView();
         initData();
         initWebViewSetting();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netCouldOrder();
     }
 
     private void initData() {
@@ -154,8 +162,11 @@ public class HomeActivity extends BaseMapActivity implements
     @Override
     public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         if (!BaiduMapUtil.isLatlngEmpty(latLng)) {
+            //定位成功
             this.nowLatlng = latLng;
+            netCouldOrder();
         } else {
+            //定位失败
             this.nowLatlng = null;
             Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
         }
@@ -175,26 +186,6 @@ public class HomeActivity extends BaseMapActivity implements
             super.onBackPressed();
         }
     }
-
-//    /**
-//     * 根据返回到的页面的url改变tab栏选中的tab
-//     */
-//    private void selectTabByUrl(String url) {
-//        notLoad = true;
-//        int buttonId = 0;
-//
-//        for (Tabs tabs : Tabs.values()) {
-//            if (url.contains(tabs.getUrlTag())) {
-//                buttonId = tabs.getButtonId();
-//            }
-//        }
-//
-//        RadioButton radioButton = (RadioButton) findViewById(buttonId);
-//        if (radioButton != null) {
-//            radioButton.setChecked(true);
-//            handleTitleByCheckedId(buttonId);
-//        }
-//    }
 
     @Override
     protected void onDestroy() {
@@ -255,6 +246,10 @@ public class HomeActivity extends BaseMapActivity implements
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         handleTitleByCheckedId(checkedId);
         BackCheckedHelper.addBackUrl(Tabs.getUrlById(checkedId));
+        if (checkedId == R.id.rb_home) {
+            //如果切换首页重新请求下单权限信息
+            netCouldOrder();
+        }
     }
 
     private void handleTitleByCheckedId(int checkedId) {
@@ -322,6 +317,25 @@ public class HomeActivity extends BaseMapActivity implements
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(HomeActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //当前用户是否可以点餐(一个新需求导致的新字段)0：不能点；1：可以点
+    public int couldOrder = 0;
+
+    //请求服务器告知当前用户是否可以点餐
+    public void netCouldOrder() {
+        if (nowLatlng == null) {
+            return;
+        }
+        if (StrUtils.isEmpty(AppData.App.getToken())) {
+            return;
+        }
+        NetCouldOrderHelper.netCouldOrder(this, nowLatlng, new NetCouldOrderHelper.CouldOrderCallback() {
+            @Override
+            public void succese(int couldOrder) {
+                HomeActivity.this.couldOrder = couldOrder;
             }
         });
     }

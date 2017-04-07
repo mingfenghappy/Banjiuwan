@@ -167,7 +167,14 @@ public class AppHelper {
         }
     }
 
-    public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice) {
+    public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
+        //如果点餐标准为不能点餐0，
+        if (couldOrder == 0) {
+            if (AppHelper.isCategoryConfigUrl(url)) {
+                dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "您购物车中包含不同类别的商品");
+                return false;
+            }
+        }
         if (areaData == null) {
             //如果没有配置，（可能是没获取到）那么不能进入
             return false;
@@ -257,6 +264,30 @@ public class AppHelper {
             }
         }
         return null;
+    }
+
+    //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
+    public static boolean isCategoryConfigUrl(String url) {
+        if (UrlUtil.matchUrl(url, AppData.Url.cookbook)) {
+            //客户端点菜页面
+            return true;
+        } else if (UrlUtil.matchUrl(url, AppData.Url.setMeal)) {
+            //客户端套餐页面
+            return true;
+        } else if (UrlUtil.matchUrl(url, AppData.Url.bamYan)) {
+            //客户端坝坝宴页面
+            return true;
+        } else if (UrlUtil.matchUrl(url, AppData.Url.wedding)) {
+            //客户端婚庆页面
+            return true;
+        } else if (UrlUtil.matchUrl(url, AppData.Url.dinner)) {
+            //客户半餐演奏页面
+            return true;
+        } else if (UrlUtil.matchUrl(url, AppData.Url.serviceDetail)) {
+            //客户专业服务页面
+            return true;
+        }
+        return false;
     }
 
     //判断当前菜品，用户所在位置是否可以进入详情

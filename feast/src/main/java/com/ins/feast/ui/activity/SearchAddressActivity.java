@@ -38,6 +38,7 @@ import com.ins.feast.R;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
+import com.ins.feast.utils.NetCouldOrderHelper;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -286,14 +287,28 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
 
     //item点击事件回调
     @Override
-    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        Position position = adapter.getResults().get(viewHolder.getAdapterPosition());
+    public void onItemClick(final RecyclerView.ViewHolder viewHolder) {
+        final Position position = adapter.getResults().get(viewHolder.getAdapterPosition());
         position.setCity(city);
         position.setType(type);
-        EventBus.getDefault().post(position);
-        finish();
-//        Position position = adapter.getResults().get(viewHolder.getLayoutPosition());
-//        MapHelper.zoomByPoint(baiduMap, position.getLatLng());
+
+        if (type==2) {
+            //新需求导致的畸形逻辑，返回前请求服务器是否可以点餐
+            NetCouldOrderHelper.netCouldOrder(this, position.getLatLng(), new NetCouldOrderHelper.CouldOrderCallback() {
+                @Override
+                public void succese(int couldOrder) {
+                    if (couldOrder == 1) {
+                        EventBus.getDefault().post(position);
+                        finish();
+                    } else {
+                        Toast.makeText(SearchAddressActivity.this, "当前位置无法点餐", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else {
+            EventBus.getDefault().post(position);
+            finish();
+        }
     }
 
     //POI检索回调

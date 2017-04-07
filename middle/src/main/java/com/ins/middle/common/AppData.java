@@ -95,12 +95,6 @@ public class AppData {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_JPUSHID);
         }
 
-        //////////////
-
-        public static void removeOrderInfo(String key) {
-            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), key);
-        }
-
         ///////////////保存客服电话
         public static String getPhone() {
             String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_PHONE);
@@ -114,6 +108,7 @@ public class AppData {
         public static void removePhone() {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_PHONE);
         }
+
     }
 
     /**
@@ -173,7 +168,8 @@ public class AppData {
         public static String getAddress                 = domain + "app/address/getAddress";                                      //获取收货地址
         public static String updateCookLatLng           = domain + "app/cook/updateCookLatLng";                                  //厨师实时上传坐标（5秒一次）
         public static String getCategoryConfig          = domain + "app/category/getCategoryConfig";                            //用户端获取菜品配置（地理围栏）
-        public static String sale                       = domain + "app/homeBanner/getBanner";                                  //用户端获取首页推荐接口
+        public static String sale                       = domain + "app/homeBanner/getBanner";                                   //用户端获取首页推荐接口
+        public static String judgeIsPoint               = domain + "app/user/judgeIsPoint";                                      //判断当前用户是否可以点餐
 
         public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
         public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名

@@ -23,6 +23,7 @@ import com.ins.feast.entity.Address;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.ChooseLocationAdapter;
 import com.ins.feast.utils.AppHelper;
+import com.ins.feast.utils.NetCouldOrderHelper;
 import com.ins.feast.utils.RxViewUtils;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
@@ -44,7 +45,7 @@ import static com.ins.feast.R.id.searchLocation;
 import static com.ins.feast.R.id.thirdListView;
 
 /**
- * type：0 收货地址打开，1：首页右上角打开 ，默认0
+ * type：0 收货地址打开，1：首页右上角打开 ，2：下单切换地址 默认0
  * 收获地址打开只更收获地址页面数据，首页打开只更改首页地址信息
  */
 public class ChooseLocationActivity extends BaseMapActivity implements
@@ -226,11 +227,27 @@ public class ChooseLocationActivity extends BaseMapActivity implements
         postAndFinishActivity(position);
     }
 
-    private void postAndFinishActivity(Position position) {
+    private void postAndFinishActivity(final Position position) {
         position.setCity(city);
         position.setType(type);
-        EventBus.getDefault().post(position);
-        finish();
+
+        if (type==2) {
+            //新需求导致的畸形逻辑，返回前请求服务器是否可以点餐
+            NetCouldOrderHelper.netCouldOrder(this, position.getLatLng(), new NetCouldOrderHelper.CouldOrderCallback() {
+                @Override
+                public void succese(int couldOrder) {
+                    if (couldOrder == 1) {
+                        EventBus.getDefault().post(position);
+                        finish();
+                    } else {
+                        Toast.makeText(ChooseLocationActivity.this, "当前位置无法点餐", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else {
+            EventBus.getDefault().post(position);
+            finish();
+        }
     }
 
     @Override

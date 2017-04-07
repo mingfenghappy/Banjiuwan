@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.ExifInterface;
 import android.util.Log;
 
 import com.sobey.common.utils.StrUtils;
@@ -28,7 +29,6 @@ public class BitmapUtil {
     public static int max = 0;
 
     // 图片sd地址 上传服务器时把图片调用下面方法压缩后 保存到临时文件夹 图片压缩后小于100KB，失真度不明显
-
     public static Bitmap revitionImageSize(String path) throws IOException {
         if (StrUtils.isEmpty(path)) {
             return null;
@@ -41,10 +41,8 @@ public class BitmapUtil {
         int i = 0;
         Bitmap bitmap = null;
         while (true) {
-            if ((options.outWidth >> i <= 1000)
-                    && (options.outHeight >> i <= 1000)) {
-                in = new BufferedInputStream(
-                        new FileInputStream(new File(path)));
+            if ((options.outWidth >> i <= 1000) && (options.outHeight >> i <= 1000)) {
+                in = new BufferedInputStream(new FileInputStream(new File(path)));
                 options.inSampleSize = (int) Math.pow(2.0D, i);
                 options.inJustDecodeBounds = false;
                 bitmap = BitmapFactory.decodeStream(in, null, options);
@@ -55,6 +53,7 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    //上面方法的重载
     public static Bitmap revitionImageSize(byte[] data) throws IOException {
         if (StrUtils.isEmpty(data)) {
             return null;
@@ -79,6 +78,7 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    //保存图片到外存路径 下
     public static String saveBitmap(Context context, Bitmap bm, String picName) {
         File f = new File(context.getExternalCacheDir(), picName);
         if (f.exists()) {
@@ -96,7 +96,8 @@ public class BitmapUtil {
         return null;
     }
 
-    public static String saveBitmap(Bitmap bm, String path) {
+    //保存图片到指定路径，可以指定格式
+    public static String saveBitmap(Bitmap bm, String path, Bitmap.CompressFormat type) {
         Log.e("", "保存图片");
         try {
             File f = new File(path);
@@ -105,7 +106,7 @@ public class BitmapUtil {
             }
 
             FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            bm.compress(type, 90, out);
             out.flush();
             out.close();
             Log.e("", "已经保存");
@@ -118,26 +119,49 @@ public class BitmapUtil {
         return null;
     }
 
-    public static String saveBitmapPNG(Bitmap bm, String path) {
-        Log.e("", "保存图片");
-        try {
-            File f = new File(path);
-            if (f.exists()) {
-                f.delete();
-            }
+    //保存图片到指定路径，默认格式JPEG
+    public static String saveBitmap(Bitmap bm, String path) {
+        return saveBitmap(bm, path, Bitmap.CompressFormat.JPEG);
+    }
 
-            FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
-            Log.e("", "已经保存");
-            return path;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    //把一张位图旋转指定角度
+    public static Bitmap rotateBitmap(int degree, Bitmap bitmap) {
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    /**
+     * 获取原始图片的角度（解决三星手机拍照后图片是横着的问题）
+     *
+     * @param path 图片的绝对路径
+     * @return 原始图片的角度
+     */
+    public static int getBitmapDegree(String path) {
+        int degree = 0;
+        try {
+            // 从指定路径下读取图片，并获取其EXIF信息
+            ExifInterface exifInterface = new ExifInterface(path);
+            // 获取图片的旋转信息
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            Log.e("jxf", "orientation" + orientation);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return degree;
     }
 
     /***
@@ -170,7 +194,7 @@ public class BitmapUtil {
         return baos.toByteArray();
     }
 
-
+    //将图片切成圆形，周围用透明色填充
     public static Bitmap makeRoundCorner(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
