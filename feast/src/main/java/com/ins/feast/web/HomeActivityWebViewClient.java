@@ -3,6 +3,7 @@ package com.ins.feast.web;
 import android.text.TextUtils;
 
 import com.ins.feast.ui.activity.CardActivity2;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 import com.tencent.smtt.sdk.WebView;
@@ -43,7 +44,11 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         //首先检查连接是否需要进行地理拦截，对需要进行拦截的链接进行捕获和弹窗提示
         if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng, homeActivity.dialogNotice)) {
             //不可进入的链接和地理位置
-            if (homeActivity.dialogNotice != null) homeActivity.dialogNotice.show();
+            L.d("cannot enter the location");
+            if (homeActivity.dialogNotice != null) {
+                L.d("noticeDialog is showing");
+                homeActivity.dialogNotice.show();
+            }
 //            Toast.makeText(homeActivity, "你不在可下单范围内", Toast.LENGTH_SHORT).show();
             return true;
         }
