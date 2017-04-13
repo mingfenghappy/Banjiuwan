@@ -76,7 +76,7 @@ public class FeastApplication extends Application {
 
     private void initJPush() {
         JPushInterface.setDebugMode(BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);            // 初始化 JPush
+        JPushInterface.init(this);            // 初始化 JPush x
     }
 
     private void initXUtils() {
