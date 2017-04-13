@@ -65,4 +65,8 @@ public class CategoryConfig implements Serializable {
     public void setIsInside(int isInside) {
         this.isInside = isInside;
     }
+
+    public boolean isInside(){
+        return isInside==1;
+    }
 }

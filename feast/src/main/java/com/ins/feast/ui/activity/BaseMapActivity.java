@@ -1,11 +1,8 @@
 package com.ins.feast.ui.activity;
 
-import android.Manifest;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
+import android.support.annotation.NonNull;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
@@ -60,9 +57,7 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
     @CallSuper
     public void startLocation() {
         L.d("startLocation");
-        if (PermissionsUtil.requsetLocation(this, null)) {
-            locationer.startlocation();
-        }
+        locationer.startlocation();
         if (showLocationLoadProgress) {
             loading.show();
         }
@@ -102,11 +97,11 @@ public abstract class BaseMapActivity extends BaseFeastActivity implements Locat
         return locationer.getAddrStr(needCity);
     }
 
-    protected String getLocationDescribe(){
+    protected String getLocationDescribe() {
         String locationDescribe = getBdLocation().getLocationDescribe();
-        if(!StrUtils.isEmpty(locationDescribe)){
+        if (!StrUtils.isEmpty(locationDescribe)) {
             return StrUtils.subFirstChart(locationDescribe, "在");
-        }else {
+        } else {
             return getAddStr();
         }
     }

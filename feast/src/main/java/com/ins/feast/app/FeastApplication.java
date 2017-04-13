@@ -58,14 +58,6 @@ public class FeastApplication extends Application {
         String logTag = getString(R.string.app_name);
         L.setTAG(logTag);
         EventBus.TAG = logTag;
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .penaltyFlashScreen()
-                    .build()
-            );
-        }
     }
 
     @Override

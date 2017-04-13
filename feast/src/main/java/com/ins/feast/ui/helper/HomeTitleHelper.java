@@ -5,11 +5,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.feast.R;
-import com.ins.feast.common.JSFunctionUrl;
 import com.ins.feast.ui.activity.ChooseLocationActivity;
 import com.ins.feast.ui.activity.CommonWebActivity;
 import com.ins.feast.ui.activity.HomeActivity;
-import com.ins.feast.ui.activity.SearchDishesActivity;
 import com.ins.feast.utils.RxViewUtils;
 import com.ins.middle.base.TitleHelper;
 import com.ins.middle.common.AppData;
@@ -132,7 +130,10 @@ public class HomeTitleHelper extends TitleHelper implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_leftIcon:
-                boolean canOnBackPressed = (boolean) iconLeft.getTag();
+                Boolean canOnBackPressed = (Boolean) iconLeft.getTag();
+                if (canOnBackPressed == null) {
+                    return;
+                }
                 if (canOnBackPressed) {
                     homeActivity.onBackPressed();
                 }

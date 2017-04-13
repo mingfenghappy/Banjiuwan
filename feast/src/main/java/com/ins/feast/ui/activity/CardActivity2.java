@@ -102,6 +102,14 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
         dialogLoading = new DialogLoading(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (dialogLoading != null) {
+            dialogLoading.dismiss();
+        }
+    }
+
     private void initView() {
         viewPager = (ViewPager) findViewById(pager);
         dotView = (TextView) findViewById(R.id.dotView);
@@ -186,6 +194,9 @@ public class CardActivity2 extends BaseFeastActivity implements OnPagerItemClick
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(CardActivity2.this, text, Toast.LENGTH_SHORT).show();
+                if (dialogLoading != null) {
+                    dialogLoading.dismiss();
+                }
             }
 
             @Override

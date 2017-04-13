@@ -1,9 +1,12 @@
 package com.ins.feast.ui.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.PermissionChecker;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioButton;
@@ -23,7 +26,6 @@ import com.ins.feast.ui.dialog.DialogNotice;
 import com.ins.feast.ui.dialog.DialogSale;
 import com.ins.feast.ui.helper.HomeTitleHelper;
 import com.ins.feast.utils.AppHelper;
-import com.ins.feast.utils.MapHelper;
 import com.ins.feast.utils.NetCouldOrderHelper;
 import com.ins.feast.web.HomeActivityWebChromeClient;
 import com.ins.feast.web.HomeActivityWebViewClient;
@@ -103,13 +105,14 @@ public class HomeActivity extends BaseMapActivity implements
     private void initBase() {
         //双击返回键退出
         setNeedDoubleClickExit(true);
-        //检查并申请权限
         PermissionsUtil.checkAndRequestPermissions(this);
+        if (PermissionChecker.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)==PermissionChecker.PERMISSION_GRANTED){
+            //检查并申请权限
+            startLocation();
+        }
         //检查更新
         updateHelper = new UpdateHelper.Builder(this).checkUrl(AppData.Url.version_feast).isHintNewVersion(false).build();
         updateHelper.check();
-        //getLocOption().setScanSpan(0);//设置只定位一次
-        startLocation();
 
         dialogNotice = new DialogNotice(this);
         dialogSale = new DialogSale(this);
@@ -157,6 +160,16 @@ public class HomeActivity extends BaseMapActivity implements
 //        webView.loadUrl("http://www.baidu.com");
         //禁止WebView长按编辑
         CommonAppHelper.setWebViewNoLongClick(webView);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==PermissionsUtil.REQUEST_STATUS_CODE){
+            if (PermissionChecker.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)==PermissionChecker.PERMISSION_GRANTED){
+                startLocation();
+            }
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ins.feast.utils;
 
 import android.os.Handler;
+import android.support.annotation.Nullable;
 
 import com.baidu.mapapi.model.LatLng;
 import com.dd.CircularProgressButton;
@@ -9,14 +10,13 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.feast.entity.Address;
 import com.ins.feast.entity.Area;
 import com.ins.feast.entity.AreaData;
+import com.ins.feast.entity.Card;
 import com.ins.feast.entity.CategoryConfig;
-import com.ins.feast.entity.Position;
 import com.ins.feast.ui.dialog.DialogNotice;
 import com.ins.middle.common.AppData;
-import com.ins.feast.entity.Card;
-import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.PreferenceUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
@@ -118,12 +118,6 @@ public class AppHelper {
         }, 1000);
     }
 
-
-    public interface ProgressCallback {
-
-        void callback();
-    }
-
     public static String getStarsStr(int count) {
         if (count == 0) return "";
         String ret = "";
@@ -167,14 +161,87 @@ public class AppHelper {
         }
     }
 
-    public static boolean chouldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
-        //如果点餐标准为不能点餐0，
-        if (couldOrder == 0) {
-            if (AppHelper.isCategoryConfigUrl(url)) {
-                dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "您购物车中包含不同类别的商品");
-                return false;
-            }
+    //    public static boolean couldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
+//        //如果点餐标准为不能点餐0，
+//        if (couldOrder == 0) {
+//            if (AppHelper.isCategoryConfigUrl(url)) {
+//                dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "您购物车中包含不同类别的商品");
+//                return false;
+//            }
+//        }
+//        if (areaData == null) {
+//            //如果没有配置，（可能是没获取到）那么不能进入
+//            return false;
+//        }
+//        if (StrUtils.isEmpty(areaData.getAreas())) {
+//            //如果配置区域没有划分，那么可以进入
+//            return true;
+//        }
+//        if (StrUtils.isEmpty(areaData.getConfigs())) {
+//            //如果没有配置，那么可以进入
+//            return true;
+//        }
+//        //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
+//        CategoryConfig config = getCategoryConfigByUrl(areaData.getConfigs(), url);
+//        if (config != null) {
+//            //如果是坝坝宴 id = 3 设置不同的Icon
+//            if (dialogNotice != null) {
+//                int type = config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING;
+//                String msg = !StrUtils.isEmpty(config.getMsg()) ? config.getMsg() : "对不起！您的点餐不在服务范围内";
+//                dialogNotice.setTypeMsg(type, msg);
+//            }
+//            if (latLng != null) {
+//                return canEnter(config, areaData.getAreas(), latLng);
+//            } else {
+//                //定位失败提示
+//                if (dialogNotice != null)
+//                    dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "定位失败，请重新定位");
+//                return false;
+//            }
+//        } else {
+//            //config为null，不拦截
+//            return true;
+//        }
+//    }
+    public static boolean couldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
+        //根据Url判断是否需要进行地理拦截,不需要直接返回true
+        if (shouldNotCheckCanEnter(url)) return true;
+        //判断当前AreaData是否为空或无数据无配置，满足条件不进行下一步判断
+        Boolean x = canAlwaysEnterIfNotConfigAreaData(areaData);
+        if (x != null) return x;
+
+        //在需要进行地理拦截的情况下，根据配置返回值并展示相应弹窗
+        CategoryConfig categoryConfig = getCategoryConfigByUrl(areaData.getConfigs(), url);
+        if (categoryConfig == null) {
+            return true;
         }
+        boolean canEnter = canEnter(categoryConfig, areaData.getAreas(), latLng);
+        if (canEnter) {
+            if (couldOrder==0){
+                showTypeNotMatchedDialog(dialogNotice);
+            }else {
+                return true;
+            }
+
+        } else {
+            showNotInRangeDialog(dialogNotice, categoryConfig);
+        }
+        return false;
+    }
+
+    private static void showTypeNotMatchedDialog(DialogNotice dialogNotice) {
+        L.d("showTypeNotMatchedDialog");
+        dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "您购物车中包含不同类别的商品");
+    }
+
+    private static boolean shouldNotCheckCanEnter(String url) {
+        L.d("shouldNotCheckCanEnter");
+        return !isCategoryConfigUrl(url);
+    }
+
+    @Nullable
+    private static Boolean canAlwaysEnterIfNotConfigAreaData(AreaData areaData) {
+        L.d("canAlwaysEnterIfNotConfigAreaData");
         if (areaData == null) {
             //如果没有配置，（可能是没获取到）那么不能进入
             return false;
@@ -187,27 +254,14 @@ public class AppHelper {
             //如果没有配置，那么可以进入
             return true;
         }
-        //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
-        CategoryConfig config = getCategoryConfigByUrl(areaData.getConfigs(), url);
-        if (config != null) {
-            //如果是坝坝宴 id = 3 设置不同的Icon
-            if (dialogNotice != null) {
-                int type = config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING;
-                String msg = !StrUtils.isEmpty(config.getMsg()) ? config.getMsg() : "对不起！您的点餐不在服务范围内";
-                dialogNotice.setTypeMsg(type, msg);
-            }
-            if (latLng != null) {
-                return needEnter(config, areaData.getAreas(), latLng);
-            } else {
-                //定位失败提示
-                if (dialogNotice != null)
-                    dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "定位失败，请重新定位");
-                return false;
-            }
-        } else {
-            //config为null，不拦截
-            return true;
-        }
+        return null;
+    }
+
+    private static void showNotInRangeDialog(DialogNotice dialogNotice, CategoryConfig config) {
+        L.d("showNotInRangeDialog");
+        int type = config.getId() == 3 ? DialogNotice.TYPE_ERROR : DialogNotice.TYPE_WARNING;
+        String msg = !StrUtils.isEmpty(config.getMsg()) ? config.getMsg() : "对不起！您的点餐不在服务范围内";
+        dialogNotice.setTypeMsg(type, msg);
     }
 
     //根据拦截链接返回该链接的地理拦截配置，如果该链接不需要拦截返回null
@@ -291,7 +345,8 @@ public class AppHelper {
     }
 
     //判断当前菜品，用户所在位置是否可以进入详情
-    public static boolean needEnter(CategoryConfig config, List<Area> areas, LatLng latLng) {
+    public static boolean canEnter(CategoryConfig config, List<Area> areas, LatLng latLng) {
+        L.d("canEnter");
         //标志为1：标示需要检查围栏，在内部才能进入。标志为0：不检查，在任何地方都可以进入
 //        if (config.getIsInside() == 1) {
 //            //需要检查围栏
@@ -328,5 +383,10 @@ public class AppHelper {
                 return true;
             }
         }
+    }
+
+    public interface ProgressCallback {
+
+        void callback();
     }
 }
