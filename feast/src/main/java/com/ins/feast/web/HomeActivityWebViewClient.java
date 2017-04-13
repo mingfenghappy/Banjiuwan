@@ -2,10 +2,7 @@ package com.ins.feast.web;
 
 import android.text.TextUtils;
 
-import com.ins.feast.entity.Tabs;
 import com.ins.feast.ui.activity.CardActivity2;
-import com.ins.feast.ui.activity.ChooseLocationActivity;
-import com.ins.feast.utils.NetCouldOrderHelper;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 import com.tencent.smtt.sdk.WebView;
@@ -44,9 +41,10 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
             Toast.makeText(webView.getContext(), "捕获链接:" + url, Toast.LENGTH_LONG).show();
 
         //首先检查连接是否需要进行地理拦截，对需要进行拦截的链接进行捕获和弹窗提示
-        if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng, homeActivity.dialogNotice, homeActivity.couldOrder)) {
+        if (!AppHelper.chouldEnter(homeActivity.areaData, url, homeActivity.nowLatlng, homeActivity.dialogNotice)) {
             //不可进入的链接和地理位置
             if (homeActivity.dialogNotice != null) homeActivity.dialogNotice.show();
+//            Toast.makeText(homeActivity, "你不在可下单范围内", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -61,15 +59,6 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         if (jumpedIfIsCardDetail(url)) {
             return true;
         }
-
-        //如果连接是Tab，则切换tab
-        for (Tabs t : Tabs.values()) {
-            if (UrlUtil.matchUrl(url, t.getUrl())){
-                homeActivity.switchTab(t.getButtonId());
-                return true;
-            }
-        }
-
         //根据pageType决定其打开页面的方式
         //pageType:0 打开新activity 显示页面
         //pageType:1 在当前activity 显示页面
