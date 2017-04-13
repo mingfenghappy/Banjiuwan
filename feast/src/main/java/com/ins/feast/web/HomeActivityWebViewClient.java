@@ -2,6 +2,7 @@ package com.ins.feast.web;
 
 import android.text.TextUtils;
 
+import com.ins.feast.entity.Tabs;
 import com.ins.feast.ui.activity.CardActivity2;
 import com.ins.feast.ui.activity.ChooseLocationActivity;
 import com.ins.feast.utils.NetCouldOrderHelper;
@@ -60,6 +61,15 @@ public class HomeActivityWebViewClient extends BaseWebViewClient {
         if (jumpedIfIsCardDetail(url)) {
             return true;
         }
+
+        //如果连接是Tab，则切换tab
+        for (Tabs t : Tabs.values()) {
+            if (UrlUtil.matchUrl(url, t.getUrl())){
+                homeActivity.switchTab(t.getButtonId());
+                return true;
+            }
+        }
+
         //根据pageType决定其打开页面的方式
         //pageType:0 打开新activity 显示页面
         //pageType:1 在当前activity 显示页面

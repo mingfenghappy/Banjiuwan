@@ -160,9 +160,6 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void modifyTabs(){
-    }
-
     private String replace(String domainIP, String str) {
         int index1 = str.indexOf("://");
         int index2 = str.indexOf("/", 10);
@@ -233,7 +230,6 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             public TextView text_ip;
             public TextView text_name;
         }
-
     }
 
     ////////////////////////////////

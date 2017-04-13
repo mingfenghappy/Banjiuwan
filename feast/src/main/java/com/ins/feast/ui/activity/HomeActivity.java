@@ -225,7 +225,7 @@ public class HomeActivity extends BaseMapActivity implements
         }
     }
 
-    private void switchTab(@IdRes int tabId) {
+    public void switchTab(@IdRes int tabId) {
         RadioButton radioButton = (RadioButton) findViewById(tabId);
         if (radioButton != null) {
             if (!radioButton.isChecked()) {
@@ -330,6 +330,8 @@ public class HomeActivity extends BaseMapActivity implements
             return;
         }
         if (StrUtils.isEmpty(AppData.App.getToken())) {
+            //未登陆 可以进入
+            couldOrder = 1;
             return;
         }
         NetCouldOrderHelper.netCouldOrder(this, nowLatlng, new NetCouldOrderHelper.CouldOrderCallback() {
