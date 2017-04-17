@@ -233,9 +233,10 @@ public class CommonWebActivity extends BaseBackActivity {
             EventBus.getDefault().post(WebEvent.shouldRefresh);
             CommonWebActivity.start(CommonWebActivity.this, url);
         } else if (pageType == 4) {
+            L.d("loadUrlWhenPageType==4:"+url);
             webView.loadUrl(url);
             urlOfThisPage = url;
-            EventBus.getDefault().post(WebEvent.shouldRefresh);
+            EventBus.getDefault().post(WebEvent.shouldRefreshExceptCommonWeb);
         } else if (pageType == 5) {
             EventBus.getDefault().post(WebEvent.jumpToCarTab);
             EventBus.getDefault().post(WebEvent.finishActivity);
@@ -243,7 +244,6 @@ public class CommonWebActivity extends BaseBackActivity {
             CommonWebActivity.start(CommonWebActivity.this, url);
         }
 
-        return;
     }
 
     /**

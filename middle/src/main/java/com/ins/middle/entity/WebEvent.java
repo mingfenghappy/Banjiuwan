@@ -24,5 +24,9 @@ public enum WebEvent {
     /*厨师端登陆成功(用于解决一个bug)*/
     loginSuccess_chef,
     /*单独关闭下单页面*/
-    finishAddOrder
+    finishAddOrder,
+    /*传递couldOrder*/
+    receivedCouldOrder,
+    /*刷新除开CommonWebActivity*/
+    shouldRefreshExceptCommonWeb
 }

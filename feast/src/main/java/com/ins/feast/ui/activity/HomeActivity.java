@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.baidumapsdk.BaiduMapUtil;
 import com.ins.feast.R;
 import com.ins.feast.entity.AreaData;
+import com.ins.feast.entity.CouldOrderEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.entity.SaleDialogEntity;
 import com.ins.feast.entity.Tabs;
@@ -225,9 +226,19 @@ public class HomeActivity extends BaseMapActivity implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceivedCouldOrder(CouldOrderEvent event){
+        if (event != null) {
+            couldOrder=event.getCouldOrder();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWebEvent(WebEvent event) {
         switch (event) {
             case shouldRefresh:
+                webView.reload();
+                break;
+            case shouldRefreshExceptCommonWeb:
                 webView.reload();
                 break;
             case jumpToCarTab:

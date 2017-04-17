@@ -20,6 +20,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.google.gson.reflect.TypeToken;
 import com.ins.feast.R;
 import com.ins.feast.entity.Address;
+import com.ins.feast.entity.CouldOrderEvent;
 import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.ChooseLocationAdapter;
 import com.ins.feast.utils.AppHelper;
@@ -28,6 +29,7 @@ import com.ins.feast.utils.RxViewUtils;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
+import com.ins.middle.entity.WebEvent;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.ClickUtils;
@@ -238,6 +240,7 @@ public class ChooseLocationActivity extends BaseMapActivity implements
             NetCouldOrderHelper.netCouldOrder(this, position.getLatLng(), new NetCouldOrderHelper.CouldOrderCallback() {
                 @Override
                 public void succese(int couldOrder) {
+                    L.d("couldOrder:"+couldOrder);
                     if (couldOrder == 1) {
                         EventBus.getDefault().post(position);
                         finish();
@@ -247,8 +250,14 @@ public class ChooseLocationActivity extends BaseMapActivity implements
                 }
             });
         }else {
-            EventBus.getDefault().post(position);
-            finish();
+            NetCouldOrderHelper.netCouldOrder(this, position.getLatLng(), new NetCouldOrderHelper.CouldOrderCallback() {
+                @Override
+                public void succese(int couldOrder) {
+                    EventBus.getDefault().post(position);
+                    EventBus.getDefault().post(new CouldOrderEvent(couldOrder));
+                    finish();
+                }
+            });
         }
     }
 

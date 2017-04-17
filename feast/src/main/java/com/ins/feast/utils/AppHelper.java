@@ -161,6 +161,7 @@ public class AppHelper {
             //这样服务器返回的数据会包含同键不同值的对，使用Gson会出现解析异常
             //因此这里采用手动解析获取List<LatLng>的方式解决
             List<LatLng> latLngs = convertMapStringToLatLngList(area.getMapList());
+            L.d(latLngs);
             area.setLatLngs(latLngs);
         }
     }
@@ -185,7 +186,7 @@ public class AppHelper {
             double[] doubles = new double[2];
             doubles[0] = Double.parseDouble(split[0]);
             doubles[1] = Double.parseDouble(split[1]);
-            return new LatLng(doubles[0], doubles[1]);
+            return new LatLng(doubles[1], doubles[0]);
         } catch (Exception e) {
             ThrowableUtil.handleThrowable(e);
         }
@@ -246,6 +247,7 @@ public class AppHelper {
 //    }
     public static boolean couldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
         //根据Url判断是否需要进行地理拦截,不需要直接返回true
+        L.d(latLng+","+couldOrder);
         if (shouldNotCheckCanEnter(url)) return true;
         //判断当前AreaData是否为空或无数据无配置，满足条件不进行下一步判断
         Boolean x = canAlwaysEnterIfNotConfigAreaData(areaData);
