@@ -32,4 +32,12 @@ public class AreaData implements Serializable{
     public void setConfigs(List<CategoryConfig> configs) {
         this.configs = configs;
     }
+
+    @Override
+    public String toString() {
+        return "AreaData{" +
+                "Areas=" + Areas +
+                ", configs=" + configs +
+                '}';
+    }
 }

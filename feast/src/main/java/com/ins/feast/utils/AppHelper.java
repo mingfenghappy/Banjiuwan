@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.baidu.mapapi.model.LatLng;
 import com.dd.CircularProgressButton;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.ins.feast.entity.Address;
 import com.ins.feast.entity.Area;
 import com.ins.feast.entity.AreaData;
@@ -21,8 +19,9 @@ import com.sobey.common.utils.PreferenceUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -154,11 +153,54 @@ public class AppHelper {
         }
         List<Area> areas = areaData.getAreas();
         for (Area area : areas) {
-            Map<String, String> map = new Gson().fromJson(area.getMapList(), new TypeToken<Map<String, String>>() {
-            }.getType());
-            List<LatLng> latLngs = MapHelper.map2LatLngs(map);
+//            Map<String, String> map = new Gson().fromJson(area.getMapList(), new TypeToken<Map<String, String>>() {
+//            }.getType());
+//            List<LatLng> latLngs = MapHelper.map2LatLngs(map);
+
+            //attention please!!!!!!!!!!!
+            //这里不能将mapList解析为Map<String,String>，因为可能出现经度相同，纬度不同的地址，
+            //这样服务器返回的数据会包含同键不同值的对，使用Gson会出现解析异常
+            //因此这里采用手动解析获取List<LatLng>的方式解决
+            List<LatLng> latLngs = convertMapStringToLatLngList(area.getMapList());
             area.setLatLngs(latLngs);
         }
+    }
+
+    private static List<LatLng> convertMapStringToLatLngList(String mapList) {
+        List<LatLng> latLngs = new ArrayList<>();
+        String[] latLngPairs = convertMapListToLatLngPair(mapList);
+        for (String latLngPair : latLngPairs) {
+            double[] latLngArray = convertLatLngPairToLatLngArray(latLngPair);
+            if (latLngArray != null) {
+                latLngs.add(new LatLng(latLngArray[0], latLngArray[1]));
+            }
+        }
+        return latLngs;
+    }
+
+    private static double[] convertLatLngPairToLatLngArray(String latLngPair) {
+        try {
+            String[] split = latLngPair.split(":");
+            split[0]=split[0].replace("\"","");
+            split[1]=split[1].replace("\"","");
+            double[] doubles = new double[2];
+            doubles[0] = Double.parseDouble(split[0]);
+            doubles[1] = Double.parseDouble(split[1]);
+            return doubles;
+        } catch (Exception e) {
+            ThrowableUtil.handleThrowable(e);
+        }
+        return null;
+    }
+
+    private static String[] convertMapListToLatLngPair(String mapList) {
+        try {
+            String replace = mapList.replace("{", "").replace("}", "");
+            return replace.split(",");
+        } catch (Exception e) {
+            ThrowableUtil.handleThrowable(e);
+        }
+        return new String[0];
     }
 
     //    public static boolean couldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
@@ -217,9 +259,9 @@ public class AppHelper {
         }
         boolean canEnter = canEnter(categoryConfig, areaData.getAreas(), latLng);
         if (canEnter) {
-            if (couldOrder==0){
+            if (couldOrder == 0) {
                 showTypeNotMatchedDialog(dialogNotice);
-            }else {
+            } else {
                 return true;
             }
 

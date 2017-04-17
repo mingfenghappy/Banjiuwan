@@ -87,7 +87,7 @@ public class L {
         }
     }
 
-    private static void printError(Exception e) {
+    public static void printError(Throwable e) {
         PrintStream err = System.err;
         StackTraceElement[] stackTrace = e.getStackTrace();
         err.println("L.e(Object message),object is null:\n" + e.getMessage());

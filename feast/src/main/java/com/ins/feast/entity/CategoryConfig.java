@@ -15,6 +15,14 @@ public class CategoryConfig implements Serializable {
     private String selectedIcon;
     private int isInside;
 
+    @Override
+    public String toString() {
+        return "CategoryConfig{" +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
+    }
+
     @SerializedName("msg")
     private String msg;
 

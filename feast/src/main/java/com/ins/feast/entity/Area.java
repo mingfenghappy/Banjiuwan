@@ -1,6 +1,7 @@
 package com.ins.feast.entity;
 
 import com.baidu.mapapi.model.LatLng;
+import com.sobey.common.utils.L;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Area implements Serializable {
     }
 
     public String getMapList() {
-        return mapList;
+        return mapList.replace("\\", "");
     }
 
     public void setMapList(String mapList) {
@@ -47,5 +48,14 @@ public class Area implements Serializable {
 
     public void setReMarket(String reMarket) {
         this.reMarket = reMarket;
+    }
+
+    @Override
+    public String toString() {
+        return "Area{" +
+                "id=" + id +
+                ", mapList='" + mapList + '\'' +
+                ", reMarket='" + reMarket + '\'' +
+                '}';
     }
 }

@@ -37,6 +37,7 @@ import com.ins.middle.entity.WebEvent;
 import com.ins.middle.helper.BackCheckedHelper;
 import com.ins.middle.helper.CommonAppHelper;
 import com.shelwee.update.UpdateHelper;
+import com.sobey.common.utils.L;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
 import com.tencent.smtt.sdk.WebView;
@@ -291,7 +292,9 @@ public class HomeActivity extends BaseMapActivity implements
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 if (pojo == null) netSetError(code, "接口异常");
                 else {
+                    L.d(AppData.Url.getCategoryConfig);
                     areaData = (AreaData) pojo;
+                    L.d("AreaData:"+areaData.toString());
                     AppHelper.removeArea();
                     AppHelper.saveArea(areaData);
                     AppHelper.setLatlogEntity(areaData);

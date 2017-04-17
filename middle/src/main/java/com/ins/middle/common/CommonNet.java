@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ins.middle.common.AppData;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.L;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author Administrator
  */
 public class CommonNet {
-
+    private final static String LOG_TAG="CommonNet";
     public static Callback.Cancelable samplepost(RequestParams params, Type entityClass, NetHander hander) {
         pritRarams(params);
         return x.http().post(params, new MyCommonCallback(hander, params, 0, entityClass, null));
@@ -144,6 +145,7 @@ public class CommonNet {
             } catch (Exception e) {
                 e.printStackTrace();
                 hander.netException(code, "未知错误");
+                Log.e(LOG_TAG,"未知错误："+e.getMessage());
                 Toast.makeText(ApplicationHelp.getApplicationContext(), "未知错误", Toast.LENGTH_SHORT).show();
             }
         }
@@ -172,6 +174,7 @@ public class CommonNet {
                 e.printStackTrace();
                 //hander.netSetError(code, "未知错误");
                 hander.netException(code, "未知错误");
+                Log.e(LOG_TAG,"未知错误："+e.getMessage());
             }
         }
 
@@ -191,6 +194,11 @@ public class CommonNet {
      * 打印出验证码
      */
     private static void printValiCode(String data) {
+        if (!data.contains("valiCode")){
+            //减少不必要的tryCatch报错
+            //data可能指代一个JSONArray
+            return;
+        }
         try {
             JSONObject datajson = new JSONObject(data);
             if (datajson.has("valiCode")) {
@@ -200,6 +208,7 @@ public class CommonNet {
             }
         } catch (Exception e) {
             Log.e("CommonNet", "解析验证码失败");
+            L.printError(e);
         }
     }
 

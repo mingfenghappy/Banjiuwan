@@ -39,6 +39,7 @@ import com.ins.feast.entity.Position;
 import com.ins.feast.ui.adapter.RecycleAdapterSearchAddress;
 import com.ins.feast.utils.MapHelper;
 import com.ins.feast.utils.NetCouldOrderHelper;
+import com.ins.feast.utils.ThrowableUtil;
 import com.ins.middle.ui.activity.BaseFeastActivity;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -52,6 +53,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.baidu.location.b.g.P;
 
 public class SearchAddressActivity extends BaseMapActivity implements OnRecycleItemClickListener, OnGetPoiSearchResultListener, View.OnClickListener, OnGetGeoCoderResultListener {
 
@@ -382,16 +385,23 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
         } else {
             List<Position> positions = new ArrayList<>();
             List<PoiInfo> poiList = result.getPoiList();
-            for (PoiInfo poi : poiList) {
+            try {
+                if (poiList == null) {
+                    return;
+                }
+                for (PoiInfo poi : poiList) {
 //                if (city.contains(poi.city)) {
-                Position position = new Position(poi);
+                    Position position = new Position(poi);
 //                    position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
-                positions.add(position);
-            }
+                    positions.add(position);
+                }
 //            }
-            adapter.getResults().clear();
-            adapter.getResults().addAll(positions);
-            freshCtrl();
+                adapter.getResults().clear();
+                adapter.getResults().addAll(positions);
+                freshCtrl();
+            }catch (Exception e){
+                ThrowableUtil.handleThrowable(e);
+            }
         }
     }
 
