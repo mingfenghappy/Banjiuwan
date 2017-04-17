@@ -210,7 +210,9 @@ public class ChooseLocationActivity extends BaseMapActivity implements
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
         List<PoiInfo> poiList =
                 reverseGeoCodeResult.getPoiList();
-        poiList = poiList.subList(0, 3);
+        if (poiList != null&&poiList.size()>=3) {
+            poiList = poiList.subList(0, 3);
+        }
         if (adapter == null) {
             adapter = new ChooseLocationAdapter(this, poiList);
             adapter.setOnItemClickListener(this);

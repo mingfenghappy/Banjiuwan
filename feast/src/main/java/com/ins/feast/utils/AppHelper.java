@@ -20,7 +20,6 @@ import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.UrlUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -170,23 +169,23 @@ public class AppHelper {
         List<LatLng> latLngs = new ArrayList<>();
         String[] latLngPairs = convertMapListToLatLngPair(mapList);
         for (String latLngPair : latLngPairs) {
-            double[] latLngArray = convertLatLngPairToLatLngArray(latLngPair);
-            if (latLngArray != null) {
-                latLngs.add(new LatLng(latLngArray[0], latLngArray[1]));
+            LatLng latLng = convertLatLngPairToLatLngArray(latLngPair);
+            if (latLng != null) {
+                latLngs.add(latLng);
             }
         }
         return latLngs;
     }
 
-    private static double[] convertLatLngPairToLatLngArray(String latLngPair) {
+    private static LatLng convertLatLngPairToLatLngArray(String latLngPair) {
         try {
             String[] split = latLngPair.split(":");
-            split[0]=split[0].replace("\"","");
-            split[1]=split[1].replace("\"","");
+            split[0] = split[0].replace("\"", "");
+            split[1] = split[1].replace("\"", "");
             double[] doubles = new double[2];
             doubles[0] = Double.parseDouble(split[0]);
             doubles[1] = Double.parseDouble(split[1]);
-            return doubles;
+            return new LatLng(doubles[0], doubles[1]);
         } catch (Exception e) {
             ThrowableUtil.handleThrowable(e);
         }
