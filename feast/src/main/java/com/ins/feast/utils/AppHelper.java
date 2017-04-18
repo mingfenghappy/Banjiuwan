@@ -247,8 +247,9 @@ public class AppHelper {
 //    }
     public static boolean couldEnter(AreaData areaData, String url, LatLng latLng, DialogNotice dialogNotice, int couldOrder) {
         //根据Url判断是否需要进行地理拦截,不需要直接返回true
-        L.d(latLng+","+couldOrder);
         if (shouldNotCheckCanEnter(url)) return true;
+        //对于需要进行地理拦截的url,如果定位失败直接返回false,并展示相应弹窗
+        if (checkLocationFailed(latLng, dialogNotice)) return false;
         //判断当前AreaData是否为空或无数据无配置，满足条件不进行下一步判断
         Boolean x = canAlwaysEnterIfNotConfigAreaData(areaData);
         if (x != null) return x;
@@ -268,6 +269,16 @@ public class AppHelper {
 
         } else {
             showNotInRangeDialog(dialogNotice, categoryConfig);
+        }
+        return false;
+    }
+
+    private static boolean checkLocationFailed(LatLng latLng, DialogNotice dialogNotice) {
+        if (latLng == null) {
+            if (dialogNotice != null) {
+                dialogNotice.setTypeMsg(DialogNotice.TYPE_ERROR, "定位失败请稍候重试");
+            }
+            return true;
         }
         return false;
     }

@@ -92,6 +92,10 @@ public class HomeActivity extends BaseMapActivity implements
         initWebViewSetting();
     }
 
+    public boolean locationFailed() {
+        return title_location != null && TextUtils.isEmpty(title_location.getText());
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
