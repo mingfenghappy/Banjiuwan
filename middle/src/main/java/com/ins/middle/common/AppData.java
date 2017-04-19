@@ -132,8 +132,8 @@ public class AppData {
         /**
          * 服务器域名
          */
-//        public static String domain = "http://tiger.magic-beans.cn/Banjiuwan/";                                //外网测试服务器(二)
-        public static String domain = "http://192.168.118.110:8080/Banjiuwan/";                                //外网测试服务器(二)
+        public static String domain = "http://tiger.magic-beans.cn/Banjiuwan/";                                //外网测试服务器(二)
+//        public static String domain = "http://192.168.118.110:8080/Banjiuwan/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
