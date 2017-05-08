@@ -285,7 +285,7 @@ public class AppHelper {
 
     private static void showTypeNotMatchedDialog(DialogNotice dialogNotice) {
         L.d("showTypeNotMatchedDialog");
-        dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, "您购物车中包含不同类别的商品");
+        dialogNotice.setTypeMsg(DialogNotice.TYPE_WARNING, AppData.App.SPECIFIC_MSG);
     }
 
     private static boolean shouldNotCheckCanEnter(String url) {
