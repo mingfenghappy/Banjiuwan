@@ -194,6 +194,7 @@ public class AppData {
         //源生接口url
         public static String getInfo                    = domain + "app/user/getInfo";                                                  //token登陆
         public static String login                      = domain + "app/user/login";                                                    //登陆
+        public static String msgConfig                  = domain + "app/user/queryMSGConfig";//获取提示语配置信息
     }
 
 
