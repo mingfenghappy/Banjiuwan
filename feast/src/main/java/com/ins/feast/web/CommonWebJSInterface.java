@@ -38,7 +38,7 @@ public class CommonWebJSInterface extends BaseFeastJSInterface {
     @JavascriptInterface
     public void openAddressPage() {
         //客户变更了需求：不需要打开地址选择页面，直接进入地图选择页
-//        ChooseLocationActivity.start(activity);
-        SearchAddressActivity.start(activity);
+        ChooseLocationActivity.start(activity);
+//        SearchAddressActivity.start(activity);
     }
 }

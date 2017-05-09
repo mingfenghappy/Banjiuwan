@@ -217,13 +217,13 @@ public class AppData {
      * 记录了app中所有全局控制常量
      */
     public static class Config {
-        public static final String JS_BRIDGE_NAME = "JSBridge";
         public static boolean showVali = false;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
         //设备类型，供web获取
         public static int DEVICE_TYPE = 0;
         public static String ERROR_PAGE_TITLE = "error.html";
         public static String ERROR_PAGE_URL = "file:///android_asset/error.html";
+        public static final String JS_BRIDGE_NAME="JSBridge";
     }
 
     /**
@@ -234,63 +234,63 @@ public class AppData {
         /**
          * 服务器域名
          */
-//        public static String domain = "http://tiger.magic-beans.cn/Banjiuwan/";                                //外网测试服务器(二)
-        public static String domain = "http://192.168.1.165:8080/Banjiuwan/";                                //外网测试服务器(二)
+        public static String domain = "http://tiger.magic-beans.cn/Banjiuwan/";                                //外网测试服务器(二)
+//        public static String domain = "http://192.168.118.110:8080/Banjiuwan/";                                //外网测试服务器(二)
 
         /**
          * 接口请求地址
          */
-        public static String version_feast = domain + "updateAPK/version_feast.json";                                    //客户端检查更新
-        public static String version_chef = domain + "updateAPK/version_chef.json";                                     //厨师端检查更新
-        public static String app_home = domain + "app/page/index";
-        public static String app_cart = domain + "app/page/car";
-        public static String app_find = domain + "app/page/find";
-        public static String app_customer_service = domain + "app/page/customer";
-        public static String app_mine = domain + "app/page/my";
-        public static String app_setMeal = domain + "app/page/setMealDetail";
-        public static String app_bamYan = domain + "app/page/bamYanDetail";
-        public static String app_dinner = domain + "app/page/dinnerDetail";
+        public static String version_feast              = domain + "updateAPK/version_feast.json";                                    //客户端检查更新
+        public static String version_chef               = domain + "updateAPK/version_chef.json";                                     //厨师端检查更新
+        public static String app_home                   = domain + "app/page/index";
+        public static String app_cart                   = domain + "app/page/car";
+        public static String app_find                   = domain + "app/page/find";
+        public static String app_customer_service       = domain + "app/page/customer";
+        public static String app_mine                   = domain + "app/page/my";
+        public static String app_setMeal                = domain + "app/page/setMealDetail";
+        public static String app_bamYan                 = domain + "app/page/bamYanDetail";
+        public static String app_dinner                 = domain + "app/page/dinnerDetail";
 
-        public static String moreAddress = domain + "app/page/moreAddress";                                        //更多地址（新增收获地址页面）
-        public static String addAddress = domain + "app/page/addAddress";                                         //新增地址（新增收获地址页面）
-        public static String myOrder = domain + "app/page/myOrder";                                             //我的订单
-        public static String loginPageCook = domain + "app/page/cookLogin";                                           //厨师登录页面
-        public static String loginPage = domain + "app/page/login";                                                //客户端登录页面
-        public static String search = domain + "app/page/search";                                              //客户端搜索页面
-        public static String addOrder = domain + "app/page/orderEdit";                                          //客户端填写订单页面
+        public static String moreAddress                = domain + "app/page/moreAddress";                                        //更多地址（新增收获地址页面）
+        public static String addAddress                 = domain + "app/page/addAddress";                                         //新增地址（新增收获地址页面）
+        public static String myOrder                    = domain + "app/page/myOrder";                                             //我的订单
+        public static String loginPageCook              = domain + "app/page/cookLogin";                                           //厨师登录页面
+        public static String loginPage                  = domain + "app/page/login";                                                //客户端登录页面
+        public static String search                     = domain + "app/page/search";                                              //客户端搜索页面
+        public static String addOrder                   = domain + "app/page/orderEdit";                                          //客户端填写订单页面
 
-        public static String cookbook = domain + "app/page/cookbook";                                            //客户端点菜页面
-        public static String setMeal = domain + "app/page/setMeal";                                             //客户端套餐页面
-        public static String bamYan = domain + "app/page/bamYan";                                              //客户端坝坝宴页面
-        public static String wedding = domain + "app/page/wedding";                                             //客户端婚庆页面
-        public static String dinner = domain + "app/page/dinner";                                              //客户半餐演奏页面
-        public static String serviceDetail = domain + "app/page/serviceDetail";                                      //客户专业服务页面
-        public static String news = domain + "app/page/bannerNews";                                                //客户首页弹窗点击跳转页面，参数newsId
+        public static String cookbook                   = domain + "app/page/cookbook";                                            //客户端点菜页面
+        public static String setMeal                    = domain + "app/page/setMeal";                                             //客户端套餐页面
+        public static String bamYan                     = domain + "app/page/bamYan";                                              //客户端坝坝宴页面
+        public static String wedding                    = domain + "app/page/wedding";                                             //客户端婚庆页面
+        public static String dinner                     = domain + "app/page/dinner";                                              //客户半餐演奏页面
+        public static String serviceDetail              = domain + "app/page/serviceDetail";                                      //客户专业服务页面
+        public static String news                       = domain + "app/page/bannerNews";                                                //客户首页弹窗点击跳转页面，参数newsId
 
-        public static String queryByCategory = domain + "app/food/queryByCategory";
-        public static String getAddress = domain + "app/address/getAddress";                                      //获取收货地址
-        public static String updateCookLatLng = domain + "app/cook/updateCookLatLng";                                  //厨师实时上传坐标（5秒一次）
-        public static String getCategoryConfig = domain + "app/category/getCategoryConfig";                            //用户端获取菜品配置（地理围栏）
-        public static String sale = domain + "app/homeBanner/getBanner";                                   //用户端获取首页推荐接口
-        public static String judgeIsPoint = domain + "app/user/judgeIsPoint";                                      //判断当前用户是否可以点餐
+        public static String queryByCategory            = domain + "app/food/queryByCategory";
+        public static String getAddress                 = domain + "app/address/getAddress";                                      //获取收货地址
+        public static String updateCookLatLng           = domain + "app/cook/updateCookLatLng";                                  //厨师实时上传坐标（5秒一次）
+        public static String getCategoryConfig          = domain + "app/category/getCategoryConfig";                            //用户端获取菜品配置（地理围栏）
+        public static String sale                       = domain + "app/homeBanner/getBanner";                                   //用户端获取首页推荐接口
+        public static String judgeIsPoint               = domain + "app/user/judgeIsPoint";                                      //判断当前用户是否可以点餐
 
-        public static String sign = domain + "app/aliPay/sign";                                                //请求支付宝支付签名
-        public static String signWeixin = domain + "app/wxPay/sign";                                                //请求微信支付签名
-        public static String recharge = domain + "app/AliPayRecharge/sign";                                    //请求支付宝充值签名
-        public static String rechargeWeixin = domain + "app/WeChatPayRecharge/sign";                                    //请求微信充值签名
+        public static String sign                       = domain + "app/aliPay/sign";             							        //请求支付宝支付签名
+        public static String signWeixin                 = domain + "app/wxPay/sign";             							        //请求微信支付签名
+        public static String recharge                   = domain + "app/AliPayRecharge/sign";             						//请求支付宝充值签名
+        public static String rechargeWeixin             = domain + "app/WeChatPayRecharge/sign";             					    //请求微信充值签名
 
         ///////////////////////////////
         //////////////  厨师端
         ///////////////////////////////
 
         //厨师端入口页
-        public static String FEAST_CHEF_HOMEPAGE = domain + "app/page/cookLogin";
+        public static String FEAST_CHEF_HOMEPAGE         = domain + "app/page/cookLogin";
         /*我的*/
-        public static String FEAST_CHEF_MINE = domain + "app/page/cookMy";
+        public static String FEAST_CHEF_MINE             = domain + "app/page/cookMy";
         /*我的订单*/
-        public static String FEAST_CHEF_MINE_ORDERFORM = domain + "app/page/cookMyOrder";
+        public static String FEAST_CHEF_MINE_ORDERFORM   = domain + "app/page/cookMyOrder";
         /*忘记密码*/
-        public static String FEAST_CHEF_FORGETPSW = domain + "app/page/forgetPassword";
+        public static String FEAST_CHEF_FORGETPSW        = domain + "app/page/forgetPassword";
 
 
         //源生接口url

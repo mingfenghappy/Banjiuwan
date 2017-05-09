@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
@@ -71,6 +73,7 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     private TextView btn_cancel;
     private TextView btn_go_left;
     private View btn_relocation;
+
 
     private ViewGroup showingroup;
     private View showin;
@@ -256,7 +259,8 @@ public class SearchAddressActivity extends BaseMapActivity implements OnRecycleI
     private void search(String key) {
         //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
         //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
-        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(1000).keyword(key).pageCapacity(PAGE_COUNT).pageNum(page).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
+//        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(1000).keyword(key).pageCapacity(PAGE_COUNT).pageNum(page).sortType(PoiSortType.distance_from_near_to_far));//.sortType(PoiSortType.distance_from_near_to_far)
+        mPoiSearch.searchInCity(new PoiCitySearchOption().city(city).keyword(key));//.sortType(PoiSortType.distance_from_near_to_far)
     }
 
     //发起Geo反地理编码查询关注点

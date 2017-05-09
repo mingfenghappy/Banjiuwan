@@ -60,8 +60,16 @@ public class LoadUpActivity extends AppCompatActivity {
                 }
             }, 2000);
         } else {
-            //有token 执行登录
-            login();
+//            有token 执行登录
+//            login();
+            //不检测登录 了
+            //无token 等待2秒 去首页
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    goHomeActivity();
+                }
+            }, 2000);
         }
     }
 

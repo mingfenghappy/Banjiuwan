@@ -41,8 +41,8 @@ public class PayHelper {
     private Activity activity;
     private IWXAPI api;
 
-    //保存启调类型，0：普通支付，1：充值
-    public static int type;
+    //保存启调类型，0：普通支付，1：充值 , 2：购物车支付
+    public static int type = 0;
 
     public PayHelper(Activity activity) {
         this.activity = activity;
@@ -55,15 +55,40 @@ public class PayHelper {
     //////// 对外方法
     ///////////////////////////////
 
+    public void netPayZhifubao(int orderId, String token) {
+        netPayZhifubao(orderId, token, 0);
+    }
+
+    public void netPayWeixin(int orderId, String token) {
+        netPayWeixin(orderId, token, 0);
+    }
+
     /**
      * 支付宝支付
      */
-    public void netPayZhifubao(int orderId, String token) {
+    public void netPayZhifubao(int orderId, String token, int type) {
         RequestParams params = new RequestParams(AppData.Url.sign);
         params.addHeader("token", token);
         params.addBodyParameter("orderId", orderId + "");
         startPayZhifubao(params);
-        type = 0;
+        this.type = type;
+    }
+
+    /**
+     * 微信支付
+     */
+    public void netPayWeixin(int orderId, String token, int type) {
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(activity, "您还没有安装微信，请先安装微信在使用微信支付", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RequestParams params = new RequestParams(AppData.Url.signWeixin);
+        params.addHeader("token", token);
+        params.addBodyParameter("orderId", orderId + "");
+        params.addBodyParameter("flag", "0");
+        //params.addBodyParameter("ip", "101.201.222.161");
+        startPayWeixin(params);
+        this.type = type;
     }
 
     /**
@@ -75,23 +100,6 @@ public class PayHelper {
         params.addBodyParameter("rechargeId", rechargeId + "");
         startPayZhifubao(params);
         type = 1;
-    }
-
-    /**
-     * 微信支付
-     */
-    public void netPayWeixin(int orderId, String token) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(activity, "您还没有安装微信，请先安装微信在使用微信支付", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        RequestParams params = new RequestParams(AppData.Url.signWeixin);
-        params.addHeader("token", token);
-        params.addBodyParameter("orderId", orderId + "");
-        params.addBodyParameter("flag", "0");
-        //params.addBodyParameter("ip", "101.201.222.161");
-        startPayWeixin(params);
-        type = 0;
     }
 
     /**
@@ -115,7 +123,7 @@ public class PayHelper {
     //////// 请求支付参数并发起支付
     ///////////////////////////////
 
-    private void startPayZhifubao(RequestParams params){
+    private void startPayZhifubao(RequestParams params) {
         CommonNet.samplepost(params, new TypeToken<LinkedHashMap<String, String>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
@@ -158,7 +166,7 @@ public class PayHelper {
         });
     }
 
-    private void startPayWeixin(RequestParams params){
+    private void startPayWeixin(RequestParams params) {
         CommonNet.samplepost(params, new TypeToken<LinkedHashMap<String, String>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override

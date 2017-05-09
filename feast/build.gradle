@@ -7,8 +7,8 @@ android {
         applicationId "io.dcloud.H52EEACAF"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 36
-        versionName "1.0.8.5"
+        versionCode 40
+        versionName "1.0.9.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ///////////////////////jpush配置 start

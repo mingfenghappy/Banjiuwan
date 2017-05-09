@@ -20,6 +20,7 @@ public class BaseFeastJSInterface extends BaseJSInterface {
     private String lastOrderId;
     private MethodInvokeTime lastGoPayment_Alipay, lastGoPayment_Weixin;
     private MethodInvokeTime lastGoRecharge_Alipay, lastGoRecharge_Weixin;
+
     public BaseFeastJSInterface(Activity activity) {
         this.activity = activity;
         helper = new PayHelper(activity);
@@ -29,11 +30,16 @@ public class BaseFeastJSInterface extends BaseJSInterface {
         return activity;
     }
 
+    @JavascriptInterface
+    public void goPayment(String orderId, String token, int payMethod) {
+        goPayment(orderId, token, payMethod, 0);
+    }
+
     /**
      * 支付
      */
     @JavascriptInterface
-    public void goPayment(String orderId, String token, int payMethod) {
+    public void goPayment(String orderId, String token, int payMethod, int type) {
         if (lastGoPayment_Alipay == null) {
             lastGoPayment_Alipay = new MethodInvokeTime();
             lastGoPayment_Weixin = new MethodInvokeTime();
@@ -44,11 +50,19 @@ public class BaseFeastJSInterface extends BaseJSInterface {
             switch (payMethod) {
                 case PayHelper.PAY_ALIPAY:
                     if (isFastClick(lastGoPayment_Alipay)) return;
-                    helper.netPayZhifubao(orderIdInt, token);
+                    if (type == 2) {
+                        helper.netPayZhifubao(orderIdInt, token, type);
+                    } else {
+                        helper.netPayZhifubao(orderIdInt, token);
+                    }
                     break;
                 case PayHelper.PAY_WEIXIN:
                     if (isFastClick(lastGoPayment_Weixin)) return;
-                    helper.netPayWeixin(orderIdInt, token);
+                    if (type == 2) {
+                        helper.netPayWeixin(orderIdInt, token, type);
+                    } else {
+                        helper.netPayWeixin(orderIdInt, token);
+                    }
                     break;
             }
         } catch (Exception e) {
