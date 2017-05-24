@@ -1,0 +1,1 @@
+include ':feast', ':library_version', ':common', ':library_alipay', ':library_swipback', ':baidumapsdk', ':feast_chef', ':middle'

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_choose_location"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    tools:context="com.ins.feast.ui.activity.ChooseLocationActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F2F2F2">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            app:elevation="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:transitionName="transitionView3">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:onClick="onClick_back"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/ic_leftarrow_white" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/chooseLocation_chooseLocation"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big" />
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/searchLocation"
+            android:background="#F2F2F2"
+            android:gravity="center_vertical"
+            android:paddingLeft="11dp"
+            android:text="@string/chooseLocation_nowLocation"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/relocationRoot"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/textView"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nowLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:ellipsize="end"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                tools:text="武侯区桂溪街道天府二街蜀都中心2期" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/relocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:onClick="onClick_relocation"
+                android:text="@string/chooseLocation_relocation"
+                android:textColor="#00A0E9"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_defult_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/relocationRoot"
+            android:background="@color/white"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_below="@+id/lay_defult_address"
+                android:background="#F2F2F2"
+                android:gravity="center_vertical"
+                android:paddingLeft="11dp"
+                android:text="收货地址"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_defult_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/com_text_blank_deep" />
+
+                <TextView
+                    android:id="@+id/text_defult_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/com_text_blank_deep" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_defult_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="7dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/com_text_dark_light" />
+
+            <TextView
+                android:id="@+id/text_defult_detailaddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="7dp"
+                android:singleLine="true"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/com_text_dark_light" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/lay_defult_address"
+            android:background="#F2F2F2"
+            android:gravity="center_vertical"
+            android:paddingLeft="11dp"
+            android:text="@string/chooseLocation_nearbyLocation"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView4"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/nearbyLocationList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/white" />
+
+            <LinearLayout
+                android:id="@+id/moreLocationRoot"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chooseLocation_moreLocation"
+                    android:textColor="#D72D22"
+                    android:textSize="15sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="11dp"
+                    android:src="@mipmap/ic_rightarrow_gray" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/searchLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/appBarLayout"
+            android:background="#D72D22"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:transitionName="redBg">
+
+            <LinearLayout
+                android:id="@+id/transition_whiteBg"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/shape_oval_bg_input"
+                android:gravity="center"
+                android:transitionName="whiteBg">
+
+                <TextView
+                    android:id="@+id/transition_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@mipmap/ic_search_gray"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@mipmap/ic_search_gray"
+                    android:gravity="center"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/chooseLocation_pleaseInput"
+                    android:textColor="#B3B3B3"
+                    android:textSize="15sp"
+                    android:transitionName="text" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>
+

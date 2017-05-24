@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.ins.chef"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 42
+        versionName "1.0.9.2"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ///////////////////////jpush配置 start
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "836045fe78246220883ee351", //JPush上注册的包名对应的appkey.//71e5c52357fcfc15fc313203
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+        ///////////////////////jpush配置 end
+    }
+    //配置keystore签名 start
+    signingConfigs {
+        myConfig {
+//            storeFile file("liaoinstan.jks")
+//            storePassword "liaoinstan"
+//            keyAlias "liaoinstan"
+//            keyPassword "liaoinstan"
+            storeFile file("HBuilder.keystore")
+            storePassword "123456"
+            keyAlias "HBuilder"
+            keyPassword "123456"
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.myConfig
+        }
+        release {
+            signingConfig signingConfigs.myConfig//不要忘了要在release的时候加入我么的签名配置信息
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //配置keystore签名 end
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "chef-"+ defaultConfig.versionCode + "-" + defaultConfig.versionName + "-" + variant.buildType.name + ".apk");
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+    //加载自定义字体
+    //    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    //bughd
+    compile 'im.fir:fir-sdk:latest.integration@aar'
+    //jpush
+    compile 'cn.jiguang.sdk:jpush:3.0.1'
+    compile 'cn.jiguang.sdk:jcore:1.1.0'
+    compile project(':library_version')
+    compile project(':middle')
+    compile project(':baidumapsdk')
+}

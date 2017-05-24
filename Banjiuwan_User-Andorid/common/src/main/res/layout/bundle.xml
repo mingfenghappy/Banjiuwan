@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/lay_bundle_photo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="5dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_rect_corner_white"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_bundle_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test" />
+
+            <ImageView
+                android:id="@+id/img_bundle_delete_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="-1dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/shape_rect_corner_whiet_small"
+                android:padding="7dp"
+                android:src="@drawable/icon_delete" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/lay_bundle_video"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="5dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_rect_corner_white"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_bundle_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test" />
+
+            <ImageView
+                android:id="@+id/img_bundle_delete_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="-1dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/shape_rect_corner_whiet_small"
+                android:padding="7dp"
+                android:src="@drawable/icon_delete" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/bundle_start_video"/>
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/lay_bundle_voice"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="5dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_rect_corner_white"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_bundle_voice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test" />
+
+            <ImageView
+                android:id="@+id/img_bundle_delete_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="-1dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/shape_rect_corner_whiet_small"
+                android:padding="7dp"
+                android:src="@drawable/icon_delete" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/bundle_start_voice"/>
+
+        </FrameLayout>
+    </FrameLayout>
+
+</merge>

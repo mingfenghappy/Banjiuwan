@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Back.Transition" parent="AppTheme.Back">
+        <item name="android:windowContentTransitions">true</item>
+        <!--&lt;!&ndash;是否覆盖执行，其实可以理解成是否同步执行还是顺序执行&ndash;&gt;-->
+        <!--<item name="android:windowAllowEnterTransitionOverlap">false</item>-->
+        <!--<item name="android:windowAllowReturnTransitionOverlap">false</item>-->
+    </style>
+</resources>

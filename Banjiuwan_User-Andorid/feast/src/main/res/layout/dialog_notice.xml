@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:background="@drawable/shape_rect_corner_white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/text_dialog_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp"
+        android:drawablePadding="20dp"
+        android:drawableTop="@mipmap/icon_notice_error"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:text="对不起！您的点餐不在服务范围内"
+        android:textColor="@color/com_text_blank_deep_light"
+        android:textSize="@dimen/text_nomal" />
+
+
+</LinearLayout>

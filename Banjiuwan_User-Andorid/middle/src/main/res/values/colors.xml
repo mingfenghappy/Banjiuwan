@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/jw_red</color>
+    <color name="colorPrimaryDark">@color/jw_red</color>
+    <color name="colorAccent">@color/jw_red</color>
+
+    <color name="jw_red">#D72D22</color>
+    <color name="jw_red_deep">#D72D22</color>
+</resources>

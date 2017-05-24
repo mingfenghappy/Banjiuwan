@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search_dishes"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ins.feast.ui.activity.SearchDishesActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#D72D22" />
+
+        <LinearLayout
+            android:id="@+id/transition_redBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D72D22"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="7dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="0dp"
+            android:paddingStart="12dp"
+            android:paddingTop="7dp">
+
+            <LinearLayout
+                android:transitionName="transitionSearch"
+                android:id="@+id/transitionView_whiteBg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_oval_bg_input">
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@mipmap/ic_search_gray"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@mipmap/ic_search_gray"
+                    android:hint="@string/searchDishes_hint"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:textColor="#333333"
+                    android:textColorHint="#999999"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick_cancel"
+                android:paddingEnd="23dp"
+                android:paddingLeft="13dp"
+                android:paddingRight="23dp"
+                android:paddingStart="13dp"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/webView_searchDishes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
